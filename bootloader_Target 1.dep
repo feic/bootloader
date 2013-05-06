@@ -1,0 +1,6 @@
+Dependencies for Project 'bootloader', Target 'Target 1': (DO NOT MODIFY !)
+F (.\init.s)(0x51874160)()
+F (.\main.c)(0x5184B4B7)()
+F (.\nand_read.c)(0x5184B4B7)()
+F (.\s3c2440.h)(0x5184B4B7)()
+F (.\smdk2440.h)(0x5184B4B7)()
