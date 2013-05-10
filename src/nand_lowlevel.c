@@ -18,8 +18,8 @@ Support 512/page NAND Flash only
 #define BPAGE_ADD 0x33ff0008
 const char bpage_magic[8] = {'B', 'b', 'B', 'b', 'P', 'a', 'G', 'e'};
 
-#define	puts	Uart_Printf
-#define	printf	Uart_Printf
+#define	puts	Uart_SendString
+#define	printf	Uart_SendString
 #define	getch	Uart_Getch
 #define	putch	Uart_SendByte
 
@@ -199,76 +199,6 @@ void ReadPage(U32 addr, U8 *buf)
 	NFChipDs();
 }
 int CheckBadBlk(U32 addr);
-U32 WritePage(U32 addr, U8 *buf)
-{
-	U32 i, mecc;
-	U8 stat, tmp[7];
-	
-	
-	NFChipEn();
-	WrNFCmd(PROGCMD0);
-	WrNFAddr(0);
-	WrNFAddr(0);
-	WrNFAddr(addr);
-	WrNFAddr(addr>>8);
-	if(NandAddr)
-		WrNFAddr(addr>>16);
-	InitEcc();	//reset mecc and secc
-	MEccUnlock();
-	for(i=0; i<2048; i++)
-		WrNFDat(buf[i]);
-	MEccLock();
-	
-	mecc = RdNFMEcc();
-		
-	tmp[0] = mecc&0xff;
-    tmp[1] = (mecc>>8)&0xff;
-    tmp[2] = (mecc>>16)&0xff;
-    tmp[3] = (mecc>>24)&0xff;
-    tmp[5] = 0xff;	//mark good block
-
-	 if(fs_yaffs==1){
-	 	WrNFDat(0xff);
-	 	for(i=2049;i<2112;i++)
-	 	{
-	 		WrNFDat(buf[i]);
-	 	}
-	 }else{
-	 	
-		WrNFDat(0xff);//2048，坏块标志
-	    SEccUnlock();
-		WrNFDat(tmp[0]);//ECC校验码
-		WrNFDat(tmp[1]);
-		WrNFDat(tmp[2]);
-		WrNFDat(tmp[3]);
-		SEccLock();
-	}
-
-	WrNFCmd(PROGCMD1);
-	stat = WaitNFBusy();
-	NFChipDs();
-	
-
-	if(stat)
-		printf("Write nand flash 0x%x fail\n", addr);
-	else {	
-	
-#if 1
-		U8 RdDat[2048];
-		
-		ReadPage(addr, RdDat);		
-		for(i=0; i<2048; i++)
-			if(RdDat[i]!=buf[i]) {
-				printf("Check data at page 0x%x, offset 0x%x fail\n", addr, i);
-				stat = 1;
-				break;
-			}
-#endif			
-	}
-	
-
-	return stat;	
-}
 
 void MarkBadBlk(U32 addr)
 {
@@ -339,108 +269,6 @@ void wince_rewrite()
 }
 */
 
-void WrFileToNF(void)
-{
-	int i ,size, skip_blks;
-	U32 ram_addr;
-	struct Partition *nf_part;
-
-	fs_yaffs=0;
-	nf_part = NandSelPart("write");
-	if(!nf_part)
-		return;	
-	StartPage = nf_part->offset>>11;
-	BlockCnt  = nf_part->size>>17;
-
-//	printf("\n    飞凌嵌入式      www.witech.com.cn\n");
-	if(!strcmp(nf_part->name,"wince"))//strcmp 串比较 不管大小写
-	{
-		puts("\nThe 'wince' partition is reserved for wince. please use eboot\n");
-		return;
-	}	
-	printf("\nNow download and write nand flash part [ %s ] \n",nf_part->name);
-	printf("press [USB Port-->transmit] to choose the file \n");
-
-	WaitDownload();
-	
-	
-	if(downloadFileSize>nf_part->size) {
-		puts("Download file size is more large than selected partition size!!!\n");
-		return;
-	}
-	
-	//if(!strcmp(nf_part->name,"wince"))//strcmp 串比较 不管大小写
-		//wince_rewrite();
-	if(!strcmp(nf_part->name,"fs_yaffs"))
-		fs_yaffs=2;
-	printf("Now write nand flash page 0x%x from ram address 0x%x, filesize = %d\n", StartPage, downloadAddress, downloadFileSize);
-
-	skip_blks = 0;
-	ram_addr = downloadAddress;
-	size = downloadFileSize-10;
-	for(i=0; size>0; )	{	
-		if(!(i&0x3f)) {
-			
-			if(EraseBlock(i+StartPage)) {
-				/*标记坏块并跳过改块*/
-				nf_part->size -= 64<<11;	//partition available size - 1 block size
-				if(downloadFileSize>nf_part->size) {
-					puts("Program nand flash fail\n");
-					return;
-				}
-				MarkBadBlk(i+StartPage);
-				//printf("bpage %x\n",i+StartPage);
-				add_bpage(i+StartPage);
-				skip_blks++;				
-				i += 64;				
-				continue;
-			}
-		}
-		if(fs_yaffs==2){
-			//i+=64;
-			fs_yaffs=1;
-			continue;
-		}
-		if(WritePage(i+StartPage, (U8 *)ram_addr)) {
-			ram_addr -= (i&0x3f)<<11;//i pages size
-			size += (i&0x3f)<<11;
-			if(fs_yaffs==1)
-			{
-				ram_addr -=(i&0x3f)*64;
-				size +=(i&0x3f)*64;			
-			}
-			i &= ~0x3f;				
-			nf_part->size -= 64<<11;	//partition available size - 1 block size
-			if(downloadFileSize>nf_part->size) {
-				puts("Program nand flash fail\n");
-				return;
-			}			
-			MarkBadBlk(i+StartPage);
-			//printf("bpage %x\n",i+StartPage);
-			add_bpage(i+StartPage);
-			skip_blks++;			
-			i += 64;			
-			continue;
-		}
-		ram_addr += 2048;
-		size -= 2048;
-		if(fs_yaffs==1){
-			ram_addr +=64;
-			size -=64;
-		}
-		i++;
-		
-	}
-	fs_yaffs=0;
-	puts("Program nand flash partition success\n");
-	if(skip_blks)
-	{
-		printf("Skiped %d bad block(s)\n", skip_blks);
-		save_params();
-		//cpy_bpage();
-	}
-}
-
 
 /************************************************************/
 int have_nandflash;
@@ -450,8 +278,7 @@ void InitNandFlash(int info)
 	
 	InitNandCfg();
 	i = ReadChipId();
-	if(info)
-		printf("NAND ID is 0x%04x \n", i);
+	
 		
 	if(i==0xecda){
 		have_nandflash = 1;	
@@ -489,67 +316,6 @@ static void MarkGoodBlk(U32 addr)
 	WaitNFBusy();		//needn't check return status
 		
 	NFChipDs();
-}
-
-void NandErase(void)
-{
-	int i, err = 0;
-
-	struct Partition *nf_part; 
-	
-	InitNandFlash(1);
-	if(!have_nandflash)
-		return;
-	
-	nf_part = NandSelPart("erase");
-	if(!nf_part)
-		return;	
-	StartPage = nf_part->offset>>11;
-	BlockCnt  = nf_part->size>>17;
-
-	
-	printf("Are you sure to erase nand flash from page 0x%x, block count 0x%x ? [y/n]\n", StartPage, BlockCnt);
-	while(1) {
-		char c;
-		
-		c = getch();
-		if((c=='y')||(c=='Y'))
-			break;
-		if((c=='n')||(c=='N'))
-			return;
-	}	
-	
-	for(i=0; BlockCnt; BlockCnt--, i+=64) {
-		if(EraseBlock(i+StartPage)) {
-			err ++;
-			add_bpage(i+StartPage);
-			//puts("Press any key to continue...\n");
-			//getch();
-		}
-		else if(!strcmp(nf_part->name,"fs_yaffs"))
-			MarkGoodBlk(i+StartPage);
-	}	
-
-	DsNandFlash();		//disable nand flash interface
-	puts("Erase Nand partition completed ");
-	
-	if(err)
-	{
-		save_params();
-		//cpy_bpage();
-		printf("with %d bad block(s)\n", err);
-	}
-	else
-		puts("success\n");
-}
-
-void NandWrite(void)
-{
-	InitNandFlash(1);
-	if(!have_nandflash)
-		return;
-	WrFileToNF();
-	DsNandFlash();		//disable nand flash interface
 }
 
 
@@ -662,97 +428,7 @@ int search_params(void)
 }
 
 
-//flash的写操作必须从一块的第一页开始写
-int save_params(void)
-{
-	
-	U8 dat[0x800];
-	int ret = 0;
-	struct Partition *nf_part;
-	
-	if(rBWSCON&0x6){//nor
-		//memcpy(dat, (void *)0x08000000, NOR_PARAMS_OFFSET);
-		memcpy(dat, &boot_params, sizeof(boot_params));
-		ret = ProgNorFlash(NOR_PARAMS_OFFSET, (U32)dat, sizeof(dat));	//28F128
-	}
-	else{
-	
-		U32 i,page, page_cnt;
-		nf_part = NandSelPart_2("bootParam");	
-		if(!nf_part)
-			return -1;	
-		page = nf_part->offset>>11;
-		page_cnt= nf_part->size>>11;
-		InitNandFlash(0);
-	
-		memset(dat, 0, 0x800/*sizeof(boot_params)*/);
-		memcpy(dat, &boot_params, sizeof(boot_params));
 
-		for(i=0; i<page_cnt; i++) {
-			if(!(i&0x3f))//擦除flash，并检测是否是坏块
-				if(EraseBlock(page)){
-					i+=64;
-					continue;
-				}
-			if(!WritePage(page+i, dat))
-				break;
-		}
-		if(i>=page_cnt)
-			ret = -1;
-		
-		
-		DsNandFlash();
-	}
-	printf("Save boot params %s.\n", ret?"fail":"success");
-	return ret;
-}
 
-int set_params(void)
-{
-	int i, key, chg=0;
-	ParamItem *pPID;
-	printf(" +------------------------------------------------------------+\n");
-	printf(" |                     Config parameters                      |\n");
-	printf(" +------------------------------------------------------------+\n");
-	//printf("\n#####Config parameters#####\n");
-	
-	do {
-		pPID = &boot_params.start;
-		for(i=0; pPID<=&boot_params.user_params; pPID++, i++)
-			printf("  [%2d] %-10s : 0x%08x (%d)\n",
-						i, pPID->flags, pPID->val, pPID->val);
-		printf("  [%2d] : Exit\n", i);
-		if(boot_params.user_params.val)
-			printf("User parameters is : \"%s\"\n", boot_params.string);
-		
-		printf("\nplease select item:");
-		key = Uart_GetIntNum();
-		if(key>=0&&key<i) {
-			chg = 1;
-			printf("please enter value:");
-			i = key;
-			if((&boot_params.start + i)==&boot_params.user_params) {
-				//确保输入的字节数不超过127!
-				char cmd[128];
-				memset(cmd, 0, sizeof(cmd));
-				Uart_GetString(cmd);
-				strncpy(boot_params.string, cmd, strlen(cmd)+1);
-				boot_params.user_params.val = strlen(cmd);
-			} else {
-				key = Uart_GetIntNum();
-				(&boot_params.start + i)->val = key;
-			}
-		} else
-			break;
-	} while(1);
-	
-	if(chg) {
-		printf("Do you want to save parameters? press y or Y for save.\n");
-		key = getch();
-		if(key=='y'||key=='Y')
-			save_params();
-	}
-	
-	return 0;
-}
+
 //=========================================================================

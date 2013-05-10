@@ -60,35 +60,28 @@ THUMBCODE SETL  {FALSE}
  		]
 	MEND
 
- 		MACRO
-$HandlerLabel HANDLER $HandleLabel
+ 		
 
-$HandlerLabel
-	sub	sp,sp,#4	;decrement sp(to store jump address)
-	stmfd	sp!,{r0}	;PUSH the work register to stack(lr does t push because it return to original address)
-	ldr     r0,=$HandleLabel;load the address of HandleXXX to r0
-	ldr     r0,[r0]	 ;load the contents(service routine start address) of HandleXXX
-	str     r0,[sp,#4]      ;store the contents(ISR) of HandleXXX to stack
-	ldmfd   sp!,{r0,pc}     ;POP the work register and pc(jump to ISR)
-	MEND
-
-	IMPORT  |Image$$RO$$Base|	; Base of ROM code
-	IMPORT  |Image$$RO$$Limit|  ; End of ROM code (=start of ROM data)
-	IMPORT  |Image$$RW$$Base|   ; Base of RAM to initialise
-	IMPORT  |Image$$ZI$$Base|   ; Base and limit of area
-	IMPORT  |Image$$ZI$$Limit|  ; to zero initialise
-
+	IMPORT  |Image$$ER_ROM1$$RO$$Base|	; Base of ROM code
+	IMPORT  |Image$$ER_ROM1$$RO$$Limit|  ; End of ROM code (=start of ROM data)
+	IMPORT  |Image$$RW_RAM1$$RW$$Base|   ; Base of RAM to initialise
+	IMPORT  |Image$$RW_RAM1$$ZI$$Base|   ; Base and limit of area
+	IMPORT  |Image$$RW_RAM1$$ZI$$Limit|  ; to zero initialise
+	
 	IMPORT	MMU_SetAsyncBusMode
 	IMPORT	MMU_SetFastBusMode	
 
 	IMPORT  Main    ; The main entry of mon program
 
 
-	AREA    Init,CODE,READONLY
+	AREA    RESET,CODE,READONLY
 
 	ENTRY
 	
 	EXPORT	__ENTRY
+	
+	PRESERVE8
+	
 __ENTRY
 ;========
 ;复位
@@ -115,16 +108,15 @@ ResetEntry
 	|
 	    b	ResetHandler
     ]
-	b	HandlerUndef	;handler for Undefined mode
-	b	HandlerSWI	;handler for SWI interrupt
-	b	HandlerPabort	;handler for PAbort
-	b	HandlerDabort	;handler for DAbort
+	b	.	;handler for Undefined mode
+	b	.	;handler for SWI interrupt
+	b	.	;handler for PAbort
+	b	.	;handler for DAbort
 	b	.		;reserved
-	b	HandlerIRQ	;handler for IRQ interrupt
-	b	HandlerFIQ	;handler for FIQ interrupt
+	b	.	;handler for IRQ interrupt
+	b	.   ;handler for FIQ interrupt
 
-;@0x20
-	b	EnterPWDN	; Must be @0x20.
+
 ChangeBigEndian
 ;@0x24
 	[ ENTRY_BUS_WIDTH=32
@@ -149,24 +141,9 @@ ChangeBigEndian
 	DCD 0xffffffff
 	b ResetHandler
 	
-HandlerFIQ      HANDLER HandleFIQ
-HandlerIRQ      HANDLER HandleIRQ
-HandlerUndef    HANDLER HandleUndef
-HandlerSWI      HANDLER HandleSWI
-HandlerDabort   HANDLER HandleDabort
-HandlerPabort   HANDLER HandlePabort
 
-IsrIRQ
-	sub	sp,sp,#4       ;reserved for PC
-	stmfd	sp!,{r8-r9}
 
-	ldr	r9,=INTOFFSET
-	ldr	r9,[r9]
-	ldr	r8,=HandleEINT0
-	add	r8,r8,r9,lsl #2
-	ldr	r8,[r8]
-	str	r8,[sp,#8]
-	ldmfd	sp!,{r8-r9,pc}
+
 
 
 	LTORG
@@ -238,12 +215,7 @@ ResetHandler
 	str	r1,[r0]
     ]
     
-	;Check if the boot is caused by the wake-up from SLEEP mode.
-	ldr	r1,=GSTATUS2
-	ldr	r0,[r1]
-	tst	r0,#0x2
-	;In case of the wake-up from SLEEP mode, go to SLEEP_WAKEUP handler.
-	bne	WAKEUP_SLEEP
+	
 
 ;	EXPORT StartPointAfterSleepWakeUp
 ;StartPointAfterSleepWakeUp
@@ -307,9 +279,7 @@ ResetHandler
 
 ;==========================================================
   	; Setup IRQ handler//建立中断表
-	ldr	r0,=HandleIRQ       ;This routine is needed
-	ldr	r1,=IsrIRQ	  ;if there isn t 'subs pc,lr,#4' at 0x18, 0x1c
-	str	r1,[r0]
+	
 ;===========================================================
 ;// 判断是从nor启动还是从nand启动
 ;===========================================================
@@ -318,7 +288,7 @@ ResetHandler
 	ldr	r0, =BWSCON
 	ldr	r0, [r0]
 	ands	r0, r0, #6		;OM[1:0] != 0, NOR FLash boot
-	bne	NORRoCopy		;don t read nand flash
+	bne	NORRwCopy		;don t read nand flash
 	adr	r0, ResetEntry		;OM[1:0] == 0, NAND FLash boot // ADR 装载参照的地址=sub r0,pc,#0x268;
 	cmp	r0, #0				;if use Multi-ice,//JTAG调试时是直接下载到内存中运行，不需要再从nand拷贝 
 	bne	InitRamZero		;don t read nand flash for boot
@@ -330,48 +300,6 @@ ResetHandler
 ;//将程序从nandflash拷贝到sdram
 ;===========================================================
 nand_boot_beg
-	bl	ClearSdram
-	mov	r5, #NFCONF
-	;set timing value
-	ldr	r0,	=(7<<12)|(7<<8)|(7<<4)
-	str	r0,	[r5]
-	;enable control
-	ldr	r0, =(0<<13)|(0<<12)|(0<<10)|(0<<9)|(0<<8)|(1<<6)|(1<<5)|(1<<4)|(1<<1)|(1<<0)
-	str	r0, [r5, #4]
-	
-	bl	ReadNandID
-	mov	r6, #0
-	ldr	r0, =0xecF1
-	cmp	r5,	r0
-	beq	%F1
-;	ldr	r0, =0xecda
-;	cmp	r5, r0
-	mov	r6, #1			;Nandaddr(寻址周期 0:4  1:5)
-1	
-	bl	ReadNandStatus
-	
-	mov	r8, #0
-	ldr	r9, =ResetEntry
-	mov r10,#32			;+081010 feiling
-2	
-	ands	r0, r8, #0x3f	;如果是第一页，则检测坏块
-	bne		%F3
-	mov		r0, r8
-	bl		CheckBadBlk
-	cmp		r0, #0
-	addne	r8, r8, #64	;每块的页数  此处有BUG r8同时也做计数用。。
-	addne	r10,r10,#64 ;+081010 feiling
-	bne		%F4
-3	
-	mov	r0, r8
-	mov	r1, r9
-	bl	ReadNandPage
-	add	r9, r9, #2048	;每页的字节数
-	add	r8, r8, #1		;页数＋1
-4	
-	cmp	r8, r10   ;要拷贝的页数 081010 pht:#32->r10 
-	bcc	%B2
-	
 	mov	r5, #NFCONF			;DsNandFlash
 	ldr	r0, [r5, #4]
 	bic r0, r0, #1
@@ -384,19 +312,6 @@ nand_boot_beg
 ;
 ;注：若在NOR中直接运行，需把RO/BASE改为0并定义RW/BASE 会跳过RO拷贝
 ;=============================================================================================
-NORRoCopy			;copy_proc_beg  by pht
-	bl	ClearSdram
-
-	adr	r0, ResetEntry		;判断是否在ROM中运行，ROM即RO指定的地址 从NOR启动时ResetEntry为0
-	ldr	r2, BaseOfROM		;如果是则跳转到RwCopy 否则的话，将程序拷贝到ROM地址 
-	cmp	r0, r2
-	beq	NORRwCopy				
-	ldr r3, TopOfROM		;
-0							
-	ldmia	r0!, {r4-r7}
-	stmia	r2!, {r4-r7}
-	cmp	r2, r3
-	bcc	%B0
 	
 		
 NORRwCopy	
@@ -453,7 +368,7 @@ ClearSdram
 	stmia	r0!,{r1-r8}
 	subs	r9,r9,#32 
 	bne	%B0
-	mov	pc,lr
+	bx lr
 	
 ;===========================================================	
 ;function initializing stacks
@@ -486,154 +401,14 @@ InitStacks
 
 	;USER mode has not be initialized.
 
-	mov	pc,lr
+	bx lr
 	;The LR register won t be valid if the current mode is not SVC mode.
 	
 ;===========================================================
-ReadNandID
-	mov      r7,#NFCONF
-	ldr      r0,[r7,#4]		;NFChipEn();
-	bic      r0,r0,#2
-	str      r0,[r7,#4]
-	mov      r0,#0x90		;WrNFCmd(RdIDCMD);
-	strb     r0,[r7,#8]
-	mov      r4,#0			;WrNFAddr(0);
-	strb     r4,[r7,#0xc]
-1							;while(NFIsBusy());
-	ldr      r0,[r7,#0x20]
-	tst      r0,#1
-	beq      %B1
-	ldrb     r0,[r7,#0x10]	;id  = RdNFDat()<<8;
-	mov      r0,r0,lsl #8
-	ldrb     r1,[r7,#0x10]	;id |= RdNFDat();
-	orr      r5,r1,r0
-	ldr      r0,[r7,#4]		;NFChipDs();
-	orr      r0,r0,#2
-	str      r0,[r7,#4]
-	mov		 pc,lr	
-	
-ReadNandStatus
-	mov		 r7,#NFCONF
-	ldr      r0,[r7,#4]		;NFChipEn();
-	bic      r0,r0,#2
-	str      r0,[r7,#4]
-	mov      r0,#0x70		;WrNFCmd(QUERYCMD);
-	strb     r0,[r7,#8]	
-	ldrb     r1,[r7,#0x10]	;r1 = RdNFDat();
-	ldr      r0,[r7,#4]		;NFChipDs();
-	orr      r0,r0,#2
-	str      r0,[r7,#4]
-	mov		 pc,lr
 
-WaitNandBusy
-	mov      r0,#0x70		;WrNFCmd(QUERYCMD);
-	mov      r1,#NFCONF
-	strb     r0,[r1,#8]
-1							;while(!(RdNFDat()&0x40));	
-	ldrb     r0,[r1,#0x10]
-	tst      r0,#0x40
-	beq		 %B1
-	mov      r0,#0			;WrNFCmd(READCMD0);
-	strb     r0,[r1,#8]
-	mov      pc,lr
 
-CheckBadBlk
-	mov		r7, lr
-	mov		r5, #NFCONF
 	
-	bic      r0,r0,#0x3f	;addr &= ~0x3f;
-	ldr      r1,[r5,#4]		;NFChipEn()
-	bic      r1,r1,#2
-	str      r1,[r5,#4]
 
-	mov      r1,#0x00		;WrNFCmd(READCMD)
-	strb     r1,[r5,#8]
-	mov      r1, #0			;2048&0xff
-	strb     r1,[r5,#0xc]	;WrNFAddr(2048&0xff);
-	mov      r1, #8			;(2048>>8)&0xf
-	strb     r1,[r5,#0xc]
-	
-	strb     r0,[r5,#0xc]	;WrNFAddr(addr)
-	mov      r1,r0,lsr #8	;WrNFAddr(addr>>8)
-	strb     r1,[r5,#0xc]
-	cmp      r6,#0			;if(NandAddr)
-	movne    r1,r0,lsr #16	;WrNFAddr(addr>>16)
-	strb     r1,[r5,#0xc]
-	
-	mov      r1,#0x30			;WrNFCmd(0x30)
-	strb     r1,[r5,#8]
-		
-;	cmp      r6,#0			;if(NandAddr)		
-;	movne    r0,r0,lsr #16	;WrNFAddr(addr>>16)
-;	strneb   r0,[r5,#0xc]
-	
-;	bl		WaitNandBusy	;WaitNFBusy()
-	;don t use WaitNandBusy, after WaitNandBusy will read part A!
-	mov	r0, #100
-1
-	subs	r0, r0, #1
-	bne	%B1
-2
-	ldr	r0, [r5, #0x20]
-	tst	r0, #1
-	beq	%B2	
-
-	ldrb	r0, [r5,#0x10]	;RdNFDat()
-	sub		r0, r0, #0xff
-	
-;	mov      r1,#0			;WrNFCmd(READCMD0)
-;	strb     r1,[r5,#8]
-	
-	ldr      r1,[r5,#4]		;NFChipDs()
-	orr      r1,r1,#2
-	str      r1,[r5,#4]
-	
-	mov		pc, r7
-	
-ReadNandPage
-	mov		 r7,lr
-	mov      r4,r1
-	mov      r5,#NFCONF
-
-	ldr      r1,[r5,#4]		;NFChipEn()
-	bic      r1,r1,#2
-	str      r1,[r5,#4]	
-
-	mov      r1,#0			;WrNFCmd(READCMD0)
-	strb     r1,[r5,#8]	
-	strb     r1,[r5,#0xc]	;WrNFAddr(0)
-	strb     r1,[r5,#0xc]	;WrNFAddr(0)	
-	strb     r0,[r5,#0xc]	;WrNFAddr(addr)
-	mov      r1,r0,lsr #8	;WrNFAddr(addr>>8)
-	strb     r1,[r5,#0xc]	
-	cmp      r6,#0			;if(NandAddr)
-	movne    r1,r0,lsr #16	;WrNFAddr(addr>>16)
-	strb     r1,[r5,#0xc]	
-
-	mov      r1,#0x30			;WrNFCmd(0x30)
-	strb     r1,[r5,#8]
-		
-	
-	ldr      r0,[r5,#4]		;InitEcc()
-	orr      r0,r0,#0x10
-	str      r0,[r5,#4]
-	
-	bl       WaitNandBusy	;WaitNFBusy()
-	
-	mov      r0,#0			;for(i=0; i<2048; i++)
-1
-	ldrb     r1,[r5,#0x10]	;buf[i] = RdNFDat()
-	strb     r1,[r4,r0]
-	add      r0,r0,#1
-	bic      r0,r0,#0x10000	;?
-	cmp      r0,#0x800
-	bcc      %B1
-	
-	ldr      r0,[r5,#4]		;NFChipDs()
-	orr      r0,r0,#2
-	str      r0,[r5,#4]
-		
-	mov		 pc,r7
 
 ;--------------------LED test
 	EXPORT	Led_Test
@@ -657,7 +432,7 @@ Led_Test
 	subs	r2, r2, #1
 	bne	%B2
 	b	%B0
-	mov	pc, lr
+	bx  lr
 
 ;===========================================================
 
@@ -696,100 +471,14 @@ SMRDATA DATA
 	DCD 0x20	    ;MRSR6 CL=2clk
 	DCD 0x20	    ;MRSR7 CL=2clk
 	
-BaseOfROM	DCD	|Image$$RO$$Base|
-TopOfROM	DCD	|Image$$RO$$Limit|
-BaseOfBSS	DCD	|Image$$RW$$Base|
-BaseOfZero	DCD	|Image$$ZI$$Base|
-EndOfBSS	DCD	|Image$$ZI$$Limit|
+BaseOfROM	DCD	|Image$$ER_ROM1$$RO$$Base|
+TopOfROM	DCD	|Image$$ER_ROM1$$RO$$Limit|
+BaseOfBSS	DCD	|Image$$RW_RAM1$$RW$$Base|
+BaseOfZero	DCD	|Image$$RW_RAM1$$ZI$$Base|
+EndOfBSS	DCD	|Image$$RW_RAM1$$ZI$$Limit|
 
 	ALIGN
 	
-;Function for entering power down mode
-; 1. SDRAM should be in self-refresh mode.
-; 2. All interrupt should be maksked for SDRAM/DRAM self-refresh.
-; 3. LCD controller should be disabled for SDRAM/DRAM self-refresh.
-; 4. The I-cache may have to be turned on.
-; 5. The location of the following code may have not to be changed.
-
-;void EnterPWDN(int CLKCON);
-EnterPWDN
-	mov r2,r0		;r2=rCLKCON
-	tst r0,#0x8		;SLEEP mode?
-	bne ENTER_SLEEP
-
-ENTER_STOP
-	ldr r0,=REFRESH
-	ldr r3,[r0]		;r3=rREFRESH
-	mov r1, r3
-	orr r1, r1, #BIT_SELFREFRESH
-	str r1, [r0]		;Enable SDRAM self-refresh
-
-	mov r1,#16			;wait until self-refresh is issued. may not be needed.
-0	subs r1,r1,#1
-	bne %B0
-
-	ldr r0,=CLKCON		;enter STOP mode.
-	str r2,[r0]
-
-	mov r1,#32
-0	subs r1,r1,#1	;1) wait until the STOP mode is in effect.
-	bne %B0		;2) Or wait here until the CPU&Peripherals will be turned-off
-			;   Entering SLEEP mode, only the reset by wake-up is available.
-
-	ldr r0,=REFRESH ;exit from SDRAM self refresh mode.
-	str r3,[r0]
-
-	MOV_PC_LR
-
-ENTER_SLEEP
-	;NOTE.
-	;1) rGSTATUS3 should have the return address after wake-up from SLEEP mode.
-
-	ldr r0,=REFRESH
-	ldr r1,[r0]		;r1=rREFRESH
-	orr r1, r1, #BIT_SELFREFRESH
-	str r1, [r0]		;Enable SDRAM self-refresh
-
-	mov r1,#16			;Wait until self-refresh is issued,which may not be needed.
-0	subs r1,r1,#1
-	bne %B0
-
-	ldr	r1,=MISCCR
-	ldr	r0,[r1]
-	orr	r0,r0,#(7<<17)  ;Set SCLK0=0, SCLK1=0, SCKE=0.
-	str	r0,[r1]
-
-	ldr r0,=CLKCON		; Enter sleep mode
-	str r2,[r0]
-
-	b .			;CPU will die here.
-
-
-WAKEUP_SLEEP
-	;Release SCLKn after wake-up from the SLEEP mode.
-	ldr	r1,=MISCCR
-	ldr	r0,[r1]
-	bic	r0,r0,#(7<<17)  ;SCLK0:0->SCLK, SCLK1:0->SCLK, SCKE:0->=SCKE.
-	str	r0,[r1]
-
-	;Set memory control registers
- 	ldr	r0,=SMRDATA	
-	ldr	r1,=BWSCON	;BWSCON Address
-	add	r2, r0, #52	;End address of SMRDATA
-0
-	ldr	r3, [r0], #4
-	str	r3, [r1], #4
-	cmp	r2, r0
-	bne	%B0
-
-	mov r1,#256
-0	subs r1,r1,#1	;1) wait until the SelfRefresh is released.
-	bne %B0
-
-	ldr r1,=GSTATUS3 	;GSTATUS3 has the start address just after SLEEP wake-up
-	ldr r0,[r1]
-
-	mov pc,r0
 	
 ;=====================================================================
 ; Clock division test
@@ -821,7 +510,7 @@ CLKDIV124
 	nop
 	nop
 	nop
-	mov     pc, lr
+	bx  lr
 
 CLKDIV144
 	ldr     r0, = CLKDIVN
@@ -845,59 +534,8 @@ CLKDIV144
 	nop
 	nop
 	nop
-	mov     pc, lr
+	bx  lr
 
 
-	ALIGN
-
-	AREA RamData, DATA, READWRITE
-
-	^   _ISR_STARTADDRESS		; _ISR_STARTADDRESS=0x33FF_FF00
-HandleReset 	#   4
-HandleUndef 	#   4
-HandleSWI		#   4
-HandlePabort    #   4
-HandleDabort    #   4
-HandleReserved  #   4
-HandleIRQ		#   4
-HandleFIQ		#   4
-
-;Don t use the label 'IntVectorTable',
-;The value of IntVectorTable is different with the address you think it may be.
-;IntVectorTable
-;@0x33FF_FF20
-HandleEINT0		#   4
-HandleEINT1		#   4
-HandleEINT2		#   4
-HandleEINT3		#   4
-HandleEINT4_7	#   4
-HandleEINT8_23	#   4
-HandleCAM		#   4		; Added for 2440.
-HandleBATFLT	#   4
-HandleTICK		#   4
-HandleWDT		#   4
-HandleTIMER0 	#   4
-HandleTIMER1 	#   4
-HandleTIMER2 	#   4
-HandleTIMER3 	#   4
-HandleTIMER4 	#   4
-HandleUART2  	#   4
-;@0x33FF_FF60
-HandleLCD 		#   4
-HandleDMA0		#   4
-HandleDMA1		#   4
-HandleDMA2		#   4
-HandleDMA3		#   4
-HandleMMC		#   4
-HandleSPI0		#   4
-HandleUART1		#   4
-HandleNFCON		#   4		; Added for 2440.
-HandleUSBD		#   4
-HandleUSBH		#   4
-HandleIIC		#   4
-HandleUART0 	#   4
-HandleSPI1 		#   4
-HandleRTC 		#   4
-HandleADC 		#   4
-;@0x33FF_FFA0
+	
 	END

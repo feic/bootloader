@@ -91,12 +91,12 @@ extern unsigned int UCLK;
 #define _NONCACHE_STARTADDRESS	0x31000000
 
 //If you use ADS1.x, please define ADS10
-#define ADS10 1
+//#define ADS10 1
 
 //USB Device Options
-#define USBDMA		1	
-#define USBDMA_DEMAND 	0	//the downloadFileSize should be (64*n)
-#define BULK_PKT_SIZE	64
+//#define USBDMA		1	
+//#define USBDMA_DEMAND 	0	//the downloadFileSize should be (64*n)
+//#define BULK_PKT_SIZE	64
 
 // note: makefile,option.a should be changed
 

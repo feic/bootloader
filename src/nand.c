@@ -24,10 +24,9 @@ static struct Partition NandPart[] = {
 	{0,			 0         , 0}
 };
 
-#define	puts	Uart_Printf
-#define	printf	Uart_Printf
+
 #define	getch	Uart_Getch
-#define	putch	Uart_SendByte
+
 #define	EnNandFlash()	(rNFCONT |= 1)
 #define	DsNandFlash()	(rNFCONT &= ~1)
 struct Partition * NandSelPart(char *info)
@@ -199,7 +198,7 @@ void call_linux(U32 a0, U32 a1, U32 a2)
 
 extern int sprintf(char * /*s*/, const char * /*format*/, ...);
 extern int CheckBadBlk(U32 addr);
-static void LoadRun(void)
+void LoadRun(void)
 {
 	U32 i, ram_addr, buf = 0x30200000;//boot_params.run_addr.val;
 	struct param_struct *params = (struct param_struct *)0x30000100;
@@ -380,171 +379,3 @@ static void LoadRun(void)
 
 /***************** LOAD PIC ***********************/
 
-void LoadPic(U32 PicBuffer)
-{
-	U32 i, ram_addr;
-	int size;
-	struct Partition *nf_part;
-	nf_part = NandSelPart_2("pic");	
-	if(!nf_part)
-		return;	
-	StartPage = nf_part->offset>>11;
-	size = nf_part->size;
-	ram_addr = PicBuffer;
-	
-	InitNandFlash(0);
-
-	for(i=0; size>0; ) {
-		if(!(i&0x3f)) {
-			if(CheckBadBlk(i+StartPage)) {
-				printf("Skipped bad block at 0x%x\n", i+StartPage);
-				i += 64;
-				//size -= 32<<9;
-				continue;
-			}
-		}
-		ReadPage((i+StartPage), (U8 *)ram_addr);
-		i++;
-		size -= 2048;
-		ram_addr += 2048;
-	}
-}
-/***************** boot APP ***********************/
-static void LoadRunApp()
-{
-	U32 i, ram_addr, buf = boot_params.initrd_addr.val;
-	int size;
-	struct Partition *nf_part;
-	
-	MemoryTest();
-	printf("Load Application...\n");	
-
-	
-	
-	nf_part = NandSelPart_2("MyApp");	
-	if(!nf_part)
-		return;	
-	StartPage = nf_part->offset>>11;
-	size = nf_part->size;
-	//StartPage = NandPart[1].offset>>11;	//part 2,3...
-	//size = NandPart[1].size;//NandPart[boot_params.root_sel.val].size;
-	ram_addr = boot_params.AppRun_addr.val;
-
-	for(i=0; size>0; ) {
-		if(!(i&0x3f)) {
-			if(CheckBadBlk(i+StartPage)) {
-				printf("Skipped bad block at 0x%x\n", i+StartPage);
-				i += 64;
-				//size -= 32<<9;
-				continue;
-			}
-		}
-		ReadPage((i+StartPage), (U8 *)ram_addr);
-		i++;
-		size -= 2048;
-		ram_addr += 2048;
-	}
-
-	
-	printf("run 0x%08x...\n",boot_params.AppRun_addr.val);
-	//RelocateNKBIN(buf, &buf, &i, &boot_params.run_addr.val);
-	call_linux(0, 0, boot_params.AppRun_addr.val);
-}
-
-/***************** boot wince ***********************/
-extern MemoryTest(void);
-int RelocateNKBIN(U32 img_src, U32 *pStart, U32 *pLength, U32 *pLaunch);
-
-static void LoadRunWince(void)
-{
-	U32 i, ram_addr;
-	int size;
-	struct Partition *nf_part;
-	
-	U32 EBOOT_RUN_ADDR = 0x30038000;
-	U32 EBOOT_SIZE	= 0x40000;
-	
-	//MemoryTest();
-	printf("Load eboot...\n");	
-
-	
-	nf_part = NandSelPart_2("eboot");	
-	if(!nf_part)
-		return;	
-	StartPage = nf_part->offset>>11;
-	//size = nf_part->size;
-	//StartPage = NandPart[5].offset>>11;	//part 2,3...
-	size = EBOOT_SIZE;//NandPart[boot_params.root_sel.val].size;
-	ram_addr = EBOOT_RUN_ADDR;
-
-	for(i=0; size>0; ) {
-		if(!(i&0x3f)) {
-			if(CheckBadBlk(i+StartPage)) {
-				printf("Skipped bad block at 0x%x\n", i+StartPage);
-				i += 64;
-				//size -= 32<<9;
-				continue;
-			}
-		}
-		ReadPage((i+StartPage), (U8 *)ram_addr);
-		i++;
-		size -= 2048;
-		ram_addr += 2048;
-	}
-
-	
-	printf("run 0x%08x...\n", EBOOT_RUN_ADDR);
-	//RelocateNKBIN(buf, &buf, &i, &boot_params.run_addr.val);
-	call_linux(0, 0, EBOOT_RUN_ADDR);
-}
-
-void NandLoadRun(void)
-{
-	InitNandFlash(1);
-	LoadRun();
-	
-}
-void NandLoadRun_wince(void)
-{
-	InitNandFlash(1);
-	LoadRunWince();
-}
-
-void NandLoadRun_App()
-{
-	InitNandFlash(1);
-	LoadRunApp();
-}
-
-void AutoNandLoadRun()
-{
-	InitNandFlash(0);
-	switch(boot_params.start.val){
-	case 1:
-		LoadRunApp();
-		break;
-	case 2:
-		LoadRun();
-		break;
-	case 3:
-		LoadRunWince();	
-		break;
-	default:
-		break;
-	}
-
-		
-}
-
-void AutoNandLoadRun_key()
-{
-	InitNandFlash(0);
-
-	if(!((rGPFDAT>>5)&0x1))
-		LoadRunWince();	
-	else if(!((rGPFDAT>>1)&0x1))
-		LoadRun();
-	else if(!((rGPGDAT>>1)&0x1))
-		LoadRunApp();
-		
-}
