@@ -7,7 +7,7 @@ Support 512/page NAND Flash only
 #include "def.h"
 #include "2440addr.h"
 #include "2440lib.h"
-#include "2440slib.h"
+
 #include "Nand.h"
 
 //suppport boot params
@@ -64,7 +64,6 @@ const char bpage_magic[8] = {'B', 'b', 'B', 'b', 'P', 'a', 'G', 'e'};
 #define	RdIDCMD		0x90
 
 static U16 NandAddr;
-static int fs_yaffs;
 
 // HCLK=100Mhz
 #define TACLS		1//7	// 1-clk(0ns) 
@@ -72,8 +71,6 @@ static int fs_yaffs;
 #define TWRPH1		1//7	// 1-clk(10ns)  //TACLS+TWRPH0+TWRPH1>=50ns
 
 void InitNandFlash(int info);
-void cpy_bpage(void);
-void add_bpage(unsigned int seq);
 
 static void InitNandCfg(void)
 {
@@ -138,17 +135,6 @@ static U32 ReadChipId(void)
 	return id;
 }
 
-static U16 ReadStatus(void)
-{
-	U16 stat;
-	
-	NFChipEn();	
-	WrNFCmd(QUERYCMD);		
-	stat = RdNFDat();	
-	NFChipDs();
-	
-	return stat;
-}
 
 
 U32 EraseBlock(U32 addr)
@@ -200,28 +186,7 @@ void ReadPage(U32 addr, U8 *buf)
 }
 int CheckBadBlk(U32 addr);
 
-void MarkBadBlk(U32 addr)
-{
-	addr &= ~0x3f;
-	
-	
-	NFChipEn();
-	
 
-	WrNFCmd(PROGCMD0);
-	//mark offset 2048
-	WrNFAddr(0);		//2048&0xff
-	WrNFAddr(8);		//(2048>>8)&0xf
-	WrNFAddr(addr);
-	WrNFAddr(addr>>8);
-	if(NandAddr)
-		WrNFAddr(addr>>16);
-	WrNFDat(0);			//mark with 0
-	WrNFCmd(PROGCMD1);
-	WaitNFBusy();		//needn't check return status
-		
-	NFChipDs();
-}
 
 int CheckBadBlk(U32 addr)
 {
@@ -296,139 +261,12 @@ void InitNandFlash(int info)
 		//printf("Nand flash status = %x\n", ReadStatus());
 }
 
-static void MarkGoodBlk(U32 addr)
-{
-	addr &= ~0x3f;
-	
-	NFChipEn();
-	
-
-	WrNFCmd(PROGCMD0);
-	//mark offset 2048
-	WrNFAddr(0);		//2048&0xff
-	WrNFAddr(8);		//(2048>>8)&0xf
-	WrNFAddr(addr);
-	WrNFAddr(addr>>8);
-	if(NandAddr)
-		WrNFAddr(addr>>16);
-	WrNFDat(0xff);			//mark with 0xff
-	WrNFCmd(PROGCMD1);
-	WaitNFBusy();		//needn't check return status
-		
-	NFChipDs();
-}
 
 
 //==================================================================
-#if 1
-void cpy_bpage()
-{
-	if(boot_params.bpage[0]>20)
-	{
-		boot_params.bpage[0]=0;
-	}	
-
-	memcpy((char *)BPAGE_MAGIC_ADD,bpage_magic,8);
-	memcpy((unsigned int *)BPAGE_ADD,boot_params.bpage,boot_params.bpage[0]*4+4);
-}
-//ÃÌº”ªµøÈ–≈œ¢
-void add_bpage(unsigned int seq)
-{
-		int i, j;
-		i = 1;
-		
-		while (i < boot_params.bpage[0] && boot_params.bpage[i] < seq)
-			i++;
-		if (boot_params.bpage[i] == seq)
-			return;
-		else if (i == boot_params.bpage[0])
-			boot_params.bpage[i+1] = seq;
-		else
-		{
-			j = boot_params.bpage[0];
-			while (j >= i)
-			{
-				boot_params.bpage[j + 1] = boot_params.bpage[j];
-				j--;
-			}
-			
-			boot_params.bpage[i] = seq;
-		}
-		boot_params.bpage[0]++;
-}
-
-#endif
-//======================================================================
-#include "norflash.h"
-#define	NOR_PARAMS_OFFSET	0x20000
 
 //======================================================================
-int search_params(void)
-{
-	U8 dat[0x800];
-	int ret=-1;
-	BootParams *pBP = (BootParams *)dat;
-	
-	if(rBWSCON&0x6){//nor flash
-		memcpy(dat, (void *)(NOR_PARAMS_OFFSET), sizeof(boot_params));	//now mmu is not set, so use original address
-		if(!strncmp(boot_params.start.flags, pBP->start.flags, 10))
-			ret = 0;
 
-	}
-	else{//nand
-	
-		U32 i,page, page_cnt;
-		struct Partition *nf_part;
-		
-		nf_part = NandSelPart_2("bootParam");	
-		if(!nf_part)
-			return ret;
-		page = nf_part->offset>>11;
-		page_cnt = nf_part->size>>11;
-		
-		InitNandFlash(0);	//don't show info in InitNandFlash!
-		//search from the last page
-		for(i=0; i<page_cnt; i++) {
-			if(!(i&0x3f)) 
-				if(CheckBadBlk(page)) {
-					i += 64;
-					continue;
-				}
-			ReadPage(page+i, dat);
-			if(!strncmp(boot_params.start.flags, pBP->start.flags, 10)) {
-				ret = 0;
-				break;
-			}
-		}
-		if(i>=page_cnt)
-			ret = -1;
-		DsNandFlash();
-	}
-		
-	
-	
-	
-	if(!ret) {
-		ParamItem *pPIS = &pBP->start, *pPID = &boot_params.start;
-		
-		for(; pPID<=&boot_params.user_params; pPIS++, pPID++)
-			if(!strncmp(pPID->flags, pPIS->flags, sizeof(pPID->flags)))
-				pPID->val = pPIS->val;
-		strncpy(boot_params.string, pPIS->flags, boot_params.user_params.val+1);
-		if(boot_params.user_params.val!=strlen(pPID->flags)) {
-			memset(boot_params.string, 0, sizeof(boot_params.string));
-			boot_params.user_params.val = 0;
-		}
-		
-	} else {
-		//printf("Fail to find boot params! Use Default parameters.\n");
-		//don't printf anything before serial initialized!
-	}
-	return ret;
-}
-
-
-
-
+//======================================================================
 
 //=========================================================================

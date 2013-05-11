@@ -36,56 +36,9 @@ extern "C" {
 
 
 // INTERRUPT
-#define rSRCPND     (*(volatile unsigned *)0x4a000000)	//Interrupt request status
-#define rINTMOD     (*(volatile unsigned *)0x4a000004)	//Interrupt mode control
-#define rINTMSK     (*(volatile unsigned *)0x4a000008)	//Interrupt mask control
-#define rPRIORITY   (*(volatile unsigned *)0x4a00000c)	//IRQ priority control
-#define rINTPND     (*(volatile unsigned *)0x4a000010)	//Interrupt request status
-#define rINTOFFSET  (*(volatile unsigned *)0x4a000014)	//Interruot request source offset
-#define rSUBSRCPND  (*(volatile unsigned *)0x4a000018)	//Sub source pending
-#define rINTSUBMSK  (*(volatile unsigned *)0x4a00001c)	//Interrupt sub mask
 
 
 // DMA
-#define rDISRC0     (*(volatile unsigned *)0x4b000000)	//DMA 0 Initial source
-#define rDISRCC0    (*(volatile unsigned *)0x4b000004)	//DMA 0 Initial source control
-#define rDIDST0     (*(volatile unsigned *)0x4b000008)	//DMA 0 Initial Destination
-#define rDIDSTC0    (*(volatile unsigned *)0x4b00000c)	//DMA 0 Initial Destination control
-#define rDCON0      (*(volatile unsigned *)0x4b000010)	//DMA 0 Control
-#define rDSTAT0     (*(volatile unsigned *)0x4b000014)	//DMA 0 Status
-#define rDCSRC0     (*(volatile unsigned *)0x4b000018)	//DMA 0 Current source
-#define rDCDST0     (*(volatile unsigned *)0x4b00001c)	//DMA 0 Current destination
-#define rDMASKTRIG0 (*(volatile unsigned *)0x4b000020)	//DMA 0 Mask trigger
-
-#define rDISRC1     (*(volatile unsigned *)0x4b000040)	//DMA 1 Initial source
-#define rDISRCC1    (*(volatile unsigned *)0x4b000044)	//DMA 1 Initial source control
-#define rDIDST1     (*(volatile unsigned *)0x4b000048)	//DMA 1 Initial Destination
-#define rDIDSTC1    (*(volatile unsigned *)0x4b00004c)	//DMA 1 Initial Destination control
-#define rDCON1      (*(volatile unsigned *)0x4b000050)	//DMA 1 Control
-#define rDSTAT1     (*(volatile unsigned *)0x4b000054)	//DMA 1 Status
-#define rDCSRC1     (*(volatile unsigned *)0x4b000058)	//DMA 1 Current source
-#define rDCDST1     (*(volatile unsigned *)0x4b00005c)	//DMA 1 Current destination
-#define rDMASKTRIG1 (*(volatile unsigned *)0x4b000060)	//DMA 1 Mask trigger
-
-#define rDISRC2     (*(volatile unsigned *)0x4b000080)	//DMA 2 Initial source
-#define rDISRCC2    (*(volatile unsigned *)0x4b000084)	//DMA 2 Initial source control
-#define rDIDST2     (*(volatile unsigned *)0x4b000088)	//DMA 2 Initial Destination
-#define rDIDSTC2    (*(volatile unsigned *)0x4b00008c)	//DMA 2 Initial Destination control
-#define rDCON2      (*(volatile unsigned *)0x4b000090)	//DMA 2 Control
-#define rDSTAT2     (*(volatile unsigned *)0x4b000094)	//DMA 2 Status
-#define rDCSRC2     (*(volatile unsigned *)0x4b000098)	//DMA 2 Current source
-#define rDCDST2     (*(volatile unsigned *)0x4b00009c)	//DMA 2 Current destination
-#define rDMASKTRIG2 (*(volatile unsigned *)0x4b0000a0)	//DMA 2 Mask trigger
-
-#define rDISRC3     (*(volatile unsigned *)0x4b0000c0)	//DMA 3 Initial source
-#define rDISRCC3    (*(volatile unsigned *)0x4b0000c4)	//DMA 3 Initial source control
-#define rDIDST3     (*(volatile unsigned *)0x4b0000c8)	//DMA 3 Initial Destination
-#define rDIDSTC3    (*(volatile unsigned *)0x4b0000cc)	//DMA 3 Initial Destination control
-#define rDCON3      (*(volatile unsigned *)0x4b0000d0)	//DMA 3 Control
-#define rDSTAT3     (*(volatile unsigned *)0x4b0000d4)	//DMA 3 Status
-#define rDCSRC3     (*(volatile unsigned *)0x4b0000d8)	//DMA 3 Current source
-#define rDCDST3     (*(volatile unsigned *)0x4b0000dc)	//DMA 3 Current destination
-#define rDMASKTRIG3 (*(volatile unsigned *)0x4b0000e0)	//DMA 3 Mask trigger
 
 
 // CLOCK & POWER MANAGEMENT
@@ -99,24 +52,7 @@ extern "C" {
 
 
 // LCD CONTROLLER
-#define rLCDCON1    (*(volatile unsigned *)0x4d000000)	//LCD control 1
-#define rLCDCON2    (*(volatile unsigned *)0x4d000004)	//LCD control 2
-#define rLCDCON3    (*(volatile unsigned *)0x4d000008)	//LCD control 3
-#define rLCDCON4    (*(volatile unsigned *)0x4d00000c)	//LCD control 4
-#define rLCDCON5    (*(volatile unsigned *)0x4d000010)	//LCD control 5
-#define rLCDSADDR1  (*(volatile unsigned *)0x4d000014)	//STN/TFT Frame buffer start address 1
-#define rLCDSADDR2  (*(volatile unsigned *)0x4d000018)	//STN/TFT Frame buffer start address 2
-#define rLCDSADDR3  (*(volatile unsigned *)0x4d00001c)	//STN/TFT Virtual screen address set
-#define rREDLUT     (*(volatile unsigned *)0x4d000020)	//STN Red lookup table
-#define rGREENLUT   (*(volatile unsigned *)0x4d000024)	//STN Green lookup table 
-#define rBLUELUT    (*(volatile unsigned *)0x4d000028)	//STN Blue lookup table
-#define rDITHMODE   (*(volatile unsigned *)0x4d00004c)	//STN Dithering mode
-#define rTPAL       (*(volatile unsigned *)0x4d000050)	//TFT Temporary palette
-#define rLCDINTPND  (*(volatile unsigned *)0x4d000054)	//LCD Interrupt pending
-#define rLCDSRCPND  (*(volatile unsigned *)0x4d000058)	//LCD Interrupt source
-#define rLCDINTMSK  (*(volatile unsigned *)0x4d00005c)	//LCD Interrupt mask
-#define rTCONSEL     (*(volatile unsigned *)0x4d000060)	//LPC3600 Control --- edited by junon
-#define PALETTE     0x4d000400						//Palette start address
+
 
 
 //Nand Flash
@@ -141,45 +77,8 @@ extern "C" {
 
 
 //Camera Interface			                       
-#define	rASIZE				(*(volatile unsigned *)0x4F000000)        
-#define	rSTAY1				(*(volatile unsigned *)0x4F000004)        
-#define	rSTAY2				(*(volatile unsigned *)0x4F000008)        
-#define	rSTAY3				(*(volatile unsigned *)0x4F00000C)        
-#define	rSTAY4				(*(volatile unsigned *)0x4F000010)        
-#define	rAYBURST			(*(volatile unsigned *)0x4F000014)
-#define	rACBBURST			(*(volatile unsigned *)0x4F000018)
-#define	rACRBURST			(*(volatile unsigned *)0x4F00001C)
-#define	rBSIZE				(*(volatile unsigned *)0x4F000020)        
-#define	rSTBY1				(*(volatile unsigned *)0x4F000024)        
-#define	rSTBY2				(*(volatile unsigned *)0x4F000028)        
-#define	rSTBY3				(*(volatile unsigned *)0x4F00002C)        
-#define	rSTBY4				(*(volatile unsigned *)0x4F000030)        
-#define	rBYBURST			(*(volatile unsigned *)0x4F000034)
-#define	rBCBBURST			(*(volatile unsigned *)0x4F000038)
-#define	rBCRBURST			(*(volatile unsigned *)0x4F00003C)
-#define	rADISTWIDTH		(*(volatile unsigned *)0x4F000040)
-#define	rBDISTWIDTH		(*(volatile unsigned *)0x4F000044)
-#define	rYRATIO				(*(volatile unsigned *)0x4F00004C)        
-#define	rCRATIO				(*(volatile unsigned *)0x4F000050)        
-#define	rYORIGINAL		(*(volatile unsigned *)0x4F000054)
-#define	rCORIGINAL		(*(volatile unsigned *)0x4F00005C)
-#define	rSTACB1				(*(volatile unsigned *)0x4F000074)        
-#define	rSTACB2				(*(volatile unsigned *)0x4F000078)        
-#define	rSTACB3				(*(volatile unsigned *)0x4F00007C)        
-#define	rSTACB4				(*(volatile unsigned *)0x4F000080)        
-#define	rSTACR1				(*(volatile unsigned *)0x4F000084)        
-#define	rSTACR2				(*(volatile unsigned *)0x4F000088)        
-#define	rSTACR3				(*(volatile unsigned *)0x4F00008C)        
-#define	rSTACR4				(*(volatile unsigned *)0x4F000090)        
-#define	rSTBCB1				(*(volatile unsigned *)0x4F00009C)        
-#define	rSTBCB2				(*(volatile unsigned *)0x4F0000A0)        
-#define	rSTBCB3				(*(volatile unsigned *)0x4F0000A4)        
-#define	rSTBCB4				(*(volatile unsigned *)0x4F0000A8)        
-#define	rSTBCR1				(*(volatile unsigned *)0x4F0000AC)        
-#define	rSTBCR2				(*(volatile unsigned *)0x4F0000B0)        
-#define	rSTBCR3				(*(volatile unsigned *)0x4F0000B4)        
-#define	rSTBCR4				(*(volatile unsigned *)0x4F0000B8)        
-#define	rCTRL_C				(*(volatile unsigned *)0x4F0000BC)        
+     
+      
 // read only register
 #define	rRDSTAT				(*(volatile unsigned *)0x4F000000)        
 #define	rRDSTAY				(*(volatile unsigned *)0x4F000014)        
@@ -297,103 +196,7 @@ extern "C" {
 
 
 // USB DEVICE
-#ifdef __BIG_ENDIAN
-<ERROR IF BIG_ENDIAN>
-#define rFUNC_ADDR_REG     (*(volatile unsigned char *)0x52000143)	//Function address
-#define rPWR_REG           (*(volatile unsigned char *)0x52000147)	//Power management
-#define rEP_INT_REG        (*(volatile unsigned char *)0x5200014b)	//EP Interrupt pending and clear
-#define rUSB_INT_REG       (*(volatile unsigned char *)0x5200015b)	//USB Interrupt pending and clear
-#define rEP_INT_EN_REG     (*(volatile unsigned char *)0x5200015f)	//Interrupt enable
-#define rUSB_INT_EN_REG    (*(volatile unsigned char *)0x5200016f)
-#define rFRAME_NUM1_REG    (*(volatile unsigned char *)0x52000173)	//Frame number lower byte
-#define rFRAME_NUM2_REG    (*(volatile unsigned char *)0x52000177)	//Frame number higher byte
-#define rINDEX_REG         (*(volatile unsigned char *)0x5200017b)	//Register index
-#define rMAXP_REG          (*(volatile unsigned char *)0x52000183)	//Endpoint max packet
-#define rEP0_CSR           (*(volatile unsigned char *)0x52000187)	//Endpoint 0 status
-#define rIN_CSR1_REG       (*(volatile unsigned char *)0x52000187)	//In endpoint control status
-#define rIN_CSR2_REG       (*(volatile unsigned char *)0x5200018b)
-#define rOUT_CSR1_REG      (*(volatile unsigned char *)0x52000193)	//Out endpoint control status
-#define rOUT_CSR2_REG      (*(volatile unsigned char *)0x52000197)
-#define rOUT_FIFO_CNT1_REG (*(volatile unsigned char *)0x5200019b)	//Endpoint out write count
-#define rOUT_FIFO_CNT2_REG (*(volatile unsigned char *)0x5200019f)
-#define rEP0_FIFO          (*(volatile unsigned char *)0x520001c3)	//Endpoint 0 FIFO
-#define rEP1_FIFO          (*(volatile unsigned char *)0x520001c7)	//Endpoint 1 FIFO
-#define rEP2_FIFO          (*(volatile unsigned char *)0x520001cb)	//Endpoint 2 FIFO
-#define rEP3_FIFO          (*(volatile unsigned char *)0x520001cf)	//Endpoint 3 FIFO
-#define rEP4_FIFO          (*(volatile unsigned char *)0x520001d3)	//Endpoint 4 FIFO
-#define rEP1_DMA_CON       (*(volatile unsigned char *)0x52000203)	//EP1 DMA interface control
-#define rEP1_DMA_UNIT      (*(volatile unsigned char *)0x52000207)	//EP1 DMA Tx unit counter
-#define rEP1_DMA_FIFO      (*(volatile unsigned char *)0x5200020b)	//EP1 DMA Tx FIFO counter
-#define rEP1_DMA_TTC_L     (*(volatile unsigned char *)0x5200020f)	//EP1 DMA total Tx counter
-#define rEP1_DMA_TTC_M     (*(volatile unsigned char *)0x52000213)
-#define rEP1_DMA_TTC_H     (*(volatile unsigned char *)0x52000217)
-#define rEP2_DMA_CON       (*(volatile unsigned char *)0x5200021b)	//EP2 DMA interface control
-#define rEP2_DMA_UNIT      (*(volatile unsigned char *)0x5200021f)	//EP2 DMA Tx unit counter
-#define rEP2_DMA_FIFO      (*(volatile unsigned char *)0x52000223)	//EP2 DMA Tx FIFO counter
-#define rEP2_DMA_TTC_L     (*(volatile unsigned char *)0x52000227)	//EP2 DMA total Tx counter
-#define rEP2_DMA_TTC_M     (*(volatile unsigned char *)0x5200022b)
-#define rEP2_DMA_TTC_H     (*(volatile unsigned char *)0x5200022f)
-#define rEP3_DMA_CON       (*(volatile unsigned char *)0x52000243)	//EP3 DMA interface control
-#define rEP3_DMA_UNIT      (*(volatile unsigned char *)0x52000247)	//EP3 DMA Tx unit counter
-#define rEP3_DMA_FIFO      (*(volatile unsigned char *)0x5200024b)	//EP3 DMA Tx FIFO counter
-#define rEP3_DMA_TTC_L     (*(volatile unsigned char *)0x5200024f)	//EP3 DMA total Tx counter
-#define rEP3_DMA_TTC_M     (*(volatile unsigned char *)0x52000253)
-#define rEP3_DMA_TTC_H     (*(volatile unsigned char *)0x52000257) 
-#define rEP4_DMA_CON       (*(volatile unsigned char *)0x5200025b)	//EP4 DMA interface control
-#define rEP4_DMA_UNIT      (*(volatile unsigned char *)0x5200025f)	//EP4 DMA Tx unit counter
-#define rEP4_DMA_FIFO      (*(volatile unsigned char *)0x52000263)	//EP4 DMA Tx FIFO counter
-#define rEP4_DMA_TTC_L     (*(volatile unsigned char *)0x52000267)	//EP4 DMA total Tx counter
-#define rEP4_DMA_TTC_M     (*(volatile unsigned char *)0x5200026b)
-#define rEP4_DMA_TTC_H     (*(volatile unsigned char *)0x5200026f)
 
-#else  // Little Endian
-#define rFUNC_ADDR_REG     (*(volatile unsigned char *)0x52000140)	//Function address
-#define rPWR_REG           (*(volatile unsigned char *)0x52000144)	//Power management
-#define rEP_INT_REG        (*(volatile unsigned char *)0x52000148)	//EP Interrupt pending and clear
-#define rUSB_INT_REG       (*(volatile unsigned char *)0x52000158)	//USB Interrupt pending and clear
-#define rEP_INT_EN_REG     (*(volatile unsigned char *)0x5200015c)	//Interrupt enable
-#define rUSB_INT_EN_REG    (*(volatile unsigned char *)0x5200016c)
-#define rFRAME_NUM1_REG    (*(volatile unsigned char *)0x52000170)	//Frame number lower byte
-#define rFRAME_NUM2_REG    (*(volatile unsigned char *)0x52000174)	//Frame number higher byte
-#define rINDEX_REG         (*(volatile unsigned char *)0x52000178)	//Register index
-#define rMAXP_REG          (*(volatile unsigned char *)0x52000180)	//Endpoint max packet
-#define rEP0_CSR           (*(volatile unsigned char *)0x52000184)	//Endpoint 0 status
-#define rIN_CSR1_REG       (*(volatile unsigned char *)0x52000184)	//In endpoint control status
-#define rIN_CSR2_REG       (*(volatile unsigned char *)0x52000188)
-#define rOUT_CSR1_REG      (*(volatile unsigned char *)0x52000190)	//Out endpoint control status
-#define rOUT_CSR2_REG      (*(volatile unsigned char *)0x52000194)
-#define rOUT_FIFO_CNT1_REG (*(volatile unsigned char *)0x52000198)	//Endpoint out write count
-#define rOUT_FIFO_CNT2_REG (*(volatile unsigned char *)0x5200019c)
-#define rEP0_FIFO          (*(volatile unsigned char *)0x520001c0)	//Endpoint 0 FIFO
-#define rEP1_FIFO          (*(volatile unsigned char *)0x520001c4)	//Endpoint 1 FIFO
-#define rEP2_FIFO          (*(volatile unsigned char *)0x520001c8)	//Endpoint 2 FIFO
-#define rEP3_FIFO          (*(volatile unsigned char *)0x520001cc)	//Endpoint 3 FIFO
-#define rEP4_FIFO          (*(volatile unsigned char *)0x520001d0)	//Endpoint 4 FIFO
-#define rEP1_DMA_CON       (*(volatile unsigned char *)0x52000200)	//EP1 DMA interface control
-#define rEP1_DMA_UNIT      (*(volatile unsigned char *)0x52000204)	//EP1 DMA Tx unit counter
-#define rEP1_DMA_FIFO      (*(volatile unsigned char *)0x52000208)	//EP1 DMA Tx FIFO counter
-#define rEP1_DMA_TTC_L     (*(volatile unsigned char *)0x5200020c)	//EP1 DMA total Tx counter
-#define rEP1_DMA_TTC_M     (*(volatile unsigned char *)0x52000210)
-#define rEP1_DMA_TTC_H     (*(volatile unsigned char *)0x52000214)
-#define rEP2_DMA_CON       (*(volatile unsigned char *)0x52000218)	//EP2 DMA interface control
-#define rEP2_DMA_UNIT      (*(volatile unsigned char *)0x5200021c)	//EP2 DMA Tx unit counter
-#define rEP2_DMA_FIFO      (*(volatile unsigned char *)0x52000220)	//EP2 DMA Tx FIFO counter
-#define rEP2_DMA_TTC_L     (*(volatile unsigned char *)0x52000224)	//EP2 DMA total Tx counter
-#define rEP2_DMA_TTC_M     (*(volatile unsigned char *)0x52000228)
-#define rEP2_DMA_TTC_H     (*(volatile unsigned char *)0x5200022c)
-#define rEP3_DMA_CON       (*(volatile unsigned char *)0x52000240)	//EP3 DMA interface control
-#define rEP3_DMA_UNIT      (*(volatile unsigned char *)0x52000244)	//EP3 DMA Tx unit counter
-#define rEP3_DMA_FIFO      (*(volatile unsigned char *)0x52000248)	//EP3 DMA Tx FIFO counter
-#define rEP3_DMA_TTC_L     (*(volatile unsigned char *)0x5200024c)	//EP3 DMA total Tx counter
-#define rEP3_DMA_TTC_M     (*(volatile unsigned char *)0x52000250)
-#define rEP3_DMA_TTC_H     (*(volatile unsigned char *)0x52000254)
-#define rEP4_DMA_CON       (*(volatile unsigned char *)0x52000258)	//EP4 DMA interface control
-#define rEP4_DMA_UNIT      (*(volatile unsigned char *)0x5200025c)	//EP4 DMA Tx unit counter
-#define rEP4_DMA_FIFO      (*(volatile unsigned char *)0x52000260)	//EP4 DMA Tx FIFO counter
-#define rEP4_DMA_TTC_L     (*(volatile unsigned char *)0x52000264)	//EP4 DMA total Tx counter
-#define rEP4_DMA_TTC_M     (*(volatile unsigned char *)0x52000268)
-#define rEP4_DMA_TTC_H     (*(volatile unsigned char *)0x5200026c)
-#endif   // __BIG_ENDIAN
 
 
 // WATCH DOG TIMER
@@ -548,75 +351,12 @@ extern "C" {
 
 
 // SD Interface
-#define rSDICON     (*(volatile unsigned *)0x5a000000)	//SDI control
-#define rSDIPRE     (*(volatile unsigned *)0x5a000004)	//SDI baud rate prescaler
-#define rSDICARG    (*(volatile unsigned *)0x5a000008)	//SDI command argument
-#define rSDICCON    (*(volatile unsigned *)0x5a00000c)	//SDI command control
-#define rSDICSTA    (*(volatile unsigned *)0x5a000010)	//SDI command status
-#define rSDIRSP0    (*(volatile unsigned *)0x5a000014)	//SDI response 0
-#define rSDIRSP1    (*(volatile unsigned *)0x5a000018)	//SDI response 1
-#define rSDIRSP2    (*(volatile unsigned *)0x5a00001c)	//SDI response 2
-#define rSDIRSP3    (*(volatile unsigned *)0x5a000020)	//SDI response 3
-#define rSDIDTIMER  (*(volatile unsigned *)0x5a000024)	//SDI data/busy timer
-#define rSDIBSIZE   (*(volatile unsigned *)0x5a000028)	//SDI block size
-#define rSDIDCON    (*(volatile unsigned *)0x5a00002c)	//SDI data control
-#define rSDIDCNT    (*(volatile unsigned *)0x5a000030)	//SDI data remain counter
-#define rSDIDSTA    (*(volatile unsigned *)0x5a000034)	//SDI data status
-#define rSDIFSTA    (*(volatile unsigned *)0x5a000038)	//SDI FIFO status
-#define rSDIIMSK    (*(volatile unsigned *)0x5a000040)	//SDI interrupt mask
-
-#ifdef __BIG_ENDIAN
-#define rSDIDAT    (*(volatile unsigned *)0x5a00003f)	//SDI data
-#define SDIDAT     0x5a00003f
-#else  // Little Endian
-#define rSDIDAT    (*(volatile unsigned *)0x5a00003c)	//SDI data
-#define SDIDAT     0x5a00003c
-#endif   //SD Interface
 
 
 // Exception vector
-#define pISR_RESET		(*(unsigned *)(_ISR_STARTADDRESS+0x0))
-#define pISR_UNDEF		(*(unsigned *)(_ISR_STARTADDRESS+0x4))
-#define pISR_SWI		(*(unsigned *)(_ISR_STARTADDRESS+0x8))
-#define pISR_PABORT		(*(unsigned *)(_ISR_STARTADDRESS+0xc))
-#define pISR_DABORT		(*(unsigned *)(_ISR_STARTADDRESS+0x10))
-#define pISR_RESERVED	(*(unsigned *)(_ISR_STARTADDRESS+0x14))
-#define pISR_IRQ		(*(unsigned *)(_ISR_STARTADDRESS+0x18))
-#define pISR_FIQ		(*(unsigned *)(_ISR_STARTADDRESS+0x1c))
-// Interrupt vector
-#define pISR_EINT0		(*(unsigned *)(_ISR_STARTADDRESS+0x20))
-#define pISR_EINT1		(*(unsigned *)(_ISR_STARTADDRESS+0x24))
-#define pISR_EINT2		(*(unsigned *)(_ISR_STARTADDRESS+0x28))
-#define pISR_EINT3		(*(unsigned *)(_ISR_STARTADDRESS+0x2c))
-#define pISR_EINT4_7	(*(unsigned *)(_ISR_STARTADDRESS+0x30))
-#define pISR_EINT8_23	(*(unsigned *)(_ISR_STARTADDRESS+0x34))
-#define pISR_CAM		(*(unsigned *)(_ISR_STARTADDRESS+0x38))		// Added for 2440.
-#define pISR_BAT_FLT	(*(unsigned *)(_ISR_STARTADDRESS+0x3c))
-#define pISR_TICK		(*(unsigned *)(_ISR_STARTADDRESS+0x40))
-#define pISR_WDT_AC97		(*(unsigned *)(_ISR_STARTADDRESS+0x44))
-#define pISR_TIMER0	 	(*(unsigned *)(_ISR_STARTADDRESS+0x48))
-#define pISR_TIMER1	 	(*(unsigned *)(_ISR_STARTADDRESS+0x4c))
-#define pISR_TIMER2		(*(unsigned *)(_ISR_STARTADDRESS+0x50))
-#define pISR_TIMER3		(*(unsigned *)(_ISR_STARTADDRESS+0x54))
-#define pISR_TIMER4		(*(unsigned *)(_ISR_STARTADDRESS+0x58))
-#define pISR_UART2		(*(unsigned *)(_ISR_STARTADDRESS+0x5c))
-#define pISR_LCD		(*(unsigned *)(_ISR_STARTADDRESS+0x60))
-#define pISR_DMA0		(*(unsigned *)(_ISR_STARTADDRESS+0x64))
-#define pISR_DMA1		(*(unsigned *)(_ISR_STARTADDRESS+0x68))
-#define pISR_DMA2		(*(unsigned *)(_ISR_STARTADDRESS+0x6c))
-#define pISR_DMA3		(*(unsigned *)(_ISR_STARTADDRESS+0x70))
-#define pISR_SDI		(*(unsigned *)(_ISR_STARTADDRESS+0x74))
-#define pISR_SPI0		(*(unsigned *)(_ISR_STARTADDRESS+0x78))
-#define pISR_UART1		(*(unsigned *)(_ISR_STARTADDRESS+0x7c))
-#define pISR_NFCON		(*(unsigned *)(_ISR_STARTADDRESS+0x80))		// Added for 2440.
-#define pISR_USBD		(*(unsigned *)(_ISR_STARTADDRESS+0x84))
-#define pISR_USBH		(*(unsigned *)(_ISR_STARTADDRESS+0x88))
-#define pISR_IIC		(*(unsigned *)(_ISR_STARTADDRESS+0x8c))
-#define pISR_UART0		(*(unsigned *)(_ISR_STARTADDRESS+0x90))
-#define pISR_SPI1		(*(unsigned *)(_ISR_STARTADDRESS+0x94))
-#define pISR_RTC		(*(unsigned *)(_ISR_STARTADDRESS+0x98))
-#define pISR_ADC		(*(unsigned *)(_ISR_STARTADDRESS+0x9c))
 
+// Interrupt vector
+#define rINTMSK     (*(volatile unsigned *)0x4a000008)	//Interrupt mask control
 
 // PENDING BIT
 #define BIT_EINT0		(0x1)
@@ -680,19 +420,7 @@ extern "C" {
 #define	DisableIrq(bit)		rINTMSK |= (bit)
 #define	EnableSubIrq(bit)	rINTSUBMSK &= ~(bit)
 #define	DisableSubIrq(bit)	rINTSUBMSK |= (bit)
-__inline void ClearPending(int bit)
-{
-	register i;
-	rSRCPND = bit;
-	rINTPND = bit;
-	i = rINTPND;
-}
-__inline void ClearSubPending(int bit)
-{
-	register i;
-	rSUBSRCPND = bit;	
-	i = rINTPND;
-}                       
+     
 //Wait until rINTPND is changed for the case that the ISR is very short.
 
 

@@ -68,8 +68,7 @@ THUMBCODE SETL  {FALSE}
 	IMPORT  |Image$$RW_RAM1$$ZI$$Base|   ; Base and limit of area
 	IMPORT  |Image$$RW_RAM1$$ZI$$Limit|  ; to zero initialise
 	
-	IMPORT	MMU_SetAsyncBusMode
-	IMPORT	MMU_SetFastBusMode	
+	
 
 	IMPORT  Main    ; The main entry of mon program
 
@@ -232,12 +231,7 @@ ResetHandler
 	cmp	r2, r0
 	bne	%B0
 	
-	;delay
-	mov	r0, #&1000
-1
-	subs	r0, r0, #1
-	bne	%B1
-	;===
+	
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;       When EINT0 is pressed,  Clear SDRAM 

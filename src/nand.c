@@ -4,7 +4,6 @@
 #include "def.h"
 #include "2440addr.h"
 #include "2440lib.h"
-#include "2440slib.h"
 #include "Nand.h"
 
 //suppport boot params
@@ -57,7 +56,7 @@ struct Partition * NandSelPart(char *info)
 
 struct Partition * NandSelPart_2(char *info)
 {
-	U16 i, max_sel;
+	U16 i;
 	struct Partition *ptr = NandPart;
 	
 	//printf("\nPlease select which region to %s : Esc to abort\n", info);
