@@ -4,239 +4,626 @@
 <h1>µVision Build Log</h1>
 <h2>Project:</h2>
 E:\Github\bootloader\bootloader.uvproj
-Project File Date:  05/06/2013
+Project File Date:  05/13/2013
 
 <h2>Output:</h2>
-Build target 'Target 1'
-assembling init.s...
-init.s(1): error: A1167E: Invalid line start 
-init.s(2): error: A1159E: Label missing from line start
-init.s(3): error: A1159E: Label missing from line start
-init.s(4): error: A1159E: Label missing from line start
-init.s(5): error: A1137E: Unexpected characters at end of line
-init.s(7): error: A1167E: Invalid line start 
-init.s(9): error: A1163E: Unknown opcode Start , expecting opcode or Macro
-init.s(11): error: A1167E: Invalid line start 
-init.s(12): error: A1167E: Invalid line start 
-init.s(14): error: A1167E: Invalid line start 
-init.s(15): error: A1163E: Unknown opcode Exception , expecting opcode or Macro
-init.s(16): error: A1167E: Invalid line start 
-init.s(18): error: A1167E: Invalid line start 
-init.s(19): error: A1105E: Area directive missing
-init.s(19): warning: A1088W: Faking declaration of area AREA |$$$$$$$|
-init.s(21): error: A1167E: Invalid line start 
-init.s(22): error: A1167E: Invalid line start 
-init.s(25): error: A1167E: Invalid line start 
-init.s(26): error: A1167E: Invalid line start 
-init.s(29): error: A1167E: Invalid line start 
-init.s(30): error: A1167E: Invalid line start 
-init.s(33): error: A1167E: Invalid line start 
-init.s(34): error: A1167E: Invalid line start 
-init.s(37): error: A1167E: Invalid line start 
-init.s(38): error: A1167E: Invalid line start 
-init.s(41): error: A1167E: Invalid line start 
-init.s(42): error: A1167E: Invalid line start 
-init.s(45): error: A1167E: Invalid line start 
-init.s(46): error: A1167E: Invalid line start 
-init.s(49): error: A1167E: Invalid line start 
-init.s(50): error: A1163E: Unknown opcode VIVI , expecting opcode or Macro
-init.s(51): error: A1167E: Invalid line start 
-init.s(53): error: A1167E: Invalid line start 
-init.s(54): error: A1137E: Unexpected characters at end of line
-init.s(55): error: A1167E: Invalid line start 
-init.s(56): error: A1137E: Unexpected characters at end of line
-init.s(57): error: A1167E: Invalid line start 
-init.s(58): error: A1137E: Unexpected characters at end of line
-init.s(59): error: A1167E: Invalid line start 
-init.s(60): error: A1137E: Unexpected characters at end of line
-init.s(61): error: A1167E: Invalid line start 
-init.s(62): error: A1137E: Unexpected characters at end of line
-init.s(64): error: A1167E: Invalid line start 
-init.s(65): error: A1163E: Unknown opcode Start , expecting opcode or Macro
-init.s(66): error: A1167E: Invalid line start 
-init.s(67): error: A1167E: Invalid line start 
-init.s(68): error: A1137E: Unexpected characters at end of line
-init.s(73): error: A1137E: Unexpected characters at end of line
-init.s(80): error: A1137E: Unexpected characters at end of line
-init.s(89): error: A1154E: Unexpected operand, operator expected
-init.s(90): error: A1154E: Unexpected operand, operator expected
-compiling main.c...
-main.c(97): error:  #29: expected an expression
-main.c(113): error:  #29: expected an expression
-main.c(114): error:  #29: expected an expression
-main.c(166): warning:  #1267-D: Implicit physical register R1 should be defined as a variable
-main.c(166): warning:  #1267-D: Implicit physical register R3 should be defined as a variable
-main.c(166): warning:  #61-D: integer operation result is out of range
-main.c(172): warning:  #1267-D: Implicit physical register R0 should be defined as a variable
-main.c(189): error:  #18: expected a ")"
-main.c(203): warning:  #223-D: function "memset" declared implicitly
-main.c(227): warning:  #223-D: function "memcpy" declared implicitly
-compiling nand_read.c...
-nand_read.c(28): warning:  #260-D: explicit type is missing ("int" assumed)
-nand_read.c(28): error:  #65: expected a ";"
-nand_read.c(109): warning: At end of source:  #12-D: parsing restarts here after previous syntax error
-nand_read.c(28): warning:  #177-D: variable "inline" was declared but never referenced
+Rebuild target 'Target 1'
+assembling 2440init.s...
+src\2440init.s(251): warning: A1876W: Use of '|' as a synonym for the :OR: operator is deprecated.
+src\2440init.s(289): warning: A1608W: MOV pc,<rn> instruction used, but BX <rn> is preferred
+compiling 2440lib.c...
+src\2440lib.c(102): warning:  #177-D: variable "i" was declared but never referenced
+compiling nand.c...
+src\nand.c(79): warning:  #1267-D: Implicit physical register R1 should be defined as a variable
+src\nand.c(82): warning:  #1267-D: Implicit physical register R3 should be defined as a variable
+src\nand.c(98): warning:  #1267-D: Implicit physical register R0 should be defined as a variable
+src\nand.c(120): warning:  #1267-D: Implicit physical register R12 should be defined as a variable
+src\nand.c(219): warning:  #223-D: function "ReadPage" declared implicitly
+compiling nand_lowlevel.c...
+compiling u2440mon.c...
+src\u2440mon.c(59): warning:  #223-D: function "InitNandFlash" declared implicitly
+src\u2440mon.c(60): warning:  #223-D: function "LoadRun" declared implicitly
+linking...
+bootloader.sct(8): warning: L6314W: No section matches pattern *(InRoot$$Sections).
+Program Size: Code=5120 RO-data=68 RW-data=588 ZI-data=0  
+FromELF: creating hex file...
+User command #1: E:\Keil\ARM\BIN40\fromelf.exe --bin -o ./bootloader.bin ./bootloader.axf
+"bootloader.axf" - 0 Error(s), 11 Warning(s).
+Rebuild target 'Target 1'
+assembling 2440init.s...
+src\2440init.s(255): warning: A1608W: MOV pc,<rn> instruction used, but BX <rn> is preferred
+compiling 2440lib.c...
+src\2440lib.c(102): warning:  #177-D: variable "i" was declared but never referenced
+compiling nand.c...
+src\nand.c(79): warning:  #1267-D: Implicit physical register R1 should be defined as a variable
+src\nand.c(82): warning:  #1267-D: Implicit physical register R3 should be defined as a variable
+src\nand.c(98): warning:  #1267-D: Implicit physical register R0 should be defined as a variable
+src\nand.c(120): warning:  #1267-D: Implicit physical register R12 should be defined as a variable
+src\nand.c(219): warning:  #223-D: function "ReadPage" declared implicitly
+compiling nand_lowlevel.c...
+compiling u2440mon.c...
+src\u2440mon.c(59): warning:  #223-D: function "InitNandFlash" declared implicitly
+src\u2440mon.c(60): warning:  #223-D: function "LoadRun" declared implicitly
+linking...
+bootloader.sct(8): warning: L6314W: No section matches pattern *(InRoot$$Sections).
+Program Size: Code=4988 RO-data=68 RW-data=588 ZI-data=0  
+FromELF: creating hex file...
+User command #1: E:\Keil\ARM\BIN40\fromelf.exe --bin -o ./bootloader.bin ./bootloader.axf
+"bootloader.axf" - 0 Error(s), 10 Warning(s).
+Rebuild target 'Target 1'
+assembling 2440init.s...
+src\2440init.s(239): warning: A1608W: MOV pc,<rn> instruction used, but BX <rn> is preferred
+compiling 2440lib.c...
+src\2440lib.c(102): warning:  #177-D: variable "i" was declared but never referenced
+compiling nand.c...
+src\nand.c(79): warning:  #1267-D: Implicit physical register R1 should be defined as a variable
+src\nand.c(82): warning:  #1267-D: Implicit physical register R3 should be defined as a variable
+src\nand.c(98): warning:  #1267-D: Implicit physical register R0 should be defined as a variable
+src\nand.c(120): warning:  #1267-D: Implicit physical register R12 should be defined as a variable
+src\nand.c(219): warning:  #223-D: function "ReadPage" declared implicitly
+compiling nand_lowlevel.c...
+compiling u2440mon.c...
+src\u2440mon.c(59): warning:  #223-D: function "InitNandFlash" declared implicitly
+src\u2440mon.c(60): warning:  #223-D: function "LoadRun" declared implicitly
+linking...
+bootloader.sct(8): warning: L6314W: No section matches pattern *(InRoot$$Sections).
+Program Size: Code=4988 RO-data=68 RW-data=588 ZI-data=0  
+FromELF: creating hex file...
+User command #1: E:\Keil\ARM\BIN40\fromelf.exe --bin -o ./bootloader.bin ./bootloader.axf
+"bootloader.axf" - 0 Error(s), 10 Warning(s).
+Rebuild target 'Target 1'
+assembling 2440init.s...
+src\2440init.s(239): warning: A1608W: MOV pc,<rn> instruction used, but BX <rn> is preferred
+compiling 2440lib.c...
+src\2440lib.c(102): warning:  #177-D: variable "i" was declared but never referenced
+compiling nand.c...
+src\nand.c(79): warning:  #1267-D: Implicit physical register R1 should be defined as a variable
+src\nand.c(82): warning:  #1267-D: Implicit physical register R3 should be defined as a variable
+src\nand.c(98): warning:  #1267-D: Implicit physical register R0 should be defined as a variable
+src\nand.c(120): warning:  #1267-D: Implicit physical register R12 should be defined as a variable
+src\nand.c(219): warning:  #223-D: function "ReadPage" declared implicitly
+compiling nand_lowlevel.c...
+compiling u2440mon.c...
+src\u2440mon.c(59): warning:  #223-D: function "InitNandFlash" declared implicitly
+src\u2440mon.c(60): warning:  #223-D: function "LoadRun" declared implicitly
+linking...
+bootloader.sct(8): warning: L6314W: No section matches pattern *(InRoot$$Sections).
+Program Size: Code=4988 RO-data=68 RW-data=588 ZI-data=0  
+FromELF: creating hex file...
+User command #1: E:\Keil\ARM\BIN40\fromelf.exe --bin -o ./bootloader.bin ./bootloader.axf
+"bootloader.axf" - 0 Error(s), 10 Warning(s).
+Rebuild target 'Target 1'
+assembling 2440init.s...
+src\2440init.s(239): warning: A1608W: MOV pc,<rn> instruction used, but BX <rn> is preferred
+compiling 2440lib.c...
+src\2440lib.c(102): warning:  #177-D: variable "i" was declared but never referenced
+compiling nand.c...
+src\nand.c(79): warning:  #1267-D: Implicit physical register R1 should be defined as a variable
+src\nand.c(82): warning:  #1267-D: Implicit physical register R3 should be defined as a variable
+src\nand.c(98): warning:  #1267-D: Implicit physical register R0 should be defined as a variable
+src\nand.c(120): warning:  #1267-D: Implicit physical register R12 should be defined as a variable
+src\nand.c(219): warning:  #223-D: function "ReadPage" declared implicitly
+compiling nand_lowlevel.c...
+compiling u2440mon.c...
+src\u2440mon.c(59): warning:  #223-D: function "InitNandFlash" declared implicitly
+src\u2440mon.c(60): warning:  #223-D: function "LoadRun" declared implicitly
+linking...
+bootloader.sct(8): warning: L6314W: No section matches pattern *(InRoot$$Sections).
+Program Size: Code=4964 RO-data=68 RW-data=588 ZI-data=0  
+FromELF: creating hex file...
+User command #1: E:\Keil\ARM\BIN40\fromelf.exe --bin -o ./bootloader.bin ./bootloader.axf
+"bootloader.axf" - 0 Error(s), 10 Warning(s).
+Rebuild target 'Target 1'
+assembling 2440init.s...
+src\2440init.s(239): warning: A1608W: MOV pc,<rn> instruction used, but BX <rn> is preferred
+compiling 2440lib.c...
+src\2440lib.c(102): warning:  #177-D: variable "i" was declared but never referenced
+compiling nand.c...
+src\nand.c(79): warning:  #1267-D: Implicit physical register R1 should be defined as a variable
+src\nand.c(82): warning:  #1267-D: Implicit physical register R3 should be defined as a variable
+src\nand.c(98): warning:  #1267-D: Implicit physical register R0 should be defined as a variable
+src\nand.c(120): warning:  #1267-D: Implicit physical register R12 should be defined as a variable
+src\nand.c(219): warning:  #223-D: function "ReadPage" declared implicitly
+compiling nand_lowlevel.c...
+compiling u2440mon.c...
+src\u2440mon.c(59): warning:  #223-D: function "InitNandFlash" declared implicitly
+src\u2440mon.c(60): warning:  #223-D: function "LoadRun" declared implicitly
+linking...
+bootloader.sct(8): warning: L6314W: No section matches pattern *(InRoot$$Sections).
+Program Size: Code=4992 RO-data=68 RW-data=588 ZI-data=0  
+FromELF: creating hex file...
+User command #1: E:\Keil\ARM\BIN40\fromelf.exe --bin -o ./bootloader.bin ./bootloader.axf
+"bootloader.axf" - 0 Error(s), 10 Warning(s).
+Rebuild target 'Target 1'
+assembling 2440init.s...
+src\2440init.s(239): warning: A1608W: MOV pc,<rn> instruction used, but BX <rn> is preferred
+compiling 2440lib.c...
+src\2440lib.c(102): warning:  #177-D: variable "i" was declared but never referenced
+compiling nand.c...
+src\nand.c(79): warning:  #1267-D: Implicit physical register R1 should be defined as a variable
+src\nand.c(82): warning:  #1267-D: Implicit physical register R3 should be defined as a variable
+src\nand.c(98): warning:  #1267-D: Implicit physical register R0 should be defined as a variable
+src\nand.c(120): warning:  #1267-D: Implicit physical register R12 should be defined as a variable
+src\nand.c(219): warning:  #223-D: function "ReadPage" declared implicitly
+compiling nand_lowlevel.c...
+compiling u2440mon.c...
+src\u2440mon.c(59): warning:  #223-D: function "InitNandFlash" declared implicitly
+src\u2440mon.c(60): warning:  #223-D: function "LoadRun" declared implicitly
+linking...
+bootloader.sct(8): warning: L6314W: No section matches pattern *(InRoot$$Sections).
+Program Size: Code=4984 RO-data=68 RW-data=588 ZI-data=0  
+FromELF: creating hex file...
+User command #1: E:\Keil\ARM\BIN40\fromelf.exe --bin -o ./bootloader.bin ./bootloader.axf
+"bootloader.axf" - 0 Error(s), 10 Warning(s).
+Rebuild target 'Target 1'
+assembling 2440init.s...
+src\2440init.s(239): warning: A1608W: MOV pc,<rn> instruction used, but BX <rn> is preferred
+compiling 2440lib.c...
+src\2440lib.c(102): warning:  #177-D: variable "i" was declared but never referenced
+compiling nand.c...
+src\nand.c(79): warning:  #1267-D: Implicit physical register R1 should be defined as a variable
+src\nand.c(82): warning:  #1267-D: Implicit physical register R3 should be defined as a variable
+src\nand.c(98): warning:  #1267-D: Implicit physical register R0 should be defined as a variable
+src\nand.c(120): warning:  #1267-D: Implicit physical register R12 should be defined as a variable
+src\nand.c(219): warning:  #223-D: function "ReadPage" declared implicitly
+compiling nand_lowlevel.c...
+compiling u2440mon.c...
+src\u2440mon.c(59): warning:  #223-D: function "InitNandFlash" declared implicitly
+src\u2440mon.c(60): warning:  #223-D: function "LoadRun" declared implicitly
+linking...
+bootloader.sct(8): warning: L6314W: No section matches pattern *(InRoot$$Sections).
+Program Size: Code=4972 RO-data=68 RW-data=588 ZI-data=0  
+FromELF: creating hex file...
+User command #1: E:\Keil\ARM\BIN40\fromelf.exe --bin -o ./bootloader.bin ./bootloader.axf
+"bootloader.axf" - 0 Error(s), 10 Warning(s).
+Rebuild target 'Target 1'
+assembling 2440init.s...
+src\2440init.s(239): warning: A1608W: MOV pc,<rn> instruction used, but BX <rn> is preferred
+compiling 2440lib.c...
+src\2440lib.c(102): warning:  #177-D: variable "i" was declared but never referenced
+compiling nand.c...
+src\nand.c(79): warning:  #1267-D: Implicit physical register R1 should be defined as a variable
+src\nand.c(82): warning:  #1267-D: Implicit physical register R3 should be defined as a variable
+src\nand.c(98): warning:  #1267-D: Implicit physical register R0 should be defined as a variable
+src\nand.c(120): warning:  #1267-D: Implicit physical register R12 should be defined as a variable
+src\nand.c(219): warning:  #223-D: function "ReadPage" declared implicitly
+compiling nand_lowlevel.c...
+compiling u2440mon.c...
+src\u2440mon.c(59): warning:  #223-D: function "InitNandFlash" declared implicitly
+src\u2440mon.c(60): warning:  #223-D: function "LoadRun" declared implicitly
+linking...
+bootloader.sct(8): warning: L6314W: No section matches pattern *(InRoot$$Sections).
+Program Size: Code=4952 RO-data=68 RW-data=588 ZI-data=0  
+FromELF: creating hex file...
+User command #1: E:\Keil\ARM\BIN40\fromelf.exe --bin -o ./bootloader.bin ./bootloader.axf
+"bootloader.axf" - 0 Error(s), 10 Warning(s).
+Rebuild target 'Target 1'
+assembling 2440init.s...
+src\2440init.s(239): warning: A1608W: MOV pc,<rn> instruction used, but BX <rn> is preferred
+compiling 2440lib.c...
+src\2440lib.c(102): warning:  #177-D: variable "i" was declared but never referenced
+compiling nand.c...
+src\nand.c(79): warning:  #1267-D: Implicit physical register R1 should be defined as a variable
+src\nand.c(82): warning:  #1267-D: Implicit physical register R3 should be defined as a variable
+src\nand.c(98): warning:  #1267-D: Implicit physical register R0 should be defined as a variable
+src\nand.c(120): warning:  #1267-D: Implicit physical register R12 should be defined as a variable
+src\nand.c(219): warning:  #223-D: function "ReadPage" declared implicitly
+compiling nand_lowlevel.c...
+compiling u2440mon.c...
+src\u2440mon.c(60): warning:  #223-D: function "LoadRun" declared implicitly
+linking...
+bootloader.sct(8): warning: L6314W: No section matches pattern *(InRoot$$Sections).
+Program Size: Code=4980 RO-data=68 RW-data=588 ZI-data=0  
+FromELF: creating hex file...
+User command #1: E:\Keil\ARM\BIN40\fromelf.exe --bin -o ./bootloader.bin ./bootloader.axf
+"bootloader.axf" - 0 Error(s), 9 Warning(s).
+Rebuild target 'Target 1'
+assembling 2440init.s...
+src\2440init.s(239): warning: A1608W: MOV pc,<rn> instruction used, but BX <rn> is preferred
+compiling 2440lib.c...
+src\2440lib.c(102): warning:  #177-D: variable "i" was declared but never referenced
+compiling nand.c...
+src\nand.c(79): warning:  #1267-D: Implicit physical register R1 should be defined as a variable
+src\nand.c(82): warning:  #1267-D: Implicit physical register R3 should be defined as a variable
+src\nand.c(98): warning:  #1267-D: Implicit physical register R0 should be defined as a variable
+src\nand.c(120): warning:  #1267-D: Implicit physical register R12 should be defined as a variable
+src\nand.c(219): warning:  #223-D: function "ReadPage" declared implicitly
+compiling nand_lowlevel.c...
+compiling u2440mon.c...
+src\u2440mon.c(59): warning:  #223-D: function "InitNandFlash" declared implicitly
+linking...
+bootloader.sct(8): warning: L6314W: No section matches pattern *(InRoot$$Sections).
+Program Size: Code=2556 RO-data=68 RW-data=16 ZI-data=0  
+FromELF: creating hex file...
+User command #1: E:\Keil\ARM\BIN40\fromelf.exe --bin -o ./bootloader.bin ./bootloader.axf
+"bootloader.axf" - 0 Error(s), 9 Warning(s).
+Rebuild target 'Target 1'
+assembling 2440init.s...
+src\2440init.s(239): warning: A1608W: MOV pc,<rn> instruction used, but BX <rn> is preferred
+compiling 2440lib.c...
+src\2440lib.c(102): warning:  #177-D: variable "i" was declared but never referenced
+compiling nand.c...
+src\nand.c(86): warning:  #1267-D: Implicit physical register R1 should be defined as a variable
+src\nand.c(89): warning:  #1267-D: Implicit physical register R3 should be defined as a variable
+src\nand.c(103): warning:  #1267-D: Implicit physical register R0 should be defined as a variable
+src\nand.c(114): warning:  #1267-D: Implicit physical register R12 should be defined as a variable
+src\nand.c(213): warning:  #223-D: function "ReadPage" declared implicitly
+compiling nand_lowlevel.c...
+compiling u2440mon.c...
+src\u2440mon.c(59): warning:  #223-D: function "InitNandFlash" declared implicitly
+src\u2440mon.c(60): warning:  #223-D: function "LoadRun" declared implicitly
+linking...
+bootloader.sct(8): warning: L6314W: No section matches pattern *(InRoot$$Sections).
+Program Size: Code=4968 RO-data=68 RW-data=588 ZI-data=0  
+FromELF: creating hex file...
+User command #1: E:\Keil\ARM\BIN40\fromelf.exe --bin -o ./bootloader.bin ./bootloader.axf
+"bootloader.axf" - 0 Error(s), 10 Warning(s).
+Rebuild target 'Target 1'
+assembling 2440init.s...
+src\2440init.s(239): warning: A1608W: MOV pc,<rn> instruction used, but BX <rn> is preferred
+compiling 2440lib.c...
+src\2440lib.c(102): warning:  #177-D: variable "i" was declared but never referenced
+compiling nand.c...
+src\nand.c(86): warning:  #1267-D: Implicit physical register R1 should be defined as a variable
+src\nand.c(89): warning:  #1267-D: Implicit physical register R3 should be defined as a variable
+src\nand.c(103): warning:  #1267-D: Implicit physical register R0 should be defined as a variable
+src\nand.c(114): warning:  #1267-D: Implicit physical register R12 should be defined as a variable
+src\nand.c(150): warning:  #177-D: variable "initrd" was declared but never referenced
+src\nand.c(151): warning:  #177-D: variable "tty_sel" was declared but never referenced
+src\nand.c(152): warning:  #550-D: variable "devfs_sel" was set but never used
+src\nand.c(153): warning:  #550-D: variable "display_sel" was set but never used
+src\nand.c(205): warning:  #223-D: function "ReadPage" declared implicitly
+compiling nand_lowlevel.c...
+compiling u2440mon.c...
+src\u2440mon.c(59): warning:  #223-D: function "InitNandFlash" declared implicitly
+src\u2440mon.c(60): warning:  #223-D: function "LoadRun" declared implicitly
+linking...
+bootloader.sct(8): warning: L6314W: No section matches pattern *(InRoot$$Sections).
+Program Size: Code=3456 RO-data=200 RW-data=588 ZI-data=0  
+FromELF: creating hex file...
+User command #1: E:\Keil\ARM\BIN40\fromelf.exe --bin -o ./bootloader.bin ./bootloader.axf
+"bootloader.axf" - 0 Error(s), 14 Warning(s).
+Rebuild target 'Target 1'
+assembling 2440init.s...
+src\2440init.s(239): warning: A1608W: MOV pc,<rn> instruction used, but BX <rn> is preferred
+compiling 2440lib.c...
+src\2440lib.c(102): warning:  #177-D: variable "i" was declared but never referenced
+compiling nand.c...
+src\nand.c(86): warning:  #1267-D: Implicit physical register R1 should be defined as a variable
+src\nand.c(89): warning:  #1267-D: Implicit physical register R3 should be defined as a variable
+src\nand.c(103): warning:  #1267-D: Implicit physical register R0 should be defined as a variable
+src\nand.c(114): warning:  #1267-D: Implicit physical register R12 should be defined as a variable
+src\nand.c(187): warning:  #223-D: function "ReadPage" declared implicitly
+compiling nand_lowlevel.c...
+compiling u2440mon.c...
+src\u2440mon.c(59): warning:  #223-D: function "InitNandFlash" declared implicitly
+src\u2440mon.c(60): warning:  #223-D: function "LoadRun" declared implicitly
+linking...
+bootloader.sct(8): warning: L6314W: No section matches pattern *(InRoot$$Sections).
+Program Size: Code=3456 RO-data=200 RW-data=588 ZI-data=0  
+FromELF: creating hex file...
+User command #1: E:\Keil\ARM\BIN40\fromelf.exe --bin -o ./bootloader.bin ./bootloader.axf
+"bootloader.axf" - 0 Error(s), 10 Warning(s).
+Rebuild target 'Target 1'
+assembling 2440init.s...
+src\2440init.s(239): warning: A1608W: MOV pc,<rn> instruction used, but BX <rn> is preferred
+compiling 2440lib.c...
+src\2440lib.c(102): warning:  #177-D: variable "i" was declared but never referenced
+compiling nand.c...
+src\nand.c(86): warning:  #1267-D: Implicit physical register R1 should be defined as a variable
+src\nand.c(89): warning:  #1267-D: Implicit physical register R3 should be defined as a variable
+src\nand.c(103): warning:  #1267-D: Implicit physical register R0 should be defined as a variable
+src\nand.c(114): warning:  #1267-D: Implicit physical register R12 should be defined as a variable
+src\nand.c(146): error:  #268: declaration may not appear after executable statement in block
+src\nand.c(172): warning:  #223-D: function "ReadPage" declared implicitly
+compiling nand_lowlevel.c...
+compiling u2440mon.c...
+src\u2440mon.c(59): warning:  #223-D: function "InitNandFlash" declared implicitly
+src\u2440mon.c(60): warning:  #223-D: function "LoadRun" declared implicitly
 Target not created
-Build target 'Target 1'
-assembling init.s...
-init.s(7): error: A1167E: Invalid line start 
-init.s(11): error: A1167E: Invalid line start 
-init.s(12): error: A1167E: Invalid line start 
-init.s(19): error: A1105E: Area directive missing
-init.s(19): warning: A1088W: Faking declaration of area AREA |$$$$$$$|
-init.s(22): error: A1167E: Invalid line start 
-init.s(26): error: A1167E: Invalid line start 
-init.s(30): error: A1167E: Invalid line start 
-init.s(34): error: A1167E: Invalid line start 
-init.s(38): error: A1167E: Invalid line start 
-init.s(42): error: A1167E: Invalid line start 
-init.s(46): error: A1167E: Invalid line start 
-init.s(54): error: A1137E: Unexpected characters at end of line
-init.s(56): error: A1137E: Unexpected characters at end of line
-init.s(58): error: A1137E: Unexpected characters at end of line
-init.s(60): error: A1137E: Unexpected characters at end of line
-init.s(62): error: A1137E: Unexpected characters at end of line
-init.s(67): error: A1167E: Invalid line start 
-init.s(111): warning: A1876W: Use of '|' as a synonym for the :OR: operator is deprecated.
-init.s(126): error: A1167E: Invalid line start 
-init.s(128): error: A1137E: Unexpected characters at end of line
-init.s(129): error: A1167E: Invalid line start 
-init.s(131): error: A1137E: Unexpected characters at end of line
-init.s(164): error: A1167E: Invalid line start 
-init.s(173): error: A1163E: Unknown opcode UART_BRD , expecting opcode or Macro
-init.s(179): error: A1167E: Invalid line start 
-init.s(181): error: A1137E: Unexpected characters at end of line
-init.s(185): error: A1167E: Invalid line start 
-init.s(192): error: A1167E: Invalid line start 
-init.s(195): error: A1137E: Unexpected characters at end of line
-init.s(202): error: A1167E: Invalid line start 
-init.s(203): error: A1167E: Invalid line start 
-init.s(204): error: A1137E: Unexpected characters at end of line
-init.s(205): error: A1137E: Unexpected characters at end of line
-init.s(206): error: A1137E: Unexpected characters at end of line
-init.s(207): error: A1137E: Unexpected characters at end of line
-init.s(208): error: A1137E: Unexpected characters at end of line
-init.s(209): error: A1137E: Unexpected characters at end of line
-init.s(210): error: A1137E: Unexpected characters at end of line
-init.s(211): error: A1137E: Unexpected characters at end of line
-init.s(212): error: A1137E: Unexpected characters at end of line
-init.s(213): error: A1137E: Unexpected characters at end of line
-init.s(214): error: A1137E: Unexpected characters at end of line
-init.s(215): error: A1137E: Unexpected characters at end of line
-init.s(216): error: A1137E: Unexpected characters at end of line
-init.s(220): error: A1167E: Invalid line start 
-init.s(221): error: A1167E: Invalid line start 
-init.s(222): error: A1137E: Unexpected characters at end of line
-init.s(225): error: A1167E: Invalid line start 
-init.s(226): error: A1137E: Unexpected characters at end of line
-init.s(227): error: A1167E: Invalid line start 
-init.s(228): error: A1137E: Unexpected characters at end of line
-compiling main.c...
-main.c(97): error:  #29: expected an expression
-main.c(113): error:  #29: expected an expression
-main.c(114): error:  #29: expected an expression
-main.c(166): warning:  #1267-D: Implicit physical register R1 should be defined as a variable
-main.c(166): warning:  #1267-D: Implicit physical register R3 should be defined as a variable
-main.c(166): warning:  #61-D: integer operation result is out of range
-main.c(172): warning:  #1267-D: Implicit physical register R0 should be defined as a variable
-main.c(189): error:  #18: expected a ")"
-main.c(203): warning:  #223-D: function "memset" declared implicitly
-main.c(227): warning:  #223-D: function "memcpy" declared implicitly
-compiling nand_read.c...
-nand_read.c(28): warning:  #260-D: explicit type is missing ("int" assumed)
-nand_read.c(28): error:  #65: expected a ";"
-nand_read.c(109): warning: At end of source:  #12-D: parsing restarts here after previous syntax error
-nand_read.c(28): warning:  #177-D: variable "inline" was declared but never referenced
-Target not created
-Build target 'Target 1'
-assembling init.s...
-init.s(7): error: A1163E: Unknown opcode smdk2440.h , expecting opcode or Macro
-init.s(11): error: A1167E: Invalid line start 
-init.s(12): error: A1167E: Invalid line start 
-init.s(19): error: A1105E: Area directive missing
-init.s(19): warning: A1088W: Faking declaration of area AREA |$$$$$$$|
-init.s(22): error: A1167E: Invalid line start 
-init.s(26): error: A1167E: Invalid line start 
-init.s(30): error: A1167E: Invalid line start 
-init.s(34): error: A1167E: Invalid line start 
-init.s(38): error: A1167E: Invalid line start 
-init.s(42): error: A1167E: Invalid line start 
-init.s(46): error: A1167E: Invalid line start 
-init.s(54): error: A1137E: Unexpected characters at end of line
-init.s(56): error: A1137E: Unexpected characters at end of line
-init.s(58): error: A1137E: Unexpected characters at end of line
-init.s(60): error: A1137E: Unexpected characters at end of line
-init.s(62): error: A1137E: Unexpected characters at end of line
-init.s(67): error: A1167E: Invalid line start 
-init.s(111): warning: A1876W: Use of '|' as a synonym for the :OR: operator is deprecated.
-init.s(126): error: A1167E: Invalid line start 
-init.s(128): error: A1137E: Unexpected characters at end of line
-init.s(129): error: A1167E: Invalid line start 
-init.s(131): error: A1137E: Unexpected characters at end of line
-init.s(164): error: A1167E: Invalid line start 
-init.s(173): error: A1163E: Unknown opcode UART_BRD , expecting opcode or Macro
-init.s(179): error: A1167E: Invalid line start 
-init.s(181): error: A1137E: Unexpected characters at end of line
-init.s(185): error: A1167E: Invalid line start 
-init.s(192): error: A1167E: Invalid line start 
-init.s(195): error: A1137E: Unexpected characters at end of line
-init.s(202): error: A1167E: Invalid line start 
-init.s(203): error: A1167E: Invalid line start 
-init.s(204): error: A1137E: Unexpected characters at end of line
-init.s(205): error: A1137E: Unexpected characters at end of line
-init.s(206): error: A1137E: Unexpected characters at end of line
-init.s(207): error: A1137E: Unexpected characters at end of line
-init.s(208): error: A1137E: Unexpected characters at end of line
-init.s(209): error: A1137E: Unexpected characters at end of line
-init.s(210): error: A1137E: Unexpected characters at end of line
-init.s(211): error: A1137E: Unexpected characters at end of line
-init.s(212): error: A1137E: Unexpected characters at end of line
-init.s(213): error: A1137E: Unexpected characters at end of line
-init.s(214): error: A1137E: Unexpected characters at end of line
-init.s(215): error: A1137E: Unexpected characters at end of line
-init.s(216): error: A1137E: Unexpected characters at end of line
-init.s(220): error: A1167E: Invalid line start 
-init.s(221): error: A1167E: Invalid line start 
-init.s(222): error: A1137E: Unexpected characters at end of line
-init.s(225): error: A1167E: Invalid line start 
-init.s(226): error: A1137E: Unexpected characters at end of line
-init.s(227): error: A1167E: Invalid line start 
-init.s(228): error: A1137E: Unexpected characters at end of line
-compiling main.c...
-main.c(97): error:  #29: expected an expression
-main.c(113): error:  #29: expected an expression
-main.c(114): error:  #29: expected an expression
-main.c(166): warning:  #1267-D: Implicit physical register R1 should be defined as a variable
-main.c(166): warning:  #1267-D: Implicit physical register R3 should be defined as a variable
-main.c(166): warning:  #61-D: integer operation result is out of range
-main.c(172): warning:  #1267-D: Implicit physical register R0 should be defined as a variable
-main.c(189): error:  #18: expected a ")"
-main.c(203): warning:  #223-D: function "memset" declared implicitly
-main.c(227): warning:  #223-D: function "memcpy" declared implicitly
-compiling nand_read.c...
-nand_read.c(28): warning:  #260-D: explicit type is missing ("int" assumed)
-nand_read.c(28): error:  #65: expected a ";"
-nand_read.c(109): warning: At end of source:  #12-D: parsing restarts here after previous syntax error
-nand_read.c(28): warning:  #177-D: variable "inline" was declared but never referenced
-Target not created
-Build target 'Target 1'
-assembling init.s...
-init.s(7): error: A1163E: Unknown opcode smdk2440.h , expecting opcode or Macro
-init.s(11): error: A1355U: A Label was found which was in no AREA
-compiling main.c...
-main.c(97): error:  #29: expected an expression
-main.c(113): error:  #29: expected an expression
-main.c(114): error:  #29: expected an expression
-main.c(166): warning:  #1267-D: Implicit physical register R1 should be defined as a variable
-main.c(166): warning:  #1267-D: Implicit physical register R3 should be defined as a variable
-main.c(166): warning:  #61-D: integer operation result is out of range
-main.c(172): warning:  #1267-D: Implicit physical register R0 should be defined as a variable
-main.c(189): error:  #18: expected a ")"
-main.c(203): warning:  #223-D: function "memset" declared implicitly
-main.c(227): warning:  #223-D: function "memcpy" declared implicitly
-compiling nand_read.c...
-nand_read.c(28): warning:  #260-D: explicit type is missing ("int" assumed)
-nand_read.c(28): error:  #65: expected a ";"
-nand_read.c(109): warning: At end of source:  #12-D: parsing restarts here after previous syntax error
-nand_read.c(28): warning:  #177-D: variable "inline" was declared but never referenced
-Target not created
+Rebuild target 'Target 1'
+assembling 2440init.s...
+src\2440init.s(239): warning: A1608W: MOV pc,<rn> instruction used, but BX <rn> is preferred
+compiling 2440lib.c...
+src\2440lib.c(102): warning:  #177-D: variable "i" was declared but never referenced
+compiling nand.c...
+src\nand.c(86): warning:  #1267-D: Implicit physical register R1 should be defined as a variable
+src\nand.c(89): warning:  #1267-D: Implicit physical register R3 should be defined as a variable
+src\nand.c(103): warning:  #1267-D: Implicit physical register R0 should be defined as a variable
+src\nand.c(114): warning:  #1267-D: Implicit physical register R12 should be defined as a variable
+src\nand.c(171): warning:  #223-D: function "ReadPage" declared implicitly
+compiling nand_lowlevel.c...
+compiling u2440mon.c...
+src\u2440mon.c(59): warning:  #223-D: function "InitNandFlash" declared implicitly
+src\u2440mon.c(60): warning:  #223-D: function "LoadRun" declared implicitly
+linking...
+bootloader.sct(8): warning: L6314W: No section matches pattern *(InRoot$$Sections).
+Program Size: Code=3460 RO-data=200 RW-data=588 ZI-data=0  
+FromELF: creating hex file...
+User command #1: E:\Keil\ARM\BIN40\fromelf.exe --bin -o ./bootloader.bin ./bootloader.axf
+"bootloader.axf" - 0 Error(s), 10 Warning(s).
+Rebuild target 'Target 1'
+assembling 2440init.s...
+src\2440init.s(239): warning: A1608W: MOV pc,<rn> instruction used, but BX <rn> is preferred
+compiling 2440lib.c...
+src\2440lib.c(102): warning:  #177-D: variable "i" was declared but never referenced
+compiling nand.c...
+src\nand.c(86): warning:  #1267-D: Implicit physical register R1 should be defined as a variable
+src\nand.c(89): warning:  #1267-D: Implicit physical register R3 should be defined as a variable
+src\nand.c(103): warning:  #1267-D: Implicit physical register R0 should be defined as a variable
+src\nand.c(114): warning:  #1267-D: Implicit physical register R12 should be defined as a variable
+src\nand.c(171): warning:  #223-D: function "ReadPage" declared implicitly
+compiling nand_lowlevel.c...
+compiling u2440mon.c...
+src\u2440mon.c(59): warning:  #223-D: function "InitNandFlash" declared implicitly
+src\u2440mon.c(60): warning:  #223-D: function "LoadRun" declared implicitly
+linking...
+bootloader.sct(8): warning: L6314W: No section matches pattern *(InRoot$$Sections).
+Program Size: Code=3460 RO-data=200 RW-data=588 ZI-data=0  
+FromELF: creating hex file...
+User command #1: E:\Keil\ARM\BIN40\fromelf.exe --bin -o ./bootloader.bin ./bootloader.axf
+"bootloader.axf" - 0 Error(s), 10 Warning(s).
+Rebuild target 'Target 1'
+assembling 2440init.s...
+src\2440init.s(239): warning: A1608W: MOV pc,<rn> instruction used, but BX <rn> is preferred
+compiling 2440lib.c...
+src\2440lib.c(102): warning:  #177-D: variable "i" was declared but never referenced
+compiling nand.c...
+src\nand.c(86): warning:  #1267-D: Implicit physical register R1 should be defined as a variable
+src\nand.c(89): warning:  #1267-D: Implicit physical register R3 should be defined as a variable
+src\nand.c(103): warning:  #1267-D: Implicit physical register R0 should be defined as a variable
+src\nand.c(114): warning:  #1267-D: Implicit physical register R12 should be defined as a variable
+src\nand.c(170): warning:  #223-D: function "ReadPage" declared implicitly
+src\nand.c(143): warning: C3017W: parameters may be used before being set
+compiling nand_lowlevel.c...
+compiling u2440mon.c...
+src\u2440mon.c(59): warning:  #223-D: function "InitNandFlash" declared implicitly
+src\u2440mon.c(60): warning:  #223-D: function "LoadRun" declared implicitly
+linking...
+bootloader.sct(8): warning: L6314W: No section matches pattern *(InRoot$$Sections).
+Program Size: Code=3356 RO-data=200 RW-data=588 ZI-data=0  
+FromELF: creating hex file...
+User command #1: E:\Keil\ARM\BIN40\fromelf.exe --bin -o ./bootloader.bin ./bootloader.axf
+"bootloader.axf" - 0 Error(s), 11 Warning(s).
+Rebuild target 'Target 1'
+assembling 2440init.s...
+src\2440init.s(239): warning: A1608W: MOV pc,<rn> instruction used, but BX <rn> is preferred
+compiling 2440lib.c...
+src\2440lib.c(102): warning:  #177-D: variable "i" was declared but never referenced
+compiling nand.c...
+src\nand.c(86): warning:  #1267-D: Implicit physical register R1 should be defined as a variable
+src\nand.c(89): warning:  #1267-D: Implicit physical register R3 should be defined as a variable
+src\nand.c(103): warning:  #1267-D: Implicit physical register R0 should be defined as a variable
+src\nand.c(114): warning:  #1267-D: Implicit physical register R12 should be defined as a variable
+src\nand.c(170): warning:  #223-D: function "ReadPage" declared implicitly
+src\nand.c(143): warning: C3017W: parameters may be used before being set
+compiling nand_lowlevel.c...
+compiling u2440mon.c...
+src\u2440mon.c(59): warning:  #223-D: function "InitNandFlash" declared implicitly
+src\u2440mon.c(60): warning:  #223-D: function "LoadRun" declared implicitly
+linking...
+bootloader.sct(8): warning: L6314W: No section matches pattern *(InRoot$$Sections).
+Program Size: Code=3356 RO-data=200 RW-data=588 ZI-data=0  
+FromELF: creating hex file...
+User command #1: E:\Keil\ARM\BIN40\fromelf.exe --bin -o ./bootloader.bin ./bootloader.axf
+"bootloader.axf" - 0 Error(s), 11 Warning(s).
+Rebuild target 'Target 1'
+assembling 2440init.s...
+src\2440init.s(239): warning: A1608W: MOV pc,<rn> instruction used, but BX <rn> is preferred
+compiling 2440lib.c...
+src\2440lib.c(102): warning:  #177-D: variable "i" was declared but never referenced
+compiling nand.c...
+src\nand.c(86): warning:  #1267-D: Implicit physical register R1 should be defined as a variable
+src\nand.c(89): warning:  #1267-D: Implicit physical register R3 should be defined as a variable
+src\nand.c(103): warning:  #1267-D: Implicit physical register R0 should be defined as a variable
+src\nand.c(114): warning:  #1267-D: Implicit physical register R12 should be defined as a variable
+src\nand.c(170): warning:  #223-D: function "ReadPage" declared implicitly
+src\nand.c(143): warning: C3017W: parameters may be used before being set
+compiling nand_lowlevel.c...
+compiling u2440mon.c...
+src\u2440mon.c(59): warning:  #223-D: function "InitNandFlash" declared implicitly
+src\u2440mon.c(60): warning:  #223-D: function "LoadRun" declared implicitly
+linking...
+bootloader.sct(8): warning: L6314W: No section matches pattern *(InRoot$$Sections).
+Program Size: Code=3356 RO-data=200 RW-data=588 ZI-data=0  
+FromELF: creating hex file...
+User command #1: E:\Keil\ARM\BIN40\fromelf.exe --bin -o ./bootloader.bin ./bootloader.axf
+"bootloader.axf" - 0 Error(s), 11 Warning(s).
+Rebuild target 'Target 1'
+assembling 2440init.s...
+src\2440init.s(239): warning: A1608W: MOV pc,<rn> instruction used, but BX <rn> is preferred
+compiling 2440lib.c...
+src\2440lib.c(102): warning:  #177-D: variable "i" was declared but never referenced
+compiling nand.c...
+src\nand.c(86): warning:  #1267-D: Implicit physical register R1 should be defined as a variable
+src\nand.c(89): warning:  #1267-D: Implicit physical register R3 should be defined as a variable
+src\nand.c(103): warning:  #1267-D: Implicit physical register R0 should be defined as a variable
+src\nand.c(114): warning:  #1267-D: Implicit physical register R12 should be defined as a variable
+src\nand.c(170): warning:  #223-D: function "ReadPage" declared implicitly
+src\nand.c(143): warning: C3017W: parameters may be used before being set
+compiling nand_lowlevel.c...
+compiling u2440mon.c...
+src\u2440mon.c(59): warning:  #223-D: function "InitNandFlash" declared implicitly
+src\u2440mon.c(60): warning:  #223-D: function "LoadRun" declared implicitly
+linking...
+bootloader.sct(8): warning: L6314W: No section matches pattern *(InRoot$$Sections).
+Program Size: Code=3356 RO-data=200 RW-data=588 ZI-data=0  
+FromELF: creating hex file...
+User command #1: E:\Keil\ARM\BIN40\fromelf.exe --bin -o ./bootloader.bin ./bootloader.axf
+"bootloader.axf" - 0 Error(s), 11 Warning(s).
+Rebuild target 'Target 1'
+assembling 2440init.s...
+src\2440init.s(239): warning: A1608W: MOV pc,<rn> instruction used, but BX <rn> is preferred
+compiling 2440lib.c...
+src\2440lib.c(102): warning:  #177-D: variable "i" was declared but never referenced
+compiling nand.c...
+src\nand.c(86): warning:  #1267-D: Implicit physical register R1 should be defined as a variable
+src\nand.c(89): warning:  #1267-D: Implicit physical register R3 should be defined as a variable
+src\nand.c(103): warning:  #1267-D: Implicit physical register R0 should be defined as a variable
+src\nand.c(114): warning:  #1267-D: Implicit physical register R12 should be defined as a variable
+src\nand.c(170): warning:  #223-D: function "ReadPage" declared implicitly
+src\nand.c(143): warning: C3017W: parameters may be used before being set
+compiling nand_lowlevel.c...
+compiling u2440mon.c...
+src\u2440mon.c(59): warning:  #223-D: function "InitNandFlash" declared implicitly
+src\u2440mon.c(60): warning:  #223-D: function "LoadRun" declared implicitly
+linking...
+bootloader.sct(8): warning: L6314W: No section matches pattern *(InRoot$$Sections).
+Program Size: Code=3356 RO-data=200 RW-data=588 ZI-data=0  
+FromELF: creating hex file...
+User command #1: E:\Keil\ARM\BIN40\fromelf.exe --bin -o ./bootloader.bin ./bootloader.axf
+"bootloader.axf" - 0 Error(s), 11 Warning(s).
+Rebuild target 'Target 1'
+assembling 2440init.s...
+src\2440init.s(239): warning: A1608W: MOV pc,<rn> instruction used, but BX <rn> is preferred
+compiling 2440lib.c...
+src\2440lib.c(102): warning:  #177-D: variable "i" was declared but never referenced
+compiling nand.c...
+src\nand.c(86): warning:  #1267-D: Implicit physical register R1 should be defined as a variable
+src\nand.c(89): warning:  #1267-D: Implicit physical register R3 should be defined as a variable
+src\nand.c(103): warning:  #1267-D: Implicit physical register R0 should be defined as a variable
+src\nand.c(114): warning:  #1267-D: Implicit physical register R12 should be defined as a variable
+src\nand.c(170): warning:  #223-D: function "ReadPage" declared implicitly
+src\nand.c(143): warning: C3017W: parameters may be used before being set
+compiling nand_lowlevel.c...
+compiling u2440mon.c...
+src\u2440mon.c(59): warning:  #223-D: function "InitNandFlash" declared implicitly
+src\u2440mon.c(60): warning:  #223-D: function "LoadRun" declared implicitly
+linking...
+bootloader.sct(8): warning: L6314W: No section matches pattern *(InRoot$$Sections).
+Program Size: Code=3356 RO-data=200 RW-data=588 ZI-data=0  
+FromELF: creating hex file...
+User command #1: E:\Keil\ARM\BIN40\fromelf.exe --bin -o ./bootloader.bin ./bootloader.axf
+"bootloader.axf" - 0 Error(s), 11 Warning(s).
+Rebuild target 'Target 1'
+assembling 2440init.s...
+src\2440init.s(239): warning: A1608W: MOV pc,<rn> instruction used, but BX <rn> is preferred
+compiling 2440lib.c...
+src\2440lib.c(102): warning:  #177-D: variable "i" was declared but never referenced
+compiling nand.c...
+src\nand.c(86): warning:  #1267-D: Implicit physical register R1 should be defined as a variable
+src\nand.c(89): warning:  #1267-D: Implicit physical register R3 should be defined as a variable
+src\nand.c(103): warning:  #1267-D: Implicit physical register R0 should be defined as a variable
+src\nand.c(114): warning:  #1267-D: Implicit physical register R12 should be defined as a variable
+src\nand.c(170): warning:  #223-D: function "ReadPage" declared implicitly
+src\nand.c(143): warning: C3017W: parameters may be used before being set
+compiling nand_lowlevel.c...
+compiling u2440mon.c...
+src\u2440mon.c(59): warning:  #223-D: function "InitNandFlash" declared implicitly
+src\u2440mon.c(60): warning:  #223-D: function "LoadRun" declared implicitly
+linking...
+bootloader.sct(8): warning: L6314W: No section matches pattern *(InRoot$$Sections).
+Program Size: Code=3356 RO-data=200 RW-data=588 ZI-data=0  
+FromELF: creating hex file...
+User command #1: E:\Keil\ARM\BIN40\fromelf.exe --bin -o ./bootloader.bin ./bootloader.axf
+"bootloader.axf" - 0 Error(s), 11 Warning(s).
+Rebuild target 'Target 1'
+assembling 2440init.s...
+src\2440init.s(239): warning: A1608W: MOV pc,<rn> instruction used, but BX <rn> is preferred
+compiling 2440lib.c...
+src\2440lib.c(102): warning:  #177-D: variable "i" was declared but never referenced
+compiling nand.c...
+src\nand.c(86): warning:  #1267-D: Implicit physical register R1 should be defined as a variable
+src\nand.c(89): warning:  #1267-D: Implicit physical register R3 should be defined as a variable
+src\nand.c(103): warning:  #1267-D: Implicit physical register R0 should be defined as a variable
+src\nand.c(114): warning:  #1267-D: Implicit physical register R12 should be defined as a variable
+src\nand.c(170): warning:  #223-D: function "ReadPage" declared implicitly
+src\nand.c(143): warning: C3017W: parameters may be used before being set
+compiling nand_lowlevel.c...
+compiling u2440mon.c...
+src\u2440mon.c(59): warning:  #223-D: function "InitNandFlash" declared implicitly
+src\u2440mon.c(60): warning:  #223-D: function "LoadRun" declared implicitly
+linking...
+bootloader.sct(8): warning: L6314W: No section matches pattern *(InRoot$$Sections).
+Program Size: Code=3352 RO-data=200 RW-data=584 ZI-data=0  
+FromELF: creating hex file...
+User command #1: E:\Keil\ARM\BIN40\fromelf.exe --bin -o ./bootloader.bin ./bootloader.axf
+"bootloader.axf" - 0 Error(s), 11 Warning(s).
+Rebuild target 'Target 1'
+assembling 2440init.s...
+src\2440init.s(223): warning: A1608W: MOV pc,<rn> instruction used, but BX <rn> is preferred
+compiling 2440lib.c...
+src\2440lib.c(102): warning:  #177-D: variable "i" was declared but never referenced
+compiling nand.c...
+src\nand.c(86): warning:  #1267-D: Implicit physical register R1 should be defined as a variable
+src\nand.c(89): warning:  #1267-D: Implicit physical register R3 should be defined as a variable
+src\nand.c(103): warning:  #1267-D: Implicit physical register R0 should be defined as a variable
+src\nand.c(114): warning:  #1267-D: Implicit physical register R12 should be defined as a variable
+src\nand.c(170): warning:  #223-D: function "ReadPage" declared implicitly
+src\nand.c(143): warning: C3017W: parameters may be used before being set
+compiling nand_lowlevel.c...
+compiling u2440mon.c...
+src\u2440mon.c(59): warning:  #223-D: function "InitNandFlash" declared implicitly
+src\u2440mon.c(60): warning:  #223-D: function "LoadRun" declared implicitly
+linking...
+bootloader.sct(8): warning: L6314W: No section matches pattern *(InRoot$$Sections).
+Program Size: Code=3352 RO-data=200 RW-data=584 ZI-data=0  
+FromELF: creating hex file...
+User command #1: E:\Keil\ARM\BIN40\fromelf.exe --bin -o ./bootloader.bin ./bootloader.axf
+"bootloader.axf" - 0 Error(s), 11 Warning(s).
+Rebuild target 'Target 1'
+assembling 2440init.s...
+src\2440init.s(223): warning: A1608W: MOV pc,<rn> instruction used, but BX <rn> is preferred
+compiling 2440lib.c...
+src\2440lib.c(102): warning:  #177-D: variable "i" was declared but never referenced
+compiling nand.c...
+src\nand.c(86): warning:  #1267-D: Implicit physical register R1 should be defined as a variable
+src\nand.c(89): warning:  #1267-D: Implicit physical register R3 should be defined as a variable
+src\nand.c(103): warning:  #1267-D: Implicit physical register R0 should be defined as a variable
+src\nand.c(114): warning:  #1267-D: Implicit physical register R12 should be defined as a variable
+src\nand.c(170): warning:  #223-D: function "ReadPage" declared implicitly
+src\nand.c(143): warning: C3017W: parameters may be used before being set
+compiling nand_lowlevel.c...
+compiling u2440mon.c...
+src\u2440mon.c(53): warning:  #223-D: function "InitNandFlash" declared implicitly
+src\u2440mon.c(54): warning:  #223-D: function "LoadRun" declared implicitly
+linking...
+bootloader.sct(8): warning: L6314W: No section matches pattern *(InRoot$$Sections).
+Program Size: Code=3352 RO-data=200 RW-data=584 ZI-data=0  
+FromELF: creating hex file...
+User command #1: E:\Keil\ARM\BIN40\fromelf.exe --bin -o ./bootloader.bin ./bootloader.axf
+"bootloader.axf" - 0 Error(s), 11 Warning(s).
+Rebuild target 'Target 1'
+assembling 2440init.s...
+src\2440init.s(223): warning: A1608W: MOV pc,<rn> instruction used, but BX <rn> is preferred
+compiling 2440lib.c...
+src\2440lib.c(102): warning:  #177-D: variable "i" was declared but never referenced
+compiling nand.c...
+src\nand.c(86): warning:  #1267-D: Implicit physical register R1 should be defined as a variable
+src\nand.c(89): warning:  #1267-D: Implicit physical register R3 should be defined as a variable
+src\nand.c(103): warning:  #1267-D: Implicit physical register R0 should be defined as a variable
+src\nand.c(114): warning:  #1267-D: Implicit physical register R12 should be defined as a variable
+src\nand.c(170): warning:  #223-D: function "ReadPage" declared implicitly
+src\nand.c(143): warning: C3017W: parameters may be used before being set
+compiling nand_lowlevel.c...
+compiling u2440mon.c...
+src\u2440mon.c(52): warning:  #223-D: function "InitNandFlash" declared implicitly
+src\u2440mon.c(53): warning:  #223-D: function "LoadRun" declared implicitly
+linking...
+bootloader.sct(8): warning: L6314W: No section matches pattern *(InRoot$$Sections).
+Program Size: Code=3352 RO-data=200 RW-data=584 ZI-data=0  
+FromELF: creating hex file...
+User command #1: E:\Keil\ARM\BIN40\fromelf.exe --bin -o ./bootloader.bin ./bootloader.axf
+"bootloader.axf" - 0 Error(s), 11 Warning(s).
+Rebuild target 'Target 1'
+assembling 2440init.s...
+src\2440init.s(223): warning: A1608W: MOV pc,<rn> instruction used, but BX <rn> is preferred
+compiling 2440lib.c...
+src\2440lib.c(79): warning:  #177-D: variable "i" was declared but never referenced
+compiling nand.c...
+src\nand.c(86): warning:  #1267-D: Implicit physical register R1 should be defined as a variable
+src\nand.c(89): warning:  #1267-D: Implicit physical register R3 should be defined as a variable
+src\nand.c(103): warning:  #1267-D: Implicit physical register R0 should be defined as a variable
+src\nand.c(114): warning:  #1267-D: Implicit physical register R12 should be defined as a variable
+src\nand.c(170): warning:  #223-D: function "ReadPage" declared implicitly
+src\nand.c(143): warning: C3017W: parameters may be used before being set
+compiling nand_lowlevel.c...
+compiling u2440mon.c...
+src\u2440mon.c(52): warning:  #223-D: function "InitNandFlash" declared implicitly
+src\u2440mon.c(53): warning:  #223-D: function "LoadRun" declared implicitly
+linking...
+bootloader.sct(8): warning: L6314W: No section matches pattern *(InRoot$$Sections).
+Program Size: Code=2996 RO-data=200 RW-data=580 ZI-data=0  
+FromELF: creating hex file...
+User command #1: E:\Keil\ARM\BIN40\fromelf.exe --bin -o ./bootloader.bin ./bootloader.axf
+"bootloader.axf" - 0 Error(s), 11 Warning(s).

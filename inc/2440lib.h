@@ -29,35 +29,29 @@ extern "C" {
 #define NULL 0
 
 #define EnterPWDN(clkcon) ((void (*)(int))0x20)(clkcon)
-void StartPointAfterPowerOffWakeUp(void); //purnnamu:Mar.29.2002
+
 
 
 // 2440lib.c
 void Delay(int time);              //Watchdog Timer is used.
 
-void *malloc(unsigned nbyte); 
-void free(void *pt);
+
 
 void Port_Init(void);
-int  Uart_Select(int ch);			
-void Uart_TxEmpty(int ch);
+
 void Uart_Init(int mclk,int baud);
 char Uart_Getch(void);
-char Uart_GetKey(void);
-void Uart_GetString(char *string);	
-int  Uart_GetIntNum(void);
+
+
+
 void Uart_SendByte(int data);
-void Uart_Printf(char *fmt,...);
+
 void Uart_SendString(char *pt);
 
-void Timer_Start(int divider);    //Watchdog Timer is used.
-int  Timer_Stop(void);            //Watchdog Timer is used.
+
 
 void Led_Display(int data);
 
-void ChangeMPllValue(int m,int p,int s);
-void ChangeClockDivider(int hdivn_val,int pdivn_val);
-void ChangeUPllValue(int m,int p,int s);
 
 #ifdef __cplusplus
 }

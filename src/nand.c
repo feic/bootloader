@@ -11,66 +11,16 @@
 #include "bootpara.h"
 
 //可更改删除分区，分区名字不可改
-static struct Partition NandPart[] = {
-	{0, 		 0x00020000, "boot"},		//128K one block
-	{0x00020000, 0x00060000, "bootParam"},	//384K three blocks
-	{0x00080000, 0x00100000, "pic"},		//1M
-	{0x00180000, 0x00380000, "MyApp"},		//3.5M
-	{0x00500000, 0x00300000, "kernel"},		//3M
-	{0x00800000, 0x03c00000, "fs_yaffs"},	//60M
-	{0x04400000, 0x00080000, "eboot"},		//512K
-	{0x04480000, 0x03b80000, "wince"},		//59.5M
-	{0,			 0         , 0}
-};
+
 
 
 #define	getch	Uart_Getch
 
 #define	EnNandFlash()	(rNFCONT |= 1)
 #define	DsNandFlash()	(rNFCONT &= ~1)
-struct Partition * NandSelPart(char *info)
-{
-	U16 i, max_sel;
-	struct Partition *ptr = NandPart;
-	
-	printf("\nPlease select which region to %s : Esc to abort\n", info);
-	
-	for(i=0; ptr->size!=0; i++, ptr++)
-		printf("%d : offset 0x%08x, size 0x%08x [%s]\n", i, ptr->offset, ptr->size, ptr->name);
-		
-	max_sel = i;
-	
-	while(1) {
-		i = getch();
-		if(i==0x1b)
-			return NULL;
-		if((i>='0')&&(i<(max_sel+'0'))) {
-			i -= '0';
-			//StartPage = NandPart[i].offset>>11;
-			//BlockCnt  = NandPart[i].size>>17;
-			//return i;
-			return &NandPart[i];
-		}
-	}	
-}
 
-struct Partition * NandSelPart_2(char *info)
-{
-	U16 i;
-	struct Partition *ptr = NandPart;
-	
-	//printf("\nPlease select which region to %s : Esc to abort\n", info);
-	
-	for(i=0; ptr->size!=0; i++, ptr++)
-		//printf("%d : offset 0x%08x, size 0x%08x [%s]\n", i, ptr->offset, ptr->size, ptr->name);
-		if(!strcmp(ptr->name,info))
-			return ptr;
 
-	printf(" ERROR:there is no %s part\n",info);
-	return NULL;
-		
 
-}
 
 /************** boot linux ***************************/
 
@@ -122,9 +72,16 @@ struct param_struct {
 
 extern void  call_linux(U32 a0, U32 a1, U32 a2);
 
-/*************************************************************/
-static __inline void cpu_arm920_cache_clean_invalidate_all(void)
+
+
+
+
+void call_linux(U32 a0, U32 a1, U32 a2)
 {
+	void (*goto_start)(U32, U32);
+	
+	rINTMSK=BIT_ALLMSK;
+	
 	__asm{
 		mov	r1, #0		
 		mov	r1, #7 << 5			  	/* 8 segments */
@@ -139,36 +96,16 @@ cache_clean_loop2:
 		mcr	p15, 0, r1, c7, c5, 0	/* invalidate I cache */
 		mcr	p15, 0, r1, c7, c10, 4	/* drain WB */
 	}
-}
-void cache_clean_invalidate(void)
-{
-	cpu_arm920_cache_clean_invalidate_all();
-}
-
-static __inline void cpu_arm920_tlb_invalidate_all(void)
-{
+	
+	
+	
 	__asm{
 		mov	r0, #0
 		mcr	p15, 0, r0, c7, c10, 4	/* drain WB */
 		mcr	p15, 0, r0, c8, c7, 0	/* invalidate I & D TLBs */
 	}
-}
-
-void tlb_invalidate(void)
-{
-	cpu_arm920_tlb_invalidate_all();
-}
-
-void disable_irq(void);
-
-void call_linux(U32 a0, U32 a1, U32 a2)
-{
-	void (*goto_start)(U32, U32);
 	
-	rINTMSK=BIT_ALLMSK;
 	
-	cache_clean_invalidate();
-	tlb_invalidate();	
 
 	__asm{
 //		mov	r0, a0//%0
@@ -201,133 +138,30 @@ void LoadRun(void)
 {
 	U32 i, ram_addr, buf = 0x30200000;//boot_params.run_addr.val;
 	struct param_struct *params = (struct param_struct *)0x30000100;
-	struct Partition *nf_part;
+
 	int size;
-	
+	char *parameters;
 	memset(params, 0, sizeof(struct param_struct));
-
-
-	if(1/*boot_params.start.val*/) {
-		char parameters[512];
-		char *rootfs;
-		char initrd[32];
-		char *tty_sel;
-		char *devfs_sel;
-		char *display_sel;
-		
-		switch (boot_params.root_sel.val) {
-		case 0:
-			rootfs = "/dev/ram";
-			break;
-		case 1:
-			rootfs = "nfs";
-			break;
-		case 2:
-			rootfs = "/dev/mtdblock2"; //    by pht.
-			break;
-		case 3:
-			rootfs = "/dev/mtdblock3";
-			break;
-		case 4:
-			rootfs = "/dev/mtdblock4";
-			break;
-		default:
-			rootfs="";	//user define
-			break;
-		}
-		
-		switch (boot_params.display_sel.val) {
-		case 0:
-			display_sel = "display=sam320";
-			break;
-		case 1:
-			display_sel = "display=vga640";
-			break;
-		case 2:
-			display_sel = "display=vga800";
-			break;			
-		case 3:
-			display_sel = "display=qch800";
-			break;	
-		case 4:
-			display_sel = "display=lcd480";
-			break;	
-											
-		default:
-			display_sel = "display=sam640";	
-			break;
-		}
 	
-	
-	
-	
-	
-		if(boot_params.root_sel.val)
-			sprintf(initrd, "load_ramdisk=0");
-		else
-			sprintf(initrd, "initrd=0x%08x,0x%08x",
-						boot_params.initrd_addr.val,
-						boot_params.initrd_len.val);
-	
-		switch (boot_params.tty_sel.val) {
-		case 0:
-			tty_sel="ttySAC0";
-			break;
-		case 1:
-			tty_sel="ttySAC1";
-			break;
-		case 2:
-			tty_sel="ttyS0";
-			break;
-		case 3:
-			tty_sel="ttyS1";
-			break;
-		case 4:
-			tty_sel="tty0";
-			break;
-		default:
-			tty_sel="ttySAC0";	//user define
-			break;
-		}
-	
-
-		devfs_sel = "devfs=mount";
-
-		
+			
 		memset(parameters, 0, sizeof(parameters));
-		sprintf(parameters,
-					"root=%s init=/linuxrc %s console=%s,%d mem=%dK %s %s %s",
-					rootfs,
-					initrd,
-					tty_sel,
-					boot_params.serial_baud.val,
-					boot_params.mem_cfg.val>>10,
-					devfs_sel,
-					display_sel,
-					boot_params.string);
+		parameters="root=/dev/mtdblock3 init=/linuxrc load_ramdisk=0 console=ttySAC0,115200 mem=65536K devfs=mount display=sam320 DEFAULT_USER_PARAMS";
+						
 		
 		params->u1.s.page_size = LINUX_PAGE_SIZE;
 		params->u1.s.nr_pages = (boot_params.mem_cfg.val >> LINUX_PAGE_SHIFT);
 		memcpy(params->commandline, parameters, strlen(parameters));
 	
-		printf("Set boot params = %s\n", params->commandline);
-	}
-
-	printf("Load Kernel...\n");	
-
+		
 	
-	
-	nf_part = NandSelPart_2("kernel");	
-	if(!nf_part)
-		return;	
-	StartPage = nf_part->offset>>11;
-	size = nf_part->size;
+	StartPage = 0x00500000>>11;
+	size = 0x00300000;
 	ram_addr = buf;	
 
 	for(i=0; size>0; ) {
 		if(!(i&0x3f)) {
 			if(CheckBadBlk(i+StartPage)) {
-				printf("Skipped bad block at 0x%x\n", i+StartPage);
+				
 				i += 64;
 				size -= 64<<11;
 				continue;
@@ -339,42 +173,11 @@ void LoadRun(void)
 		ram_addr += 2048;
 	}
 
-/*	
-	if(!boot_params.root_sel.val) {
-		int ramdisk_sz;
-		
-		printf("Load Ramdisk...\n");
-		
-		StartPage = NandPart[3].offset>>11;
-		size = NandPart[3].size;
-		
-		ram_addr = boot_params.initrd_addr.val;
-		ramdisk_sz = boot_params.initrd_len.val;
-		
-		for(i=0; size>0&&ramdisk_sz>0; ) {
-			if(!(i&0x3f)) {
-				if(CheckBadBlk(i+StartPage)) {
-					printf("Skipped bad block at 0x%x\n", i+StartPage);
-					i += 64;
-					size -= 64<<9;
-					continue;
-				}
-			}
-			ReadPage((i+StartPage), (U8 *)ram_addr);
-			i++;
-			size -= 2048;
-			ram_addr += 2048;
-			ramdisk_sz -= 2048;
-		}
-	}
-*/	
+
 	DsNandFlash();
 
-		//ChangeClockDivider(13,12);
-		//ChangeMPllValue(67,1,1);	//300MHz,2440A!
-		//rCLKCON = 0x7fff0;
+		
 	call_linux(0, boot_params.machine.val, buf);
 }
 
-/***************** LOAD PIC ***********************/
 

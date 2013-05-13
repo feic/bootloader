@@ -29,18 +29,8 @@ typedef struct {
 	unsigned int bpage[50];
 } BootParams;
 
-typedef struct {
-	ParamItem vid;
-	ParamItem pid;
-	ParamItem ser_l;
-	ParamItem ser_h;
-	ParamItem user_params;
-	char string[128];
-} VenderParams;
 
-int search_params(void);
-int save_params(void);
-int set_params(void);
+
 
 #define	DEFAULT_USER_PARAMS	" "
 
@@ -71,19 +61,12 @@ BootParams boot_params = {
 };
 
 //小于等于256字节
-VenderParams vend_params = {
-	{"VendID",   0x76543210},
-	{"ProdID",   0xfedcba98},
-	{"Serial_L", 0x01234567},
-	{"Serial_H", 0x89abcdef},
-	{"userpara", 1},	//0=data, 1=string
-	"www.witech.com.cn"
-};
+
 
 #else
 
 extern BootParams boot_params;
-extern VenderParams vend_params;
+
 
 #endif
 

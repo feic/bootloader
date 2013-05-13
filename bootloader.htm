@@ -1,0 +1,275 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html><head>
+<title>Static Call Graph - [E:\Github\bootloader\bootloader.axf]</title></head>
+<body><HR>
+<H1>Static Call Graph for image E:\Github\bootloader\bootloader.axf</H1><HR>
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 4.1 [Build 894]: Last Updated: Mon May 13 19:31:41 2013
+<BR><P>
+<H3>Maximum Stack Usage =        148 bytes + Unknown(Functions without stacksize, Untraceable Function Pointers)</H3><H3>
+Call chain for Maximum Stack Depth:</H3>
+CEntry &rArr; Main &rArr; Uart_Init &rArr; __aeabi_dadd &rArr; _double_epilogue &rArr; __aeabi_llsr
+<P>
+<H3>
+Functions with no stack information
+</H3><UL>
+ <LI><a href="#[1]">__ENTRY</a>
+ <LI><a href="#[0]">CEntry</a>
+</UL>
+</UL>
+<P>
+<H3>
+Function Pointers
+</H3><UL>
+ <LI><a href="#[0]">CEntry</a> from 2440init.o(RESET) referenced from 2440init.o(RESET)
+</UL>
+<P>
+<H3>
+Global Symbols
+</H3>
+<P><STRONG><a name="[1]"></a>__ENTRY</STRONG> (ARM, 0 bytes, Stack size unknown bytes, 2440init.o(RESET))
+
+<P><STRONG><a name="[14]"></a>Port_Init</STRONG> (ARM, 160 bytes, Stack size 12 bytes, 2440lib.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 12<LI>Call Chain = Port_Init
+</UL>
+<BR>[Called By]<UL><LI><a href="#[2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Main
+</UL>
+
+<P><STRONG><a name="[3]"></a>Uart_Init</STRONG> (ARM, 168 bytes, Stack size 40 bytes, 2440lib.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 140<LI>Call Chain = Uart_Init &rArr; __aeabi_dadd &rArr; _double_epilogue &rArr; __aeabi_llsr
+</UL>
+<BR>[Calls]<UL><LI><a href="#[4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_i2d (via Veneer)
+<LI><a href="#[6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ddiv (via Veneer)
+<LI><a href="#[7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd (via Veneer)
+<LI><a href="#[8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2iz (via Veneer)
+<LI><a href="#[5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ARM_scalbn (via Veneer)
+</UL>
+<BR>[Called By]<UL><LI><a href="#[2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Main
+</UL>
+
+<P><STRONG><a name="[a]"></a>Uart_SendByte</STRONG> (ARM, 56 bytes, Stack size 0 bytes, 2440lib.o(.text))
+<BR><BR>[Called By]<UL><LI><a href="#[9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Uart_SendString
+<LI><a href="#[2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Main
+</UL>
+
+<P><STRONG><a name="[9]"></a>Uart_SendString</STRONG> (ARM, 40 bytes, Stack size 4 bytes, 2440lib.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 4<LI>Call Chain = Uart_SendString
+</UL>
+<BR>[Calls]<UL><LI><a href="#[a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Uart_SendByte
+</UL>
+<BR>[Called By]<UL><LI><a href="#[2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Main
+</UL>
+
+<P><STRONG><a name="[12]"></a>call_linux</STRONG> (ARM, 112 bytes, Stack size 8 bytes, nand.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = call_linux
+</UL>
+<BR>[Called By]<UL><LI><a href="#[b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LoadRun
+</UL>
+
+<P><STRONG><a name="[b]"></a>LoadRun</STRONG> (ARM, 220 bytes, Stack size 32 bytes, nand.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 48<LI>Call Chain = LoadRun &rArr; ReadPage
+</UL>
+<BR>[Calls]<UL><LI><a href="#[e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;strlen (via Veneer)
+<LI><a href="#[c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memclr4 (via Veneer)
+<LI><a href="#[d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memclr (via Veneer)
+<LI><a href="#[f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy (via Veneer)
+<LI><a href="#[11]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadPage
+<LI><a href="#[10]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CheckBadBlk
+<LI><a href="#[12]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;call_linux
+</UL>
+<BR>[Called By]<UL><LI><a href="#[2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Main
+</UL>
+
+<P><STRONG><a name="[11]"></a>ReadPage</STRONG> (ARM, 144 bytes, Stack size 16 bytes, nand_lowlevel.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = ReadPage
+</UL>
+<BR>[Calls]<UL><LI><a href="#[13]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WaitNFBusy
+</UL>
+<BR>[Called By]<UL><LI><a href="#[b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LoadRun
+</UL>
+
+<P><STRONG><a name="[10]"></a>CheckBadBlk</STRONG> (ARM, 124 bytes, Stack size 8 bytes, nand_lowlevel.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = CheckBadBlk
+</UL>
+<BR>[Calls]<UL><LI><a href="#[13]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WaitNFBusy
+</UL>
+<BR>[Called By]<UL><LI><a href="#[b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LoadRun
+</UL>
+
+<P><STRONG><a name="[15]"></a>InitNandFlash</STRONG> (ARM, 36 bytes, Stack size 0 bytes, nand_lowlevel.o(.text))
+<BR><BR>[Called By]<UL><LI><a href="#[2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Main
+</UL>
+
+<P><STRONG><a name="[2]"></a>Main</STRONG> (ARM, 60 bytes, Stack size 8 bytes, u2440mon.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 148<LI>Call Chain = Main &rArr; Uart_Init &rArr; __aeabi_dadd &rArr; _double_epilogue &rArr; __aeabi_llsr
+</UL>
+<BR>[Calls]<UL><LI><a href="#[15]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InitNandFlash
+<LI><a href="#[b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LoadRun
+<LI><a href="#[9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Uart_SendString
+<LI><a href="#[a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Uart_SendByte
+<LI><a href="#[3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Uart_Init
+<LI><a href="#[14]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Port_Init
+</UL>
+<BR>[Called By]<UL><LI><a href="#[0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CEntry
+</UL>
+
+<P><STRONG><a name="[f]"></a>__aeabi_memcpy</STRONG> (Thumb, 36 bytes, Stack size 0 bytes, memcpya.o(.text))
+<BR><BR>[Called By]<UL><LI><a href="#[b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LoadRun (via Veneer)
+</UL>
+
+<P><STRONG><a name="[20]"></a>__aeabi_memcpy4</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, memcpya.o(.text), UNUSED)
+
+<P><STRONG><a name="[21]"></a>__aeabi_memcpy8</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, memcpya.o(.text), UNUSED)
+
+<P><STRONG><a name="[16]"></a>__aeabi_memset</STRONG> (Thumb, 16 bytes, Stack size 0 bytes, memseta.o(.text))
+<BR><BR>[Called By]<UL><LI><a href="#[17]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_memset$wrapper
+<LI><a href="#[d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memclr
+</UL>
+
+<P><STRONG><a name="[22]"></a>__aeabi_memset4</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, memseta.o(.text), UNUSED)
+
+<P><STRONG><a name="[23]"></a>__aeabi_memset8</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, memseta.o(.text), UNUSED)
+
+<P><STRONG><a name="[d]"></a>__aeabi_memclr</STRONG> (Thumb, 4 bytes, Stack size 0 bytes, memseta.o(.text))
+<BR><BR>[Calls]<UL><LI><a href="#[16]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memset
+</UL>
+<BR>[Called By]<UL><LI><a href="#[b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LoadRun (via Veneer)
+</UL>
+
+<P><STRONG><a name="[c]"></a>__aeabi_memclr4</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, memseta.o(.text))
+<BR><BR>[Called By]<UL><LI><a href="#[b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LoadRun (via Veneer)
+</UL>
+
+<P><STRONG><a name="[24]"></a>__aeabi_memclr8</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, memseta.o(.text), UNUSED)
+
+<P><STRONG><a name="[17]"></a>_memset$wrapper</STRONG> (Thumb, 24 bytes, Stack size 8 bytes, memseta.o(.text), UNUSED)
+<BR><BR>[Calls]<UL><LI><a href="#[16]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memset
+</UL>
+
+<P><STRONG><a name="[e]"></a>strlen</STRONG> (Thumb, 16 bytes, Stack size 0 bytes, strlen.o(.text))
+<BR><BR>[Called By]<UL><LI><a href="#[b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LoadRun (via Veneer)
+</UL>
+
+<P><STRONG><a name="[7]"></a>__aeabi_dadd</STRONG> (Thumb, 334 bytes, Stack size 48 bytes, dadd.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 100<LI>Call Chain = __aeabi_dadd &rArr; _double_epilogue &rArr; __aeabi_llsr
+</UL>
+<BR>[Calls]<UL><LI><a href="#[19]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_lasr
+<LI><a href="#[18]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_llsl
+<LI><a href="#[1b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_double_round
+<LI><a href="#[1a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_double_epilogue
+</UL>
+<BR>[Called By]<UL><LI><a href="#[1d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_drsub
+<LI><a href="#[1c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dsub
+<LI><a href="#[3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Uart_Init (via Veneer)
+</UL>
+
+<P><STRONG><a name="[1c]"></a>__aeabi_dsub</STRONG> (Thumb, 12 bytes, Stack size 8 bytes, dadd.o(.text), UNUSED)
+<BR><BR>[Calls]<UL><LI><a href="#[7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd
+</UL>
+
+<P><STRONG><a name="[1d]"></a>__aeabi_drsub</STRONG> (Thumb, 12 bytes, Stack size 8 bytes, dadd.o(.text), UNUSED)
+<BR><BR>[Calls]<UL><LI><a href="#[7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd
+</UL>
+
+<P><STRONG><a name="[6]"></a>__aeabi_ddiv</STRONG> (Thumb, 238 bytes, Stack size 40 bytes, ddiv.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 44<LI>Call Chain = __aeabi_ddiv &rArr; _double_round
+</UL>
+<BR>[Calls]<UL><LI><a href="#[1b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_double_round
+</UL>
+<BR>[Called By]<UL><LI><a href="#[3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Uart_Init (via Veneer)
+</UL>
+
+<P><STRONG><a name="[5]"></a>__ARM_scalbn</STRONG> (Thumb, 46 bytes, Stack size 12 bytes, dscalb.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 12<LI>Call Chain = __ARM_scalbn
+</UL>
+<BR>[Called By]<UL><LI><a href="#[3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Uart_Init (via Veneer)
+</UL>
+
+<P><STRONG><a name="[25]"></a>scalbn</STRONG> (Thumb, 0 bytes, Stack size 12 bytes, dscalb.o(.text), UNUSED)
+
+<P><STRONG><a name="[4]"></a>__aeabi_i2d</STRONG> (Thumb, 36 bytes, Stack size 16 bytes, dflti.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 68<LI>Call Chain = __aeabi_i2d &rArr; _double_epilogue &rArr; __aeabi_llsr
+</UL>
+<BR>[Calls]<UL><LI><a href="#[1a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_double_epilogue
+</UL>
+<BR>[Called By]<UL><LI><a href="#[3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Uart_Init (via Veneer)
+</UL>
+
+<P><STRONG><a name="[8]"></a>__aeabi_d2iz</STRONG> (Thumb, 66 bytes, Stack size 16 bytes, dfixi.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 20<LI>Call Chain = __aeabi_d2iz &rArr; __aeabi_llsr
+</UL>
+<BR>[Calls]<UL><LI><a href="#[1e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_llsr
+</UL>
+<BR>[Called By]<UL><LI><a href="#[3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Uart_Init (via Veneer)
+</UL>
+
+<P><STRONG><a name="[18]"></a>__aeabi_llsl</STRONG> (Thumb, 34 bytes, Stack size 4 bytes, llshl.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 4<LI>Call Chain = __aeabi_llsl
+</UL>
+<BR>[Called By]<UL><LI><a href="#[1a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_double_epilogue
+<LI><a href="#[7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd
+</UL>
+
+<P><STRONG><a name="[26]"></a>_ll_shift_l</STRONG> (Thumb, 0 bytes, Stack size 4 bytes, llshl.o(.text), UNUSED)
+
+<P><STRONG><a name="[1e]"></a>__aeabi_llsr</STRONG> (Thumb, 36 bytes, Stack size 4 bytes, llushr.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 4<LI>Call Chain = __aeabi_llsr
+</UL>
+<BR>[Called By]<UL><LI><a href="#[1a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_double_epilogue
+<LI><a href="#[8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2iz
+</UL>
+
+<P><STRONG><a name="[27]"></a>_ll_ushift_r</STRONG> (Thumb, 0 bytes, Stack size 4 bytes, llushr.o(.text), UNUSED)
+
+<P><STRONG><a name="[19]"></a>__aeabi_lasr</STRONG> (Thumb, 40 bytes, Stack size 4 bytes, llsshr.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 4<LI>Call Chain = __aeabi_lasr
+</UL>
+<BR>[Called By]<UL><LI><a href="#[7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd
+</UL>
+
+<P><STRONG><a name="[28]"></a>_ll_sshift_r</STRONG> (Thumb, 0 bytes, Stack size 4 bytes, llsshr.o(.text), UNUSED)
+
+<P><STRONG><a name="[29]"></a>__I$use$fp</STRONG> (ARM, 0 bytes, Stack size 4 bytes, iusefp.o(.text), UNUSED)
+
+<P><STRONG><a name="[1b]"></a>_double_round</STRONG> (Thumb, 28 bytes, Stack size 4 bytes, depilogue.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 4<LI>Call Chain = _double_round
+</UL>
+<BR>[Called By]<UL><LI><a href="#[1a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_double_epilogue
+<LI><a href="#[6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ddiv
+<LI><a href="#[7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd
+</UL>
+
+<P><STRONG><a name="[1a]"></a>_double_epilogue</STRONG> (Thumb, 170 bytes, Stack size 48 bytes, depilogue.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 52<LI>Call Chain = _double_epilogue &rArr; __aeabi_llsr
+</UL>
+<BR>[Calls]<UL><LI><a href="#[1f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ARM_clz
+<LI><a href="#[1e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_llsr
+<LI><a href="#[18]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_llsl
+<LI><a href="#[1b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_double_round
+</UL>
+<BR>[Called By]<UL><LI><a href="#[4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_i2d
+<LI><a href="#[7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd
+</UL>
+
+<P><STRONG><a name="[1f]"></a>__ARM_clz</STRONG> (Thumb, 46 bytes, Stack size 0 bytes, depilogue.o(i.__ARM_clz))
+<BR><BR>[Called By]<UL><LI><a href="#[1a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_double_epilogue
+</UL>
+<P>
+<H3>
+Local Symbols
+</H3>
+<P><STRONG><a name="[0]"></a>CEntry</STRONG> (ARM, 0 bytes, Stack size unknown bytes, 2440init.o(RESET))
+<BR><BR>[Stack]<UL><LI>Max Depth = 148 + Unknown Stack Size
+<LI>Call Chain = CEntry &rArr; Main &rArr; Uart_Init &rArr; __aeabi_dadd &rArr; _double_epilogue &rArr; __aeabi_llsr
+</UL>
+<BR>[Calls]<UL><LI><a href="#[2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Main
+</UL>
+<BR>[Address Reference Count : 1]<UL><LI> 2440init.o(RESET)
+</UL>
+<P><STRONG><a name="[13]"></a>WaitNFBusy</STRONG> (ARM, 40 bytes, Stack size 0 bytes, nand_lowlevel.o(.text))
+<BR><BR>[Called By]<UL><LI><a href="#[11]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadPage
+<LI><a href="#[10]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CheckBadBlk
+</UL>
+<P>
+<H3>
+Undefined Global Symbols
+</H3><HR></body></html>

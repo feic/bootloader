@@ -15,23 +15,7 @@
 
 BIT_SELFREFRESH EQU	(1<<22)
 
-;Pre-defined constants
-USERMODE    EQU 	0x10
-FIQMODE     EQU 	0x11
-IRQMODE     EQU 	0x12
-SVCMODE     EQU 	0x13
-ABORTMODE   EQU 	0x17
-UNDEFMODE   EQU 	0x1b
-MODEMASK    EQU 	0x1f
-NOINT       EQU 	0xc0
 
-;The location of stacks
-UserStack	EQU	(_STACK_BASEADDRESS-0x3800)	;0x33ff4800 ~
-SVCStack	EQU	(_STACK_BASEADDRESS-0x2800)	;0x33ff5800 ~
-UndefStack	EQU	(_STACK_BASEADDRESS-0x2400)	;0x33ff5c00 ~
-AbortStack	EQU	(_STACK_BASEADDRESS-0x2000)	;0x33ff6000 ~
-IRQStack	EQU	(_STACK_BASEADDRESS-0x1000)	;0x33ff7000 ~
-FIQStack	EQU	(_STACK_BASEADDRESS-0x0)	;0x33ff8000 ~
 
 ;Check if tasm.exe(armasm -16 ...@ADS 1.0) is used.
 	GBLL    THUMBCODE
@@ -42,23 +26,7 @@ THUMBCODE SETL  {TRUE}
 THUMBCODE SETL  {FALSE}
     ]
 
- 		MACRO
-	MOV_PC_LR
- 		[ THUMBCODE
-	    bx lr
- 		|
-	    mov	pc,lr
- 		]
-	MEND
-
- 		MACRO
-	MOVEQ_PC_LR
- 		[ THUMBCODE
-        bxeq lr
- 		|
-	    moveq pc,lr
- 		]
-	MEND
+ 
 
  		
 
@@ -90,56 +58,15 @@ ResetEntry
 	;2)The following little endian code will be compiled in Big-Endian mode.
 	;  The code byte order should be changed as the memory bus width.
 	;3)The pseudo instruction,DCD can t be used here because the linker generates error.
-	ASSERT	:DEF:ENDIAN_CHANGE
-	[ ENDIAN_CHANGE
-	    ASSERT  :DEF:ENTRY_BUS_WIDTH
-	    [ ENTRY_BUS_WIDTH=32
-		b	ChangeBigEndian	    ;DCD 0xea000007
-	    ]
-
-	    [ ENTRY_BUS_WIDTH=16
-		andeq	r14,r7,r0,lsl #20   ;DCD 0x0007ea00
-	    ]
-
-	    [ ENTRY_BUS_WIDTH=8
-		streq	r0,[r0,-r10,ror #1] ;DCD 0x070000ea
-	    ]
-	|
-	    b	ResetHandler
-    ]
-	b	.	;handler for Undefined mode
+	
+    b	ResetHandler
+   	b	.	;handler for Undefined mode
 	b	.	;handler for SWI interrupt
 	b	.	;handler for PAbort
 	b	.	;handler for DAbort
 	b	.		;reserved
 	b	.	;handler for IRQ interrupt
 	b	.   ;handler for FIQ interrupt
-
-
-ChangeBigEndian
-;@0x24
-	[ ENTRY_BUS_WIDTH=32
-	    DCD	0xee110f10	;0xee110f10 => mrc p15,0,r0,c1,c0,0
-	    DCD	0xe3800080	;0xe3800080 => orr r0,r0,#0x80;  //Big-endian
-	    DCD	0xee010f10	;0xee010f10 => mcr p15,0,r0,c1,c0,0
-	]
-	[ ENTRY_BUS_WIDTH=16
-	    DCD 0x0f10ee11
-	    DCD 0x0080e380
-	    DCD 0x0f10ee01
-	]
-	[ ENTRY_BUS_WIDTH=8
-	    DCD 0x100f11ee
-	    DCD 0x800080e3
-	    DCD 0x100f01ee
-    ]
-	DCD 0xffffffff  ;swinv 0xffffff is similar with NOP and run well in both endian mode.
-	DCD 0xffffffff
-	DCD 0xffffffff
-	DCD 0xffffffff
-	DCD 0xffffffff
-	b ResetHandler
-	
 
 
 
@@ -164,7 +91,7 @@ ResetHandler
 	str	r1,[r0]
 
 	;led显示
-	[ {FALSE}
+
 	; rGPFDAT = (rGPFDAT & ~(0xf<<4)) | ((~data & 0xf)<<4);
 	; Led_Display
 	ldr	r0,=GPFCON
@@ -173,7 +100,7 @@ ResetHandler
 	ldr	r0,=GPFDAT
 	ldr	r1,=0x10
 	str	r1,[r0]
-	]
+
 
 	;To reduce PLL lock time, adjust the LOCKTIME register.
 	ldr	r0,=LOCKTIME
@@ -216,8 +143,7 @@ ResetHandler
     
 	
 
-;	EXPORT StartPointAfterSleepWakeUp
-;StartPointAfterSleepWakeUp
+
 
 	;Set memory control registers
  	;ldr	r0,=SMRDATA
@@ -233,47 +159,9 @@ ResetHandler
 	
 	
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;       When EINT0 is pressed,  Clear SDRAM 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-; check if EIN0 button is pressed
-
-;	ldr	r0,=GPFCON
-;	ldr	r1,=0x0
-;	str	r1,[r0]
-;	ldr	r0,=GPFUP
-;	ldr	r1,=0xff
-;	str	r1,[r0]
-;
-;	ldr	r1,=GPFDAT
-;	ldr	r0,[r1]
-;	bic	r0,r0,#(0x1e<<1)  ; bit clear
-;	tst	r0,#0x1
-;	bne %F1
-
-; Clear SDRAM Start
-  
-;	ldr	r0,=GPFCON
-;	ldr	r1,=0x55aa
-;	str	r1,[r0]
-;	ldr	r0,=GPFUP
-;	ldr	r1,=0xff
-;	str	r1,[r0]
-;	ldr	r0,=GPFDAT
-;	ldr	r1,=0x0
-;	str	r1,[r0]	;LED=****
 
 
-;Clear SDRAM End
 
-1
-
-	;Initialize stacks
-	bl	InitStacks
-
-;==========================================================
-  	; Setup IRQ handler//建立中断表
-	
 ;===========================================================
 ;// 判断是从nor启动还是从nand启动
 ;===========================================================
@@ -283,23 +171,11 @@ ResetHandler
 	ldr	r0, [r0]
 	ands	r0, r0, #6		;OM[1:0] != 0, NOR FLash boot
 	bne	NORRwCopy		;don t read nand flash
-	adr	r0, ResetEntry		;OM[1:0] == 0, NAND FLash boot // ADR 装载参照的地址=sub r0,pc,#0x268;
-	cmp	r0, #0				;if use Multi-ice,//JTAG调试时是直接下载到内存中运行，不需要再从nand拷贝 
-	bne	InitRamZero		;don t read nand flash for boot
-	;nop
+	
+	
 	
 
-	
-;===========================================================
-;//将程序从nandflash拷贝到sdram
-;===========================================================
-nand_boot_beg
-	mov	r5, #NFCONF			;DsNandFlash
-	ldr	r0, [r5, #4]
-	bic r0, r0, #1
-	str	r0, [r5, #4]
-	ldr	pc, =InitRamZero;此处跳转到内存空间 LDR 装载数据，寻址灵活。 但不改变PSR
-						  ;要装载一个被存储的‘状态’并正确的恢复它 可以这样写：ldr r0, [base] 换行  moves pc, r0
+
 ;=============================================================================================
 ;若是从NAND启动，则拷贝工作已经在nand_boot_beg中完成，所以直接跳转到main
 ;若是从NOR启动，则将RO和RW部分都拷贝到内存，然后跳转到内存运行（也可在NOR中运行，只是速度稍慢）
@@ -308,17 +184,7 @@ nand_boot_beg
 ;=============================================================================================
 	
 		
-NORRwCopy	
-	ldr	r0, TopOfROM
-	ldr r1, BaseOfROM
-	sub r0, r0, r1			;TopOfROM-BaseOfROM得到从0开始RW的偏移地址
-	ldr	r2, BaseOfBSS		;将RW部分的数据从ROM拷贝到RAM
-	ldr	r3, BaseOfZero	
-0
-	cmp	r2, r3
-	ldrcc	r1, [r0], #4
-	strcc	r1, [r2], #4
-	bcc	%B0	
+
 	
 InitRamZero
 	mov	r0,	#0
@@ -332,13 +198,6 @@ InitRamZero
 	ldr	pc, =CEntry		;goto compiler address
 
 	
-;	[ CLKDIV_VAL>1 		; means Fclk:Hclk is not 1:1.
-;	bl	MMU_SetAsyncBusMode
-;	|
-;	bl MMU_SetFastBusMode	; default value.
-;	]
-	
-
 
 CEntry
  	bl	Main	;Don t use main() because ......
@@ -346,87 +205,23 @@ CEntry
 
 
 ;=========================================================
-ClearSdram
-	mov r1,#0
-	mov r2,#0
-	mov r3,#0
-	mov r4,#0
-	mov r5,#0
-	mov r6,#0
-	mov r7,#0
-	mov r8,#0
 	
-	ldr	r9,=0x00700000   ;for wince
-	ldr	r0,=0x30000000
-0	
-	stmia	r0!,{r1-r8}
-	subs	r9,r9,#32 
-	bne	%B0
-	bx lr
-	
-;===========================================================	
-;function initializing stacks
-InitStacks
-	;Don t use DRAM,such as stmfd,ldmfd......
-	;SVCstack is initialized before
-	;Under toolkit ver 2.5, 'msr cpsr,r1' can be used instead of 'msr cpsr_cxsf,r1'
-	mrs	r0,cpsr
-	bic	r0,r0,#MODEMASK
-	orr	r1,r0,#UNDEFMODE|NOINT
-	msr	cpsr_cxsf,r1		;UndefMode
-	ldr	sp,=UndefStack		; UndefStack=0x33FF_5C00
 
-	orr	r1,r0,#ABORTMODE|NOINT
-	msr	cpsr_cxsf,r1		;AbortMode
-	ldr	sp,=AbortStack		; AbortStack=0x33FF_6000
-
-	orr	r1,r0,#IRQMODE|NOINT
-	msr	cpsr_cxsf,r1		;IRQMode
-	ldr	sp,=IRQStack		; IRQStack=0x33FF_7000
-
-	orr	r1,r0,#FIQMODE|NOINT
-	msr	cpsr_cxsf,r1		;FIQMode
-	ldr	sp,=FIQStack		; FIQStack=0x33FF_8000
-
-	bic	r0,r0,#MODEMASK|NOINT
-	orr	r1,r0,#SVCMODE
-	msr	cpsr_cxsf,r1		;SVCMode
-	ldr	sp,=SVCStack		; SVCStack=0x33FF_5800
-
-	;USER mode has not be initialized.
-
-	bx lr
-	;The LR register won t be valid if the current mode is not SVC mode.
 	
 ;===========================================================
-
-
+NORRwCopy	
+	ldr	r0, TopOfROM
+	ldr r1, BaseOfROM
+	sub r0, r0, r1			;TopOfROM-BaseOfROM得到从0开始RW的偏移地址
+	ldr	r2, BaseOfBSS		;将RW部分的数据从ROM拷贝到RAM
+	ldr	r3, BaseOfZero	
+0
+	cmp	r2, r3
+	ldrcc	r1, [r0], #4
+	strcc	r1, [r2], #4
+	bcc	%B0	
+	mov pc,lr 
 	
-
-
-;--------------------LED test
-	EXPORT	Led_Test
-Led_Test
-	mov	r0, #0x56000000
-	mov	r1, #0x5500
-	str	r1, [r0, #0x50]
-	
-0	
-	mov	r1, #0x50
-	str	r1, [r0, #0x54]
-	mov	r2, #0x100000
-1
-	subs	r2, r2, #1
-	bne	%B1
-	
-	mov	r1, #0xa0
-	str	r1, [r0, #0x54]
-	mov	r2, #0x100000
-2
-	subs	r2, r2, #1
-	bne	%B2
-	b	%B0
-	bx  lr
 
 ;===========================================================
 
@@ -473,62 +268,7 @@ EndOfBSS	DCD	|Image$$RW_RAM1$$ZI$$Limit|
 
 	ALIGN
 	
-	
-;=====================================================================
-; Clock division test
-; Assemble code, because VSYNC time is very short
-;=====================================================================
-	EXPORT CLKDIV124
-	EXPORT CLKDIV144
-	
-CLKDIV124
-	
-	ldr     r0, = CLKDIVN
-	ldr     r1, = 0x3		; 0x3 = 1:2:4
-	str     r1, [r0]
-;	wait until clock is stable
-	nop
-	nop
-	nop
-	nop
-	nop
 
-	ldr     r0, = REFRESH
-	ldr     r1, [r0]
-	bic		r1, r1, #0xff
-	bic		r1, r1, #(0x7<<8)
-	orr		r1, r1, #0x470	; REFCNT135
-	str     r1, [r0]
-	nop
-	nop
-	nop
-	nop
-	nop
-	bx  lr
-
-CLKDIV144
-	ldr     r0, = CLKDIVN
-	ldr     r1, = 0x4		; 0x4 = 1:4:4
-	str     r1, [r0]
-;	wait until clock is stable
-	nop
-	nop
-	nop
-	nop
-	nop
-
-	ldr     r0, = REFRESH
-	ldr     r1, [r0]
-	bic		r1, r1, #0xff
-	bic		r1, r1, #(0x7<<8)
-	orr		r1, r1, #0x630	; REFCNT675 - 1520
-	str     r1, [r0]
-	nop
-	nop
-	nop
-	nop
-	nop
-	bx  lr
 
 
 	

@@ -1,0 +1,7 @@
+;#<FEEDBACK># ARM Linker, 4.1 [Build 894]: Last Updated: Mon May 13 19:31:41 2013
+;VERSION 0.2
+;FILE 2440lib.o
+Uart_Getch <= USED 0
+;FILE nand.o
+;FILE nand_lowlevel.o
+;FILE u2440mon.o
