@@ -1,6 +1,7 @@
-/*
-Support 512/page NAND Flash only
-*/
+/******************************************
+  DESC:Nand Flash diver
+  Modified by Allium for RAM saving.
+*******************************************/
 #include <string.h>
 #include <stdio.h>
 
@@ -8,9 +9,7 @@ Support 512/page NAND Flash only
 #include "2440addr.h"
 #include "2440lib.h"
 
-//#include "Nand.h"
 
-//suppport boot params
 #define	GLOBAL_PARAMS
 #include "bootpara.h"
 
@@ -50,14 +49,8 @@ Support 512/page NAND Flash only
 #define	NFIsBusy()		(!(rNFSTAT&1))
 #define	NFIsReady()		(rNFSTAT&1)
 
-//#define	WIAT_BUSY_HARD	1
-//#define	ER_BAD_BLK_TEST
-//#define	WR_BAD_BLK_TEST
-
 #define	READCMD0	0
 #define	READCMD1	0x30
-
-
 
 #define	QUERYCMD	0x70
 
@@ -73,33 +66,23 @@ void InitNandFlash(void);
 
 static void InitNandCfg(void)
 {
-	// for S3C2440
-
 	rNFCONF = (TACLS<<12)|(TWRPH0<<8)|(TWRPH1<<4)|(0<<0);	
-	
-	
 	rNFCONT = (0<<13)|(0<<12)|(0<<10)|(0<<9)|(0<<8)|(1<<6)|(1<<5)|(1<<4)|(1<<1)|(1<<0);
 	
-
 }
 
-#ifdef	WIAT_BUSY_HARD
-#define	WaitNFBusy()	while(NFIsBusy())
-#else
-static U32 WaitNFBusy(void)	// R/B 未接好?
+
+static U32 WaitNFBusy(void)	// R/B 未接好
 {
 	U8 stat;
 	
 	WrNFCmd(QUERYCMD);
 	do {
 		stat = RdNFDat();
-		//printf("%x\n", stat);
-	}while(!(stat&0x40));
+			}while(!(stat&0x40));
 	WrNFCmd(READCMD0);
 	return stat&1;
 }
-#endif
-
 
 
 
@@ -154,17 +137,11 @@ int CheckBadBlk(U32 addr)
 	return (dat!=0xff);
 }
 
-/************************************************************/
-
-
-
 
 /***********************************************************/
 
 void InitNandFlash(void)
-{	
-
-	
+{		
 	InitNandCfg();
 	
 	NandAddr = 1;
@@ -172,7 +149,4 @@ void InitNandFlash(void)
 	}
 
 	
-
-
-
 

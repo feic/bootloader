@@ -7,6 +7,7 @@
 ; 2002.02.25:kwtark: ver 0.0
 ; 2002.03.20:purnnamu: Add some functions for testing STOP,Sleep mode
 ; 2003.03.14:DonGo: Modified for 2440.
+; Modified by Allium for RAM saving
 ;=========================================
 
 	GET option.inc
@@ -168,22 +169,13 @@ ResetHandler
 	ldr	r0, =BWSCON
 	ldr	r0, [r0]
 	ands	r0, r0, #6		;OM[1:0] != 0, NOR FLash boot
-	bne	NORRwCopy		;don t read nand flash
+	blne	NORRwCopy		;don t read nand flash
 	
-	
-	
-
-
 ;=============================================================================================
-;若是从NAND启动，则拷贝工作已经在nand_boot_beg中完成，所以直接跳转到main
-;若是从NOR启动，则将RO和RW部分都拷贝到内存，然后跳转到内存运行（也可在NOR中运行，只是速度稍慢）
-;
-;注：若在NOR中直接运行，需把RO/BASE改为0并定义RW/BASE 会跳过RO拷贝
+;若是从NAND启动，不进行拷贝，直接进行ZI部分初始化
+;若是从NOR启动，则将RW部分拷贝到内存
 ;=============================================================================================
-	
-		
 
-	
 InitRamZero
 	mov	r0,	#0
 	ldr r2, BaseOfZero
@@ -295,9 +287,5 @@ BaseOfZero	DCD	|Image$$RW_RAM1$$ZI$$Base|
 EndOfBSS	DCD	|Image$$RW_RAM1$$ZI$$Limit|
 
 	ALIGN
-	
-
-
-
 	
 	END

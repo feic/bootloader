@@ -32,14 +32,6 @@ extern "C" {
 #define rMRSRB7    (*(volatile unsigned *)0x48000030)	//Mode register set for SDRAM
 
 
-// USB Host
-
-
-// INTERRUPT
-
-
-// DMA
-
 
 // CLOCK & POWER MANAGEMENT
 #define rLOCKTIME   (*(volatile unsigned *)0x4c000000)	//PLL lock time counter
@@ -75,8 +67,7 @@ extern "C" {
 #define rNFSBLK		(*(volatile unsigned *)0x4E000038)		//NAND Flash Start block address
 #define rNFEBLK		(*(volatile unsigned *)0x4E00003C)		//NAND Flash End block address
 
-
-//Camera Interface			                       
+                    
      
       
 // read only register
@@ -193,9 +184,6 @@ extern "C" {
 #define rTCNTO3 (*(volatile unsigned *)0x51000038)	//Timer count observation 3
 #define rTCNTB4 (*(volatile unsigned *)0x5100003c)	//Timer count buffer 4
 #define rTCNTO4 (*(volatile unsigned *)0x51000040)	//Timer count observation 4
-
-
-// USB DEVICE
 
 
 
@@ -350,10 +338,6 @@ extern "C" {
 #define rSPRDAT1   (*(volatile unsigned *)0x59000034)	//SPI1 Rx data
 
 
-// SD Interface
-
-
-// Exception vector
 
 // Interrupt vector
 #define rINTMSK     (*(volatile unsigned *)0x4a000008)	//Interrupt mask control

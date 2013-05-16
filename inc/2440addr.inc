@@ -1,5 +1,5 @@
 ;====================================================================
-; File Name : 2440addr.a
+; File Name : 2440addr.inc
 ; Function  : S3C2440 Define Address Register (Assembly)
 ; Date      : March 27, 2002
 ; Revision	: Programming start (February 18,2002) -> SOP

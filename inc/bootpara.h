@@ -60,7 +60,6 @@ BootParams boot_params = {
 	{0}
 };
 
-//小于等于256字节
 
 
 #else

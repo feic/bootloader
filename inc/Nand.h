@@ -1,11 +1,7 @@
 #ifndef __NAND_H
 #define __NAND_H
 
-////////////////////////////// 8-bit ////////////////////////////////
-// Main function
 
-
-//int NandSelPart(char *info);
 static U32 StartPage, BlockCnt;
 void InitNandFlash(void);
 void LoadRun(void);

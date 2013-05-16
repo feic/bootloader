@@ -31,25 +31,10 @@ extern "C" {
 #define EnterPWDN(clkcon) ((void (*)(int))0x20)(clkcon)
 
 
-
-// 2440lib.c
-void Delay(int time);              //Watchdog Timer is used.
-
-
-
 void Port_Init(void);
-
 void Uart_Init(int mclk,int baud);
-char Uart_Getch(void);
-
-
-
 void Uart_SendByte(char data);
-
 void Uart_SendString(char *pt);
-
-
-
 void Led_Display(int data);
 
 

@@ -306,7 +306,7 @@
               <OCR_RVCT6>
                 <Type>0</Type>
                 <StartAddress>0x30000000</StartAddress>
-                <Size>0x2000000</Size>
+                <Size>0x4000000</Size>
               </OCR_RVCT6>
               <OCR_RVCT7>
                 <Type>0</Type>

@@ -1,10 +1,7 @@
 //===================================================================
 // File Name : 2440lib.c
-// Function  : S3C2410 PLL,Uart, LED, Port Init
-// Date      : March 20, 2002
-// Version   : 0.0
-// History
-//   0.0 : Programming start (February 20,2002) -> SOP
+// Function  : S3C2440 PLL,Uart, LED, Port Init
+// Modified by Allium for RAM saving.
 //===================================================================
 
 #include "def.h"
@@ -21,48 +18,30 @@
 extern char Image$$RW_RAM1$$RW$$Limit[];
 void *mallocPt=Image$$RW_RAM1$$RW$$Limit;
 
-//***************************[ SYSTEM ]***************************************************
-
-
-
-
-//***************************[ PORTS ]****************************************************
-
-
+/*****************************************[Port]*********************************************************/
+//port init
 void Port_Init(void)
-{
-         
-    rGPACON = 0x7fffff; 
-
-    
+{         
+    rGPACON = 0x7fffff;     
     rGPBCON = 0x000151;
     rGPBUP  = 0x7ff;     // The pull up function is disabled GPB[10:0]
-	rGPBDAT &= ~0x1;
-    
+	  rGPBDAT &= ~0x1;    
     rGPCCON = 0xaaaaaaaa;       
-    rGPCUP  = 0xffff;     // The pull up function is disabled GPC[15:0] 
-
-    
+    rGPCUP  = 0xffff;     // The pull up function is disabled GPC[15:0]     
     rGPDCON = 0xaaaaaaaa;       
-    rGPDUP  = 0xffff;     // The pull up function is disabled GPD[15:0]
-
-    
-	rGPECON = 0xa02aa800; // For added AC97 setting      
+    rGPDUP  = 0xffff;     // The pull up function is disabled GPD[15:0]    
+	  rGPECON = 0xa02aa800; // For added AC97 setting      
     rGPEUP  = 0xffff;     
-
+	
      //*** PORT F GROUP
     rGPFCON = 0xC151;
     rGPFUP  = 0xff;     // The pull up function is disabled GPF[7:0]
 
     //*** PORT G GROUP
     rGPGCON = 0x00a25550;// GPG9 input without pull-up
-    rGPGUP  = 0xffff;    // The pull up function is disabled GPG[15:0]
-
-    
+    rGPGUP  = 0xffff;    // The pull up function is disabled GPG[15:0]    
     rGPHCON = 0x00faaa;
-    rGPHUP  = 0x7ff;    // The pull up function is disabled GPH[10:0]
-
-	
+    rGPHUP  = 0x7ff;    // The pull up function is disabled GPH[10:0]	
     rGPJCON = 0x02aaaaaa;
     rGPJUP  = 0x1fff;    // The pull up function is disabled GPH[10:0]
     
@@ -71,9 +50,9 @@ void Port_Init(void)
     rEXTINT1 = 0x22222222;    // EINT[15:8]
     rEXTINT2 = 0x22222222;    // EINT[23:16]
 }
-//***************************[ UART ]******************************
 
-
+/*************************************************[Uart]****************************************************************/
+//UART Init
 void Uart_Init(int pclk,int baud)
 {
     
@@ -83,40 +62,36 @@ void Uart_Init(int pclk,int baud)
     rUFCON2 = 0x0;   //UART channel 2 FIFO control register, FIFO disable
     rUMCON0 = 0x0;   //UART chaneel 0 MODEM control register, AFC disable
     rUMCON1 = 0x0;   //UART chaneel 1 MODEM control register, AFC disable
-//UART0
-    rULCON0 = 0x3;   //Line control register : Normal,No parity,1 stop,8 bits
-     
+		
+    //init UART0  only
+    rULCON0 = 0x3;   //Line control register : Normal,No parity,1 stop,8 bits     
     rUCON0  = 0x245;   // Control register
     rUBRDIV0=26;   //Baud rate divisior register 0
-
     
 }
 
-//===================================================================
 
 
-//=====================================================================
+
+//Uart SendByte
 void Uart_SendByte(char data)
 {
     
    if(data=='\n')
     {
-     while(!(rUTRSTAT0 & 0x2));
-      //  Delay(10);        //because the slow response of hyper_terminal 
+     while(!(rUTRSTAT0 & 0x2));      
       rUTXH0='\r';
      }
      while(!(rUTRSTAT0 & 0x2));   //Wait until THR is empty.
-			//Delay(10);  
-      rUTXH0=data;
+			 rUTXH0=data;
     
 }               
 
+// Uart SendingString
 void Uart_SendString(char *pt)
 {
     while(*pt)
         Uart_SendByte(*pt++);
 }
-
-
 
 
