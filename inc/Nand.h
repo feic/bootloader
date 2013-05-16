@@ -7,6 +7,9 @@
 
 //int NandSelPart(char *info);
 static U32 StartPage, BlockCnt;
+void InitNandFlash(void);
+void LoadRun(void);
+void ReadPage(U32 addr, U8 *buf);
 
 struct Partition{
 	U32 offset;

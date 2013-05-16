@@ -14,6 +14,7 @@
 #include "option.h"
 #include "2440addr.h"
 #include "2440lib.h"
+#include "Nand.h"
 
 
 
@@ -25,7 +26,7 @@
 
 /*************************************************************/
 
-void Main(void)
+void Bootloader(void)
 {
 	
 
@@ -34,22 +35,22 @@ void Main(void)
 
 
 	
-	Uart_Init(0,115200/*boot_params.serial_baud.val*/);
+	Uart_Init(0,115200);
 	
 
 	//MMU_Init();	
 
-	Uart_SendByte('\n');
+	
   
 	
    Uart_SendString("bootloader for test\n");
 	
 	
-	Uart_SendString(" +------------------------------------------------------------+\n");	
+	//Uart_SendString(" +------------------------------------------------------------+\n");	
 	
 
 	
-	InitNandFlash(1);
+	InitNandFlash();
 	LoadRun();    //boot linux  added @5.8 
 }
 

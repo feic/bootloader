@@ -16,6 +16,23 @@
 BIT_SELFREFRESH EQU	(1<<22)
 
 
+USERMODE    EQU 	0x10
+FIQMODE     EQU 	0x11
+IRQMODE     EQU 	0x12
+SVCMODE     EQU 	0x13
+ABORTMODE   EQU 	0x17
+UNDEFMODE   EQU 	0x1b
+MODEMASK    EQU 	0x1f
+NOINT       EQU 	0xc0
+
+;The location of stacks
+UserStack	EQU	(_STACK_BASEADDRESS-0x3800)	;0x33ff4800 ~
+SVCStack	EQU	(_STACK_BASEADDRESS-0x2800)	;0x33ff5800 ~
+UndefStack	EQU	(_STACK_BASEADDRESS-0x2400)	;0x33ff5c00 ~
+AbortStack	EQU	(_STACK_BASEADDRESS-0x2000)	;0x33ff6000 ~
+IRQStack	EQU	(_STACK_BASEADDRESS-0x1000)	;0x33ff7000 ~
+FIQStack	EQU	(_STACK_BASEADDRESS-0x0)	;0x33ff8000 ~
+
 
 ;Check if tasm.exe(armasm -16 ...@ADS 1.0) is used.
 	GBLL    THUMBCODE
@@ -38,41 +55,20 @@ THUMBCODE SETL  {FALSE}
 	
 	
 
-	IMPORT  Main    ; The main entry of mon program
+	IMPORT  Bootloader    ; The main entry of mon program
 
 
 	AREA    RESET,CODE,READONLY
 
-	ENTRY
-	
-	EXPORT	__ENTRY
 	
 	PRESERVE8
-	
-__ENTRY
-;========
-;复位
-;========
-ResetEntry
-	;1)The code, which converts to Big-endian, should be in little endian code.
-	;2)The following little endian code will be compiled in Big-Endian mode.
-	;  The code byte order should be changed as the memory bus width.
-	;3)The pseudo instruction,DCD can t be used here because the linker generates error.
-	
-    b	ResetHandler
-   	b	.	;handler for Undefined mode
-	b	.	;handler for SWI interrupt
-	b	.	;handler for PAbort
-	b	.	;handler for DAbort
-	b	.		;reserved
-	b	.	;handler for IRQ interrupt
-	b	.   ;handler for FIQ interrupt
+
+	ENTRY
 
 
 
 
 
-	LTORG
 
 ;=======
 ; ENTRY
@@ -94,12 +90,14 @@ ResetHandler
 
 	; rGPFDAT = (rGPFDAT & ~(0xf<<4)) | ((~data & 0xf)<<4);
 	; Led_Display
-	ldr	r0,=GPFCON
-	ldr	r1,=0x5500
-	str	r1,[r0]
-	ldr	r0,=GPFDAT
-	ldr	r1,=0x10
-	str	r1,[r0]
+	LDR	R3,	=0x56000010		;把GPB的控制寄存器地址保存在r3中
+	LDR	R4,	=0x555555		;
+	STR	R4,	[R3]			;初始化GPB口的控制寄存器，
+							;使LED0-LED3对应的管脚为输出
+	
+	LDR R1,	=0x56000014		;GPB的DAT寄存器地址
+	MOV	R2,	#0x00000		;
+	STR R2,	[R1]			;点亮led0-led3
 
 
 	;To reduce PLL lock time, adjust the LOCKTIME register.
@@ -159,7 +157,7 @@ ResetHandler
 	
 	
 
-
+	bl	InitStacks
 
 
 ;===========================================================
@@ -200,11 +198,41 @@ InitRamZero
 	
 
 CEntry
- 	bl	Main	;Don t use main() because ......
- 	b	.
-
+ 	bl	Bootloader	;Don t use main() because ......
+ 
 
 ;=========================================================
+InitStacks
+	;Don t use DRAM,such as stmfd,ldmfd......
+	;SVCstack is initialized before
+	;Under toolkit ver 2.5, 'msr cpsr,r1' can be used instead of 'msr cpsr_cxsf,r1'
+	mrs	r0,cpsr
+	bic	r0,r0,#MODEMASK
+	orr	r1,r0,#UNDEFMODE|NOINT
+	msr	cpsr_cxsf,r1		;UndefMode
+	ldr	sp,=UndefStack		; UndefStack=0x33FF_5C00
+
+	orr	r1,r0,#ABORTMODE|NOINT
+	msr	cpsr_cxsf,r1		;AbortMode
+	ldr	sp,=AbortStack		; AbortStack=0x33FF_6000
+
+	orr	r1,r0,#IRQMODE|NOINT
+	msr	cpsr_cxsf,r1		;IRQMode
+	ldr	sp,=IRQStack		; IRQStack=0x33FF_7000
+
+	orr	r1,r0,#FIQMODE|NOINT
+	msr	cpsr_cxsf,r1		;FIQMode
+	ldr	sp,=FIQStack		; FIQStack=0x33FF_8000
+
+	bic	r0,r0,#MODEMASK|NOINT
+	orr	r1,r0,#SVCMODE
+	msr	cpsr_cxsf,r1		;SVCMode
+	ldr	sp,=SVCStack		; SVCStack=0x33FF_5800
+
+	;USER mode has not be initialized.
+
+	mov	pc,lr
+	;The LR register won t be valid if the current mode is not SVC mode.
 	
 
 	

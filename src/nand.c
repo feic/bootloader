@@ -14,7 +14,6 @@
 
 
 
-#define	getch	Uart_Getch
 
 #define	EnNandFlash()	(rNFCONT |= 1)
 #define	DsNandFlash()	(rNFCONT &= ~1)
@@ -140,15 +139,16 @@ void LoadRun(void)
 	struct param_struct *params = (struct param_struct *)0x30000100;
 
 	int size;
-	char *parameters;
+	char parameters[512];
 	memset(params, 0, sizeof(struct param_struct));
 	
 			
-		memset(parameters, 0, sizeof(parameters));
-		parameters="root=/dev/mtdblock3 init=/linuxrc load_ramdisk=0 console=ttySAC0,115200 mem=65536K devfs=mount display=sam320 DEFAULT_USER_PARAMS";
+		
+		sprintf(parameters,"root=/dev/mtdblock3 init=/linuxrc load_ramdisk=0 console=ttySAC0,115200 mem=65536K devfs=mount display=sam320 DEFAULT_USER_PARAMS");
 						
 		
 		params->u1.s.page_size = LINUX_PAGE_SIZE;
+	
 		params->u1.s.nr_pages = (boot_params.mem_cfg.val >> LINUX_PAGE_SHIFT);
 		memcpy(params->commandline, parameters, strlen(parameters));
 	
@@ -177,7 +177,7 @@ void LoadRun(void)
 	DsNandFlash();
 
 		
-	call_linux(0, boot_params.machine.val, buf);
+	call_linux(0,193, buf);
 }
 
 

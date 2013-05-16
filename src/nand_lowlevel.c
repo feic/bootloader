@@ -62,14 +62,14 @@ Support 512/page NAND Flash only
 #define	QUERYCMD	0x70
 
 
-static U16 NandAddr;
+U16 NandAddr;
 
 // HCLK=100Mhz
 #define TACLS		1//7	// 1-clk(0ns) 
 #define TWRPH0		4//7	// 3-clk(25ns)
 #define TWRPH1		1//7	// 1-clk(10ns)  //TACLS+TWRPH0+TWRPH1>=50ns
 
-void InitNandFlash(int info);
+void InitNandFlash(void);
 
 static void InitNandCfg(void)
 {
@@ -108,6 +108,7 @@ static U32 WaitNFBusy(void)	// R/B Î´½ÓºÃ?
 void ReadPage(U32 addr, U8 *buf)
 {
 	U16 i;
+	NandAddr=1;//5.16add
 	
 	NFChipEn();
 	WrNFCmd(READCMD0);
@@ -133,7 +134,8 @@ int CheckBadBlk(U32 addr)
 	U8 dat;
 	
 	addr &= ~0x3f;
-
+	
+	NandAddr=1;
 
 	NFChipEn();
 	WrNFCmd(READCMD0);
@@ -159,7 +161,7 @@ int CheckBadBlk(U32 addr)
 
 /***********************************************************/
 
-void InitNandFlash(int info)
+void InitNandFlash(void)
 {	
 
 	

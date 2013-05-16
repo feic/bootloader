@@ -44,7 +44,7 @@ char Uart_Getch(void);
 
 
 
-void Uart_SendByte(int data);
+void Uart_SendByte(char data);
 
 void Uart_SendString(char *pt);
 

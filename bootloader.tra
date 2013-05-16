@@ -15,7 +15,7 @@
 ### ADS-LD Output File: 'bootloader.axf'
 ### ADS-LD Command File: 'bootloader.lnp'
 ### Checking for dirty Components...
-### Creating CmdFile 'bootloader.lnp', Handle=0x0000034C
+### Creating CmdFile 'bootloader.lnp', Handle=0x00001AB8
 ### Writing '.lnp' file
 ### ADS-LD Command file 'bootloader.lnp' is ready.
 ### ADS-LD: About to start ADS-LD Thread.

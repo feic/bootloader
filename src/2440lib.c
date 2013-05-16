@@ -76,9 +76,8 @@ void Port_Init(void)
 
 void Uart_Init(int pclk,int baud)
 {
-    int i;
+    
     if(pclk == 0)
-    pclk    = PCLK;
     rUFCON0 = 0x0;   //UART channel 0 FIFO control register, FIFO disable
     rUFCON1 = 0x0;   //UART channel 1 FIFO control register, FIFO disable
     rUFCON2 = 0x0;   //UART channel 2 FIFO control register, FIFO disable
@@ -88,15 +87,7 @@ void Uart_Init(int pclk,int baud)
     rULCON0 = 0x3;   //Line control register : Normal,No parity,1 stop,8 bits
      
     rUCON0  = 0x245;   // Control register
-    rUBRDIV0=( (int)(pclk/16./baud+0.5) -1 );   //Baud rate divisior register 0
-//UART1
-    rULCON1 = 0x3;
-    rUCON1  = 0x245;
-    rUBRDIV1=( (int)(pclk/16./baud+0.5) -1 );
-//UART2
-    rULCON2 = 0x3;
-    rUCON2  = 0x245;
-    rUBRDIV2=( (int)(pclk/16./baud+0.5) -1 );    
+    rUBRDIV0=26;   //Baud rate divisior register 0
 
     
 }
@@ -104,20 +95,19 @@ void Uart_Init(int pclk,int baud)
 //===================================================================
 
 
-
 //=====================================================================
-void Uart_SendByte(int data)
+void Uart_SendByte(char data)
 {
     
    if(data=='\n')
     {
      while(!(rUTRSTAT0 & 0x2));
-                //because the slow response of hyper_terminal 
-      WrUTXH0('\r');
+      //  Delay(10);        //because the slow response of hyper_terminal 
+      rUTXH0='\r';
      }
      while(!(rUTRSTAT0 & 0x2));   //Wait until THR is empty.
-    
-      WrUTXH0(data);
+			//Delay(10);  
+      rUTXH0=data;
     
 }               
 
@@ -127,11 +117,6 @@ void Uart_SendString(char *pt)
         Uart_SendByte(*pt++);
 }
 
-char Uart_Getch(void)
-{
-   while(!(rUTRSTAT0 & 0x1)); //Receive data ready
-   return RdURXH0();
-}
 
 
 
