@@ -551,6 +551,11 @@
               <FileType>1</FileType>
               <FilePath>.\src\u2440mon.c</FilePath>
             </File>
+            <File>
+              <FileName>lcd.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\lcd.c</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>

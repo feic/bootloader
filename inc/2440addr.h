@@ -393,6 +393,30 @@ extern "C" {
 #define BIT_SUB_ERR0	(0x1<<2)
 #define BIT_SUB_TXD0	(0x1<<1)
 #define BIT_SUB_RXD0	(0x1<<0)
+
+
+
+// LCD CONTROLLER
+#define rLCDCON1    (*(volatile unsigned *)0x4d000000)	//LCD control 1
+#define rLCDCON2    (*(volatile unsigned *)0x4d000004)	//LCD control 2
+#define rLCDCON3    (*(volatile unsigned *)0x4d000008)	//LCD control 3
+#define rLCDCON4    (*(volatile unsigned *)0x4d00000c)	//LCD control 4
+#define rLCDCON5    (*(volatile unsigned *)0x4d000010)	//LCD control 5
+#define rLCDSADDR1  (*(volatile unsigned *)0x4d000014)	//STN/TFT Frame buffer start address 1
+#define rLCDSADDR2  (*(volatile unsigned *)0x4d000018)	//STN/TFT Frame buffer start address 2
+#define rLCDSADDR3  (*(volatile unsigned *)0x4d00001c)	//STN/TFT Virtual screen address set
+#define rREDLUT     (*(volatile unsigned *)0x4d000020)	//STN Red lookup table
+#define rGREENLUT   (*(volatile unsigned *)0x4d000024)	//STN Green lookup table 
+#define rBLUELUT    (*(volatile unsigned *)0x4d000028)	//STN Blue lookup table
+#define rDITHMODE   (*(volatile unsigned *)0x4d00004c)	//STN Dithering mode
+#define rTPAL       (*(volatile unsigned *)0x4d000050)	//TFT Temporary palette
+#define rLCDINTPND  (*(volatile unsigned *)0x4d000054)	//LCD Interrupt pending
+#define rLCDSRCPND  (*(volatile unsigned *)0x4d000058)	//LCD Interrupt source
+#define rLCDINTMSK  (*(volatile unsigned *)0x4d00005c)	//LCD Interrupt mask
+#define rTCONSEL     (*(volatile unsigned *)0x4d000060)	//LPC3600 Control --- edited by junon
+#define PALETTE     0x4d000400						//Palette start address
+
+
 /*
 #define	ClearPending(bit) {\
 			rSRCPND = bit;\

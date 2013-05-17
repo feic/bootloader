@@ -20,8 +20,10 @@ void Bootloader(void)
 {
 	Port_Init();	
 	Uart_Init(0,115200);
-	Uart_SendString("bootloader for test\n");
+	Uart_SendString("Bootloader for booting Linux Kernel\n");
+	Uart_SendString("Copyleft by Allium\n");
 	InitNandFlash();
+	Lcd_Tft_LTV350QV_F05_Init();
 	LoadRun();    
 }
 

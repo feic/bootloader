@@ -1,4 +1,4 @@
---cpu ARM920T "2440init.o" "2440lib.o" "nand.o" "nand_lowlevel.o" "u2440mon.o" --library_type=microlib --feedback "bootloader.fed" 
+--cpu ARM920T "2440init.o" "2440lib.o" "nand.o" "nand_lowlevel.o" "u2440mon.o" "lcd.o" --library_type=microlib --feedback "bootloader.fed" 
 --strict --scatter "bootloader.sct" 
 --summary_stderr --info summarysizes --map --xref --callgraph --symbols 
 --info sizes --info totals --info unused --info veneers 

@@ -36,6 +36,7 @@ void Uart_Init(int mclk,int baud);
 void Uart_SendByte(char data);
 void Uart_SendString(char *pt);
 void Led_Display(int data);
+void LcdBkLtSet(U32 HiRatio);
 
 
 #ifdef __cplusplus

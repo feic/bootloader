@@ -150,4 +150,30 @@ void LoadRun(void)
 	call_linux(0,193, buf);
 }
 
+/***************** LOAD PIC ***********************/
 
+void LoadPic(U32 PicBuffer)
+{
+	U32 i, ram_addr;
+	int size;
+	
+	StartPage = 0x00080000>>11;
+	size = 0x00100000;
+	ram_addr = PicBuffer;
+	
+
+	for(i=0; size>0; ) {
+		if(!(i&0x3f)) {
+			if(CheckBadBlk(i+StartPage)) {
+				
+				i += 64;
+				//size -= 32<<9;
+				continue;
+			}
+		}
+		ReadPage((i+StartPage), (U8 *)ram_addr);
+		i++;
+		size -= 2048;
+		ram_addr += 2048;
+	}
+}

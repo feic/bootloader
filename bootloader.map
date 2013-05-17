@@ -5,6 +5,7 @@ ARM Linker, 4.1 [Build 894] [Professional]
 Section Cross References
 
     2440init.o(RESET) refers to u2440mon.o(.text) for Bootloader
+    2440lib.o(.text) refers to uidiv.o(.text) for __aeabi_uidivmod
     nand.o(.text) refers to memseta.o(.text) for __aeabi_memclr4
     nand.o(.text) refers to printfb.o(i.__0sprintf$bare) for __2sprintf
     nand.o(.text) refers to strlen.o(.text) for strlen
@@ -16,7 +17,10 @@ Section Cross References
     nand_lowlevel.o(.text) refers to nand_lowlevel.o(.data) for .data
     u2440mon.o(.text) refers to 2440lib.o(.text) for Port_Init
     u2440mon.o(.text) refers to nand_lowlevel.o(.text) for InitNandFlash
+    u2440mon.o(.text) refers to lcd.o(.text) for Lcd_Tft_LTV350QV_F05_Init
     u2440mon.o(.text) refers to nand.o(.text) for LoadRun
+    lcd.o(.text) refers to 2440lib.o(.text) for LcdBkLtSet
+    lcd.o(.text) refers to nand.o(.text) for LoadPic
     printfb.o(i.__0fprintf$bare) refers to printfb.o(i._printf_core) for _printf_core
     printfb.o(i.__0fprintf$bare) refers to fputc.o(i.fputc) for fputc
     printfb.o(i.__0printf$bare) refers to printfb.o(i._printf_core) for _printf_core
@@ -311,12 +315,13 @@ Removing Unused input sections from the image.
 
 Adding Veneers to the image
 
+    Adding AT veneer (8 bytes, Inline) for call to '__aeabi_uidivmod' from 2440lib.o(.text).
     Adding AT veneer (8 bytes, Inline) for call to '__aeabi_memcpy4' from nand.o(.text).
     Adding AT veneer (8 bytes, Inline) for call to '__aeabi_memclr4' from nand.o(.text).
     Adding AT veneer (8 bytes, Inline) for call to 'strlen' from nand.o(.text).
     Adding AT veneer (8 bytes, Inline) for call to '__2sprintf' from nand.o(.text).
 
-4 Veneer(s) (total 32 bytes) added to the image.
+5 Veneer(s) (total 40 bytes) added to the image.
 
 ==============================================================================
 
@@ -337,17 +342,17 @@ Image Symbol Table
     ../../microlib/longlong.c                0x00000000   Number         0  llsshr.o ABSOLUTE
     ../../microlib/longlong.c                0x00000000   Number         0  llushr.o ABSOLUTE
     ../../microlib/longlong.c                0x00000000   Number         0  llshl.o ABSOLUTE
-    ../../microlib/printf/printf.c           0x00000000   Number         0  printf0.o ABSOLUTE
-    ../../microlib/printf/printf.c           0x00000000   Number         0  printfa.o ABSOLUTE
-    ../../microlib/printf/printf.c           0x00000000   Number         0  printf8.o ABSOLUTE
-    ../../microlib/printf/printf.c           0x00000000   Number         0  printf7.o ABSOLUTE
+    ../../microlib/printf/printf.c           0x00000000   Number         0  printfb.o ABSOLUTE
     ../../microlib/printf/printf.c           0x00000000   Number         0  printf6.o ABSOLUTE
     ../../microlib/printf/printf.c           0x00000000   Number         0  printf5.o ABSOLUTE
     ../../microlib/printf/printf.c           0x00000000   Number         0  printf4.o ABSOLUTE
     ../../microlib/printf/printf.c           0x00000000   Number         0  printf3.o ABSOLUTE
-    ../../microlib/printf/printf.c           0x00000000   Number         0  printfb.o ABSOLUTE
-    ../../microlib/printf/printf.c           0x00000000   Number         0  printf2.o ABSOLUTE
+    ../../microlib/printf/printf.c           0x00000000   Number         0  printfa.o ABSOLUTE
     ../../microlib/printf/printf.c           0x00000000   Number         0  printf1.o ABSOLUTE
+    ../../microlib/printf/printf.c           0x00000000   Number         0  printf8.o ABSOLUTE
+    ../../microlib/printf/printf.c           0x00000000   Number         0  printf7.o ABSOLUTE
+    ../../microlib/printf/printf.c           0x00000000   Number         0  printf0.o ABSOLUTE
+    ../../microlib/printf/printf.c           0x00000000   Number         0  printf2.o ABSOLUTE
     ../../microlib/stdio/fputc.c             0x00000000   Number         0  fputc.o ABSOLUTE
     ../../microlib/stdio/semi.s              0x00000000   Number         0  semi.o ABSOLUTE
     ../../microlib/stdio/streams.c           0x00000000   Number         0  stdout.o ABSOLUTE
@@ -361,25 +366,29 @@ Image Symbol Table
     dc.s                                     0x00000000   Number         0  dc.o ABSOLUTE
     src\2440init.s                           0x00000000   Number         0  2440init.o ABSOLUTE
     src\2440lib.c                            0x00000000   Number         0  2440lib.o ABSOLUTE
+    src\lcd.c                                0x00000000   Number         0  lcd.o ABSOLUTE
     src\nand.c                               0x00000000   Number         0  nand.o ABSOLUTE
     src\nand_lowlevel.c                      0x00000000   Number         0  nand_lowlevel.o ABSOLUTE
     src\u2440mon.c                           0x00000000   Number         0  u2440mon.o ABSOLUTE
     CEntry                                   0x000000e4   ARM Code       0  2440init.o(RESET)
     .text                                    0x000001f0   Section        0  2440lib.o(.text)
-    .text                                    0x0000035c   Section        0  nand.o(.text)
-    .text                                    0x000004c4   Section        0  nand_lowlevel.o(.text)
-    WaitNFBusy                               0x000005f4   ARM Code      40  nand_lowlevel.o(.text)
-    .text                                    0x00000624   Section        0  u2440mon.o(.text)
-    .text                                    0x00000670   Section        0  memcpya.o(.text)
-    .text                                    0x0000069c   Section        0  memseta.o(.text)
-    .text                                    0x000006d0   Section        0  strlen.o(.text)
-    i.__0sprintf$bare                        0x000006e8   Section        0  printfb.o(i.__0sprintf$bare)
-    i.__ARM_common_call_via_r6               0x00000710   Section        0  printfb.o(i.__ARM_common_call_via_r6)
-    i._printf_core                           0x00000712   Section        0  printfb.o(i._printf_core)
-    _printf_core                             0x00000713   Thumb Code    36  printfb.o(i._printf_core)
-    i._sputc                                 0x00000736   Section        0  printfb.o(i._sputc)
-    _sputc                                   0x00000737   Thumb Code    10  printfb.o(i._sputc)
-    .constdata                               0x00000740   Section      130  nand.o(.constdata)
+    .text                                    0x00000430   Section        0  nand.o(.text)
+    .text                                    0x00000600   Section        0  nand_lowlevel.o(.text)
+    WaitNFBusy                               0x00000730   ARM Code      40  nand_lowlevel.o(.text)
+    .text                                    0x00000760   Section        0  u2440mon.o(.text)
+    .text                                    0x000007d4   Section        0  lcd.o(.text)
+    Lcd_Init_320_240                         0x00000834   ARM Code     124  lcd.o(.text)
+    .text                                    0x000008e0   Section        0  uidiv.o(.text)
+    .text                                    0x00000918   Section        0  memcpya.o(.text)
+    .text                                    0x00000944   Section        0  memseta.o(.text)
+    .text                                    0x00000978   Section        0  strlen.o(.text)
+    i.__0sprintf$bare                        0x00000990   Section        0  printfb.o(i.__0sprintf$bare)
+    i.__ARM_common_call_via_r6               0x000009b8   Section        0  printfb.o(i.__ARM_common_call_via_r6)
+    i._printf_core                           0x000009ba   Section        0  printfb.o(i._printf_core)
+    _printf_core                             0x000009bb   Thumb Code    36  printfb.o(i._printf_core)
+    i._sputc                                 0x000009de   Section        0  printfb.o(i._sputc)
+    _sputc                                   0x000009df   Thumb Code    10  printfb.o(i._sputc)
+    .constdata                               0x000009e8   Section      130  nand.o(.constdata)
     .data                                    0x30000000   Section        4  nand.o(.data)
     StartPage                                0x30000000   Data           4  nand.o(.data)
     .data                                    0x30000004   Section      568  nand_lowlevel.o(.data)
@@ -395,32 +404,38 @@ Image Symbol Table
     Uart_Init                                0x00000288   ARM Code      68  2440lib.o(.text)
     Uart_SendByte                            0x000002cc   ARM Code      56  2440lib.o(.text)
     Uart_SendString                          0x00000304   ARM Code      40  2440lib.o(.text)
-    call_linux                               0x0000035c   ARM Code     112  nand.o(.text)
-    LoadRun                                  0x000003cc   ARM Code     228  nand.o(.text)
-    ReadPage                                 0x000004c4   ARM Code     144  nand_lowlevel.o(.text)
-    CheckBadBlk                              0x00000554   ARM Code     124  nand_lowlevel.o(.text)
-    InitNandFlash                            0x000005d0   ARM Code      36  nand_lowlevel.o(.text)
-    Bootloader                               0x00000624   ARM Code      40  u2440mon.o(.text)
-    Inline ARM to Thumb Veneer to __aeabi_memcpy4 0x00000668   ARM Code       8  memcpya.o(.text)
-    __aeabi_memcpy                           0x00000671   Thumb Code    36  memcpya.o(.text)
-    __aeabi_memcpy4                          0x00000671   Thumb Code     0  memcpya.o(.text)
-    __aeabi_memcpy8                          0x00000671   Thumb Code     0  memcpya.o(.text)
-    Inline ARM to Thumb Veneer to __aeabi_memclr4 0x00000694   ARM Code       8  memseta.o(.text)
-    __aeabi_memset                           0x0000069d   Thumb Code    16  memseta.o(.text)
-    __aeabi_memset4                          0x0000069d   Thumb Code     0  memseta.o(.text)
-    __aeabi_memset8                          0x0000069d   Thumb Code     0  memseta.o(.text)
-    __aeabi_memclr                           0x000006ad   Thumb Code     4  memseta.o(.text)
-    __aeabi_memclr4                          0x000006ad   Thumb Code     0  memseta.o(.text)
-    __aeabi_memclr8                          0x000006ad   Thumb Code     0  memseta.o(.text)
-    _memset$wrapper                          0x000006b1   Thumb Code    24  memseta.o(.text)
-    Inline ARM to Thumb Veneer to strlen     0x000006c8   ARM Code       8  strlen.o(.text)
-    strlen                                   0x000006d1   Thumb Code    16  strlen.o(.text)
-    Inline ARM to Thumb Veneer to __2sprintf 0x000006e0   ARM Code       8  printfb.o(i.__0sprintf$bare)
-    __0sprintf$bare                          0x000006e9   Thumb Code    34  printfb.o(i.__0sprintf$bare)
-    __1sprintf$bare                          0x000006e9   Thumb Code     0  printfb.o(i.__0sprintf$bare)
-    __2sprintf                               0x000006e9   Thumb Code     0  printfb.o(i.__0sprintf$bare)
-    __ARM_common_call_via_r6                 0x00000711   Thumb Code     2  printfb.o(i.__ARM_common_call_via_r6)
-    Image$$ER_ROM1$$RO$$Limit                0x000007c2   Number         0  nand.o(.constdata)
+    LcdBkLtSet                               0x0000032c   ARM Code     208  2440lib.o(.text)
+    call_linux                               0x00000430   ARM Code     112  nand.o(.text)
+    LoadRun                                  0x000004a0   ARM Code     228  nand.o(.text)
+    LoadPic                                  0x00000584   ARM Code     104  nand.o(.text)
+    ReadPage                                 0x00000600   ARM Code     144  nand_lowlevel.o(.text)
+    CheckBadBlk                              0x00000690   ARM Code     124  nand_lowlevel.o(.text)
+    InitNandFlash                            0x0000070c   ARM Code      36  nand_lowlevel.o(.text)
+    Bootloader                               0x00000760   ARM Code      52  u2440mon.o(.text)
+    Lcd_Tft_LTV350QV_F05_Init                0x000007d4   ARM Code      96  lcd.o(.text)
+    Inline ARM to Thumb Veneer to __aeabi_uidivmod 0x000008d8   ARM Code       8  uidiv.o(.text)
+    __aeabi_uidiv                            0x000008e1   Thumb Code     0  uidiv.o(.text)
+    __aeabi_uidivmod                         0x000008e1   Thumb Code    46  uidiv.o(.text)
+    Inline ARM to Thumb Veneer to __aeabi_memcpy4 0x00000910   ARM Code       8  memcpya.o(.text)
+    __aeabi_memcpy                           0x00000919   Thumb Code    36  memcpya.o(.text)
+    __aeabi_memcpy4                          0x00000919   Thumb Code     0  memcpya.o(.text)
+    __aeabi_memcpy8                          0x00000919   Thumb Code     0  memcpya.o(.text)
+    Inline ARM to Thumb Veneer to __aeabi_memclr4 0x0000093c   ARM Code       8  memseta.o(.text)
+    __aeabi_memset                           0x00000945   Thumb Code    16  memseta.o(.text)
+    __aeabi_memset4                          0x00000945   Thumb Code     0  memseta.o(.text)
+    __aeabi_memset8                          0x00000945   Thumb Code     0  memseta.o(.text)
+    __aeabi_memclr                           0x00000955   Thumb Code     4  memseta.o(.text)
+    __aeabi_memclr4                          0x00000955   Thumb Code     0  memseta.o(.text)
+    __aeabi_memclr8                          0x00000955   Thumb Code     0  memseta.o(.text)
+    _memset$wrapper                          0x00000959   Thumb Code    24  memseta.o(.text)
+    Inline ARM to Thumb Veneer to strlen     0x00000970   ARM Code       8  strlen.o(.text)
+    strlen                                   0x00000979   Thumb Code    16  strlen.o(.text)
+    Inline ARM to Thumb Veneer to __2sprintf 0x00000988   ARM Code       8  printfb.o(i.__0sprintf$bare)
+    __0sprintf$bare                          0x00000991   Thumb Code    34  printfb.o(i.__0sprintf$bare)
+    __1sprintf$bare                          0x00000991   Thumb Code     0  printfb.o(i.__0sprintf$bare)
+    __2sprintf                               0x00000991   Thumb Code     0  printfb.o(i.__0sprintf$bare)
+    __ARM_common_call_via_r6                 0x000009b9   Thumb Code     2  printfb.o(i.__ARM_common_call_via_r6)
+    Image$$ER_ROM1$$RO$$Limit                0x00000a6a   Number         0  nand.o(.constdata)
     Image$$RW_RAM1$$RW$$Base                 0x30000000   Number         0  nand.o(.data)
     boot_params                              0x30000004   Data         568  nand_lowlevel.o(.data)
     NandAddr                                 0x3000023c   Data           2  nand_lowlevel.o(.data)
@@ -436,29 +451,33 @@ Memory Map of the image
 
   Image Entry point : 0x00000000
 
-  Load Region LR_ROM1 (Base: 0x00000000, Size: 0x00000a04, Max: 0x00002000, ABSOLUTE)
+  Load Region LR_ROM1 (Base: 0x00000000, Size: 0x00000cac, Max: 0x00002000, ABSOLUTE)
 
-    Execution Region ER_ROM1 (Base: 0x00000000, Size: 0x000007c4, Max: 0x00002000, ABSOLUTE)
+    Execution Region ER_ROM1 (Base: 0x00000000, Size: 0x00000a6c, Max: 0x00002000, ABSOLUTE)
 
     Base Addr    Size         Type   Attr      Idx    E Section Name        Object
 
     0x00000000   0x000001f0   Code   RO            1  * RESET               2440init.o
-    0x000001f0   0x0000016c   Code   RO            6    .text               2440lib.o
-    0x0000035c   0x00000168   Code   RO           53    .text               nand.o
-    0x000004c4   0x00000160   Code   RO           79    .text               nand_lowlevel.o
-    0x00000624   0x00000044   Code   RO           98    .text               u2440mon.o
-    0x00000668   0x00000008   Ven    RO          130    .text               mc_t.l(memcpya.o)
-    0x00000670   0x00000024   Code   RO          130    .text               mc_t.l(memcpya.o)
-    0x00000694   0x00000008   Ven    RO          132    .text               mc_t.l(memseta.o)
-    0x0000069c   0x0000002c   Code   RO          132    .text               mc_t.l(memseta.o)
-    0x000006c8   0x00000008   Ven    RO          134    .text               mc_t.l(strlen.o)
-    0x000006d0   0x00000010   Code   RO          134    .text               mc_t.l(strlen.o)
-    0x000006e0   0x00000008   Ven    RO          141    i.__0sprintf$bare   mc_t.l(printfb.o)
-    0x000006e8   0x00000028   Code   RO          141    i.__0sprintf$bare   mc_t.l(printfb.o)
-    0x00000710   0x00000002   Code   RO          160    i.__ARM_common_call_via_r6  mc_t.l(printfb.o)
-    0x00000712   0x00000024   Code   RO          146    i._printf_core      mc_t.l(printfb.o)
-    0x00000736   0x0000000a   Code   RO          148    i._sputc            mc_t.l(printfb.o)
-    0x00000740   0x00000082   Data   RO           54    .constdata          nand.o
+    0x000001f0   0x00000240   Code   RO            6    .text               2440lib.o
+    0x00000430   0x000001d0   Code   RO           53    .text               nand.o
+    0x00000600   0x00000160   Code   RO           79    .text               nand_lowlevel.o
+    0x00000760   0x00000074   Code   RO           98    .text               u2440mon.o
+    0x000007d4   0x00000104   Code   RO          128    .text               lcd.o
+    0x000008d8   0x00000008   Ven    RO          142    .text               mc_t.l(uidiv.o)
+    0x000008e0   0x0000002e   Code   RO          142    .text               mc_t.l(uidiv.o)
+    0x0000090e   0x00000002   PAD
+    0x00000910   0x00000008   Ven    RO          144    .text               mc_t.l(memcpya.o)
+    0x00000918   0x00000024   Code   RO          144    .text               mc_t.l(memcpya.o)
+    0x0000093c   0x00000008   Ven    RO          146    .text               mc_t.l(memseta.o)
+    0x00000944   0x0000002c   Code   RO          146    .text               mc_t.l(memseta.o)
+    0x00000970   0x00000008   Ven    RO          148    .text               mc_t.l(strlen.o)
+    0x00000978   0x00000010   Code   RO          148    .text               mc_t.l(strlen.o)
+    0x00000988   0x00000008   Ven    RO          155    i.__0sprintf$bare   mc_t.l(printfb.o)
+    0x00000990   0x00000028   Code   RO          155    i.__0sprintf$bare   mc_t.l(printfb.o)
+    0x000009b8   0x00000002   Code   RO          174    i.__ARM_common_call_via_r6  mc_t.l(printfb.o)
+    0x000009ba   0x00000024   Code   RO          160    i._printf_core      mc_t.l(printfb.o)
+    0x000009de   0x0000000a   Code   RO          162    i._sputc            mc_t.l(printfb.o)
+    0x000009e8   0x00000082   Data   RO           54    .constdata          nand.o
 
 
     Execution Region RW_RAM1 (Base: 0x30000000, Size: 0x00000240, Max: 0x04000000, ABSOLUTE)
@@ -469,7 +488,7 @@ Memory Map of the image
     0x30000004   0x00000238   Data   RW           80    .data               nand_lowlevel.o
     0x3000023c   0x00000002   Data   RW           81    .data               nand_lowlevel.o
     0x3000023e   0x00000002   PAD
-    0x30000240   0x00000000   Zero   RW          433    linker$$defined$$symbols  anon$$obj.o
+    0x30000240   0x00000000   Zero   RW          445    linker$$defined$$symbols  anon$$obj.o
 
 
 ==============================================================================
@@ -480,13 +499,14 @@ Image component sizes
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   Object Name
 
        496        148          0          0          0        292   2440init.o
-       364         48          0          0          0       2892   2440lib.o
-       360         20        130          4          0       2333   nand.o
+       576         52          0          0          0       3247   2440lib.o
+       260         40          0          0          0       1416   lcd.o
+       464         20        130          4          0       2613   nand.o
        352          8          0        570          0       3248   nand_lowlevel.o
-        68         28          0          0          0        369   u2440mon.o
+       116         64          0          0          0        377   u2440mon.o
 
     ----------------------------------------------------------------------
-      1640        252        132        576          0       9134   Object Totals
+      2264        332        132        576          0      11193   Object Totals
          0          0          0          0          0          0   (incl. Generated)
          0          0          2          2          0          0   (incl. Padding)
 
@@ -498,19 +518,20 @@ Image component sizes
         52          0          0          0          0        112   memseta.o
         96          6          0          0          0        292   printfb.o
         24          0          0          0          0         60   strlen.o
+        54          0          0          0          0         72   uidiv.o
 
     ----------------------------------------------------------------------
-       216          6          0          0          0        524   Library Totals
-         0          0          0          0          0          0   (incl. Padding)
+       272          6          0          0          0        596   Library Totals
+         2          0          0          0          0          0   (incl. Padding)
 
     ----------------------------------------------------------------------
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   Library Name
 
-       216          6          0          0          0        524   mc_t.l
+       270          6          0          0          0        596   mc_t.l
 
     ----------------------------------------------------------------------
-       216          6          0          0          0        524   Library Totals
+       272          6          0          0          0        596   Library Totals
 
     ----------------------------------------------------------------------
 
@@ -519,15 +540,15 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   
 
-      1856        258        132        576          0       9378   Grand Totals
-      1856        258        132        576          0       9378   ELF Image Totals
-      1856        258        132        576          0          0   ROM Totals
+      2536        338        132        576          0      11361   Grand Totals
+      2536        338        132        576          0      11361   ELF Image Totals
+      2536        338        132        576          0          0   ROM Totals
 
 ==============================================================================
 
-    Total RO  Size (Code + RO Data)                 1988 (   1.94kB)
+    Total RO  Size (Code + RO Data)                 2668 (   2.61kB)
     Total RW  Size (RW Data + ZI Data)               576 (   0.56kB)
-    Total ROM Size (Code + RO Data + RW Data)       2564 (   2.50kB)
+    Total ROM Size (Code + RO Data + RW Data)       3244 (   3.17kB)
 
 ==============================================================================
 

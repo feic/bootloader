@@ -97,8 +97,8 @@ ResetHandler
 							;使LED0-LED3对应的管脚为输出
 	
 	LDR R1,	=0x56000014		;GPB的DAT寄存器地址
-	MOV	R2,	#0x00000		;
-	STR R2,	[R1]			;点亮led0-led3
+	MOV	R2,	#0x00001		;
+	STR R2,	[R1]			;点亮led0-led3,蜂鸣器蜂鸣
 
 
 	;To reduce PLL lock time, adjust the LOCKTIME register.

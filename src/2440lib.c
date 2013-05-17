@@ -94,4 +94,34 @@ void Uart_SendString(char *pt)
         Uart_SendByte(*pt++);
 }
 
+//********************** BOARD LCD backlight ]****************************
+void LcdBkLtSet(U32 HiRatio)
+{
+#define FREQ_PWM1		1000
 
+	if(!HiRatio)
+	{
+		rGPBCON  = rGPBCON & (~(3<<2)) | (1<<2) ;	//GPB1设置为output
+		rGPBDAT &= ~(1<<1);
+		return;
+	}
+	rGPBCON = rGPBCON & (~(3<<2)) | (2<<2) ;		//GPB1设置为TOUT1
+	
+	if( HiRatio > 100 )
+		HiRatio = 100 ;	
+	
+	rTCON = rTCON & (~(0xf<<8)) ;			// clear manual update bit, stop Timer1
+
+	rTCFG0 	&= 0xffffff00;					// set Timer 0&1 prescaler 0
+	rTCFG0 |= 15;							//prescaler = 15+1
+
+	rTCFG1 	&= 0xffffff0f;					// set Timer 1 MUX 1/16
+	rTCFG1  |= 0x00000030;					// set Timer 1 MUX 1/16
+
+	rTCNTB1	 = ( 100000000>>8 )/FREQ_PWM1;		//if set inverter off, when TCNT2<=TCMP2, TOUT is high, TCNT2>TCMP2, TOUT is low
+	rTCMPB1  = ( rTCNTB1*(100-HiRatio))/100 ;	//if set inverter on,  when TCNT2<=TCMP2, TOUT is low,  TCNT2>TCMP2, TOUT is high
+
+	rTCON = rTCON & (~(0xf<<8)) | (0x0e<<8) ;
+	//自动重装,输出取反关闭,更新TCNTBn、TCMPBn,死区控制器关闭
+	rTCON = rTCON & (~(0xf<<8)) | (0x0d<<8) ;		//开启背光控制
+}
