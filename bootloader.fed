@@ -1,7 +1,7 @@
-;#<FEEDBACK># ARM Linker, 4.1 [Build 894]: Last Updated: Fri May 17 13:04:46 2013
+;#<FEEDBACK># ARM Linker, 4.1 [Build 894]: Last Updated: Fri May 17 16:44:09 2013
 ;VERSION 0.2
 ;FILE 2440lib.o
+;FILE bootloader.o
 ;FILE lcd.o
 ;FILE nand.o
 ;FILE nand_lowlevel.o
-;FILE u2440mon.o

@@ -5,10 +5,10 @@
 ### List of Objects: adding '"2440lib.o"'
 ### List of Objects: adding '"nand.o"'
 ### List of Objects: adding '"nand_lowlevel.o"'
-### List of Objects: adding '"u2440mon.o"'
 ### List of Objects: adding '"lcd.o"'
+### List of Objects: adding '"bootloader.o"'
 ### ADS-LD Command completed:
---cpu ARM920T "2440init.o" "2440lib.o" "nand.o" "nand_lowlevel.o" "u2440mon.o" "lcd.o" --library_type=microlib --feedback "bootloader.fed" 
+--cpu ARM920T "2440init.o" "2440lib.o" "nand.o" "nand_lowlevel.o" "lcd.o" "bootloader.o" --library_type=microlib --feedback "bootloader.fed" 
 --strict --scatter "bootloader.sct" 
 --summary_stderr --info summarysizes --map --xref --callgraph --symbols 
 --info sizes --info totals --info unused --info veneers 
@@ -16,7 +16,7 @@
 ### ADS-LD Output File: 'bootloader.axf'
 ### ADS-LD Command File: 'bootloader.lnp'
 ### Checking for dirty Components...
-### Creating CmdFile 'bootloader.lnp', Handle=0x0000031C
+### Creating CmdFile 'bootloader.lnp', Handle=0x000004E8
 ### Writing '.lnp' file
 ### ADS-LD Command file 'bootloader.lnp' is ready.
 ### ADS-LD: About to start ADS-LD Thread.

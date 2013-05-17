@@ -821,7 +821,8 @@ ARM Macro Assembler    Page 13
                                                             ;GPB的DAT寄存器地址
                                                             
   100 00000034 E3A02001        MOV              R2, #0x00001 ;
-  101 00000038 E5812000        STR              R2, [R1]    ;点亮led0-led3
+  101 00000038 E5812000        STR              R2, [R1]    ;点亮led0-led3,蜂鸣
+                                                            器蜂鸣
   102 0000003C         
   103 0000003C         
   104 0000003C         ;To reduce PLL lock time, adjust the LOCKTIME register.
@@ -842,13 +843,13 @@ ARM Macro Assembler    Page 13
   115 00000054         
   116 00000054                 [                CLKDIV_VAL>1 ; means Fclk:Hclk 
                                                             is not 1:1.
-  117 00000054 EE110F10        mrc              p15,0,r0,c1,c0,0
 
 
 
 ARM Macro Assembler    Page 14 
 
 
+  117 00000054 EE110F10        mrc              p15,0,r0,c1,c0,0
   118 00000058 E3800103        orr              r0,r0,#0xc0000000 
                                                             ;R1_nF:OR:R1_iA
   119 0000005C EE010F10        mcr              p15,0,r0,c1,c0,0
@@ -907,13 +908,13 @@ _SDIV)
                        ====
   165 000000B8         ;// 判断是从nor启动还是从nand启动
   166 000000B8         ;=======================================================
-                       ====
 
 
 
 ARM Macro Assembler    Page 15 
 
 
+                       ====
   167 000000B8         ;bl Led_Test
   168 000000B8         
   169 000000B8 E3A00312        ldr              r0, =BWSCON
@@ -972,13 +973,13 @@ ARM Macro Assembler    Page 15
   210 00000108         
   211 00000108 E38010D2        orr              r1,r0,#IRQMODE|NOINT
   212 0000010C E12FF001        msr              cpsr_cxsf,r1 ;IRQMode
-  213 00000110 E59FD084        ldr              sp,=IRQStack ; IRQStack=0x33FF_
 
 
 
 ARM Macro Assembler    Page 16 
 
 
+  213 00000110 E59FD084        ldr              sp,=IRQStack ; IRQStack=0x33FF_
                                                             7000
   214 00000114         
   215 00000114 E38010D1        orr              r1,r0,#FIQMODE|NOINT
@@ -1037,13 +1038,13 @@ ARM Macro Assembler    Page 16
               0007F021 
               00000000 
               33FF5C00 
-              33FF6000 
 
 
 
 ARM Macro Assembler    Page 17 
 
 
+              33FF6000 
               33FF7000 
               33FF8000 
               33FF5800         LTORG
@@ -1102,13 +1103,13 @@ CAN))
   278 000001D4         ;DCD 0x02     ;SCLK power saving disable, BANKSIZE 128M/
                        128M
   279 000001D4         
-  280 000001D4 00000020        DCD              0x20        ;MRSR6 CL=2clk
 
 
 
 ARM Macro Assembler    Page 18 
 
 
+  280 000001D4 00000020        DCD              0x20        ;MRSR6 CL=2clk
   281 000001D8 00000020        DCD              0x20        ;MRSR7 CL=2clk
   282 000001DC         
   283 000001DC 00000000 
@@ -1131,8 +1132,8 @@ ARM Macro Assembler    Page 18
   290 000001F0         
   291 000001F0                 END
 Command Line: --debug --xref --cpu=ARM920T --apcs=interwork --depend=2440init.d
- -o2440init.o -I.\inc -I.\inc -I.\inc -ID:\Keil\ARM\RV31\Inc -ID:\Keil\ARM\CMSI
-S\Include -ID:\Keil\ARM\Inc\Samsung --predefine="__MICROLIB SETA 1" --list=.\24
+ -o2440init.o -I.\inc -I.\inc -I.\inc -IE:\Keil\ARM\RV31\Inc -IE:\Keil\ARM\CMSI
+S\Include -IE:\Keil\ARM\Inc\Samsung --predefine="__MICROLIB SETA 1" --list=.\24
 40init.lst src\2440init.s
 
 

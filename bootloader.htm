@@ -3,7 +3,7 @@
 <title>Static Call Graph - [E:\Github\bootloader\bootloader.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image E:\Github\bootloader\bootloader.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 4.1 [Build 894]: Last Updated: Fri May 17 13:04:46 2013
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 4.1 [Build 894]: Last Updated: Fri May 17 16:44:09 2013
 <BR><P>
 <H3>Maximum Stack Usage =        568 bytes + Unknown(Functions without stacksize, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -26,11 +26,11 @@ Function Pointers
 <H3>
 Global Symbols
 </H3>
-<P><STRONG><a name="[11]"></a>Port_Init</STRONG> (ARM, 152 bytes, Stack size 0 bytes, 2440lib.o(.text))
+<P><STRONG><a name="[13]"></a>Port_Init</STRONG> (ARM, 152 bytes, Stack size 0 bytes, 2440lib.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Bootloader
 </UL>
 
-<P><STRONG><a name="[12]"></a>Uart_Init</STRONG> (ARM, 68 bytes, Stack size 0 bytes, 2440lib.o(.text))
+<P><STRONG><a name="[14]"></a>Uart_Init</STRONG> (ARM, 68 bytes, Stack size 0 bytes, 2440lib.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Bootloader
 </UL>
 
@@ -51,7 +51,7 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_uidivmod (via Veneer)
 </UL>
-<BR>[Called By]<UL><LI><a href="#[14]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Lcd_Tft_LTV350QV_F05_Init
+<BR>[Called By]<UL><LI><a href="#[11]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Lcd_Tft_LTV350QV_F05_Init
 </UL>
 
 <P><STRONG><a name="[e]"></a>call_linux</STRONG> (ARM, 112 bytes, Stack size 8 bytes, nand.o(.text))
@@ -80,7 +80,7 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadPage
 <LI><a href="#[c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CheckBadBlk
 </UL>
-<BR>[Called By]<UL><LI><a href="#[14]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Lcd_Tft_LTV350QV_F05_Init
+<BR>[Called By]<UL><LI><a href="#[11]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Lcd_Tft_LTV350QV_F05_Init
 </UL>
 
 <P><STRONG><a name="[d]"></a>ReadPage</STRONG> (ARM, 144 bytes, Stack size 16 bytes, nand_lowlevel.o(.text))
@@ -101,31 +101,31 @@ Global Symbols
 <LI><a href="#[7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LoadRun
 </UL>
 
-<P><STRONG><a name="[13]"></a>InitNandFlash</STRONG> (ARM, 36 bytes, Stack size 0 bytes, nand_lowlevel.o(.text))
+<P><STRONG><a name="[15]"></a>InitNandFlash</STRONG> (ARM, 36 bytes, Stack size 0 bytes, nand_lowlevel.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Bootloader
 </UL>
 
-<P><STRONG><a name="[2]"></a>Bootloader</STRONG> (ARM, 52 bytes, Stack size 8 bytes, u2440mon.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 568<LI>Call Chain = Bootloader &rArr; LoadRun &rArr; __2sprintf
-</UL>
-<BR>[Calls]<UL><LI><a href="#[14]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Lcd_Tft_LTV350QV_F05_Init
-<LI><a href="#[13]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InitNandFlash
-<LI><a href="#[7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LoadRun
-<LI><a href="#[3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Uart_SendString
-<LI><a href="#[12]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Uart_Init
-<LI><a href="#[11]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Port_Init
-</UL>
-<BR>[Called By]<UL><LI><a href="#[0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CEntry
-</UL>
-
-<P><STRONG><a name="[14]"></a>Lcd_Tft_LTV350QV_F05_Init</STRONG> (ARM, 96 bytes, Stack size 8 bytes, lcd.o(.text))
+<P><STRONG><a name="[11]"></a>Lcd_Tft_LTV350QV_F05_Init</STRONG> (ARM, 96 bytes, Stack size 8 bytes, lcd.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 48<LI>Call Chain = Lcd_Tft_LTV350QV_F05_Init &rArr; LoadPic &rArr; ReadPage
 </UL>
-<BR>[Calls]<UL><LI><a href="#[15]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Lcd_Init_320_240
+<BR>[Calls]<UL><LI><a href="#[12]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Lcd_Init_320_240
 <LI><a href="#[f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LoadPic
 <LI><a href="#[5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LcdBkLtSet
 </UL>
 <BR>[Called By]<UL><LI><a href="#[2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Bootloader
+</UL>
+
+<P><STRONG><a name="[2]"></a>Bootloader</STRONG> (ARM, 52 bytes, Stack size 8 bytes, bootloader.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 568<LI>Call Chain = Bootloader &rArr; LoadRun &rArr; __2sprintf
+</UL>
+<BR>[Calls]<UL><LI><a href="#[11]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Lcd_Tft_LTV350QV_F05_Init
+<LI><a href="#[15]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InitNandFlash
+<LI><a href="#[7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LoadRun
+<LI><a href="#[3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Uart_SendString
+<LI><a href="#[14]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Uart_Init
+<LI><a href="#[13]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Port_Init
+</UL>
+<BR>[Called By]<UL><LI><a href="#[0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CEntry
 </UL>
 
 <P><STRONG><a name="[39]"></a>__aeabi_uidiv</STRONG> (Thumb, 0 bytes, Stack size 8 bytes, uidiv.o(.text), UNUSED)
@@ -204,8 +204,8 @@ Local Symbols
 <LI><a href="#[c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CheckBadBlk
 </UL>
 
-<P><STRONG><a name="[15]"></a>Lcd_Init_320_240</STRONG> (ARM, 124 bytes, Stack size 0 bytes, lcd.o(.text))
-<BR><BR>[Called By]<UL><LI><a href="#[14]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Lcd_Tft_LTV350QV_F05_Init
+<P><STRONG><a name="[12]"></a>Lcd_Init_320_240</STRONG> (ARM, 124 bytes, Stack size 0 bytes, lcd.o(.text))
+<BR><BR>[Called By]<UL><LI><a href="#[11]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Lcd_Tft_LTV350QV_F05_Init
 </UL>
 
 <P><STRONG><a name="[1a]"></a>_printf_core</STRONG> (Thumb, 36 bytes, Stack size 24 bytes, printfb.o(i._printf_core), UNUSED)

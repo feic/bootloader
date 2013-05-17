@@ -1,10 +1,10 @@
-ARM Linker, 4.1 [Build 894] [Professional]
+ARM Linker, 4.1 [Build 894] [Standard]
 
 ==============================================================================
 
 Section Cross References
 
-    2440init.o(RESET) refers to u2440mon.o(.text) for Bootloader
+    2440init.o(RESET) refers to bootloader.o(.text) for Bootloader
     2440lib.o(.text) refers to uidiv.o(.text) for __aeabi_uidivmod
     nand.o(.text) refers to memseta.o(.text) for __aeabi_memclr4
     nand.o(.text) refers to printfb.o(i.__0sprintf$bare) for __2sprintf
@@ -15,12 +15,12 @@ Section Cross References
     nand.o(.text) refers to nand_lowlevel.o(.data) for boot_params
     nand.o(.text) refers to nand.o(.data) for .data
     nand_lowlevel.o(.text) refers to nand_lowlevel.o(.data) for .data
-    u2440mon.o(.text) refers to 2440lib.o(.text) for Port_Init
-    u2440mon.o(.text) refers to nand_lowlevel.o(.text) for InitNandFlash
-    u2440mon.o(.text) refers to lcd.o(.text) for Lcd_Tft_LTV350QV_F05_Init
-    u2440mon.o(.text) refers to nand.o(.text) for LoadRun
     lcd.o(.text) refers to 2440lib.o(.text) for LcdBkLtSet
     lcd.o(.text) refers to nand.o(.text) for LoadPic
+    bootloader.o(.text) refers to 2440lib.o(.text) for Port_Init
+    bootloader.o(.text) refers to nand_lowlevel.o(.text) for InitNandFlash
+    bootloader.o(.text) refers to lcd.o(.text) for Lcd_Tft_LTV350QV_F05_Init
+    bootloader.o(.text) refers to nand.o(.text) for LoadRun
     printfb.o(i.__0fprintf$bare) refers to printfb.o(i._printf_core) for _printf_core
     printfb.o(i.__0fprintf$bare) refers to fputc.o(i.fputc) for fputc
     printfb.o(i.__0printf$bare) refers to printfb.o(i._printf_core) for _printf_core
@@ -297,10 +297,10 @@ Section Cross References
 Removing Unused input sections from the image.
 
     Removing 2440lib.o(.data), (4 bytes).
-    Removing u2440mon.o(.data), (4 bytes).
-    Removing u2440mon.o(.data), (4 bytes).
-    Removing u2440mon.o(.data), (4 bytes).
-    Removing u2440mon.o(.data), (4 bytes).
+    Removing bootloader.o(.data), (4 bytes).
+    Removing bootloader.o(.data), (4 bytes).
+    Removing bootloader.o(.data), (4 bytes).
+    Removing bootloader.o(.data), (4 bytes).
     Removing dadd.o(.text), (364 bytes).
     Removing dmul.o(.text), (212 bytes).
     Removing ddiv.o(.text), (244 bytes).
@@ -366,18 +366,18 @@ Image Symbol Table
     dc.s                                     0x00000000   Number         0  dc.o ABSOLUTE
     src\2440init.s                           0x00000000   Number         0  2440init.o ABSOLUTE
     src\2440lib.c                            0x00000000   Number         0  2440lib.o ABSOLUTE
+    src\bootloader.c                         0x00000000   Number         0  bootloader.o ABSOLUTE
     src\lcd.c                                0x00000000   Number         0  lcd.o ABSOLUTE
     src\nand.c                               0x00000000   Number         0  nand.o ABSOLUTE
     src\nand_lowlevel.c                      0x00000000   Number         0  nand_lowlevel.o ABSOLUTE
-    src\u2440mon.c                           0x00000000   Number         0  u2440mon.o ABSOLUTE
     CEntry                                   0x000000e4   ARM Code       0  2440init.o(RESET)
     .text                                    0x000001f0   Section        0  2440lib.o(.text)
     .text                                    0x00000430   Section        0  nand.o(.text)
     .text                                    0x00000600   Section        0  nand_lowlevel.o(.text)
     WaitNFBusy                               0x00000730   ARM Code      40  nand_lowlevel.o(.text)
-    .text                                    0x00000760   Section        0  u2440mon.o(.text)
-    .text                                    0x000007d4   Section        0  lcd.o(.text)
-    Lcd_Init_320_240                         0x00000834   ARM Code     124  lcd.o(.text)
+    .text                                    0x00000760   Section        0  lcd.o(.text)
+    Lcd_Init_320_240                         0x000007c0   ARM Code     124  lcd.o(.text)
+    .text                                    0x00000864   Section        0  bootloader.o(.text)
     .text                                    0x000008e0   Section        0  uidiv.o(.text)
     .text                                    0x00000918   Section        0  memcpya.o(.text)
     .text                                    0x00000944   Section        0  memseta.o(.text)
@@ -411,8 +411,8 @@ Image Symbol Table
     ReadPage                                 0x00000600   ARM Code     144  nand_lowlevel.o(.text)
     CheckBadBlk                              0x00000690   ARM Code     124  nand_lowlevel.o(.text)
     InitNandFlash                            0x0000070c   ARM Code      36  nand_lowlevel.o(.text)
-    Bootloader                               0x00000760   ARM Code      52  u2440mon.o(.text)
-    Lcd_Tft_LTV350QV_F05_Init                0x000007d4   ARM Code      96  lcd.o(.text)
+    Lcd_Tft_LTV350QV_F05_Init                0x00000760   ARM Code      96  lcd.o(.text)
+    Bootloader                               0x00000864   ARM Code      52  bootloader.o(.text)
     Inline ARM to Thumb Veneer to __aeabi_uidivmod 0x000008d8   ARM Code       8  uidiv.o(.text)
     __aeabi_uidiv                            0x000008e1   Thumb Code     0  uidiv.o(.text)
     __aeabi_uidivmod                         0x000008e1   Thumb Code    46  uidiv.o(.text)
@@ -461,8 +461,8 @@ Memory Map of the image
     0x000001f0   0x00000240   Code   RO            6    .text               2440lib.o
     0x00000430   0x000001d0   Code   RO           53    .text               nand.o
     0x00000600   0x00000160   Code   RO           79    .text               nand_lowlevel.o
-    0x00000760   0x00000074   Code   RO           98    .text               u2440mon.o
-    0x000007d4   0x00000104   Code   RO          128    .text               lcd.o
+    0x00000760   0x00000104   Code   RO           98    .text               lcd.o
+    0x00000864   0x00000074   Code   RO          110    .text               bootloader.o
     0x000008d8   0x00000008   Ven    RO          142    .text               mc_t.l(uidiv.o)
     0x000008e0   0x0000002e   Code   RO          142    .text               mc_t.l(uidiv.o)
     0x0000090e   0x00000002   PAD
@@ -500,13 +500,13 @@ Image component sizes
 
        496        148          0          0          0        292   2440init.o
        576         52          0          0          0       3247   2440lib.o
+       116         64          0          0          0        381   bootloader.o
        260         40          0          0          0       1416   lcd.o
        464         20        130          4          0       2613   nand.o
        352          8          0        570          0       3248   nand_lowlevel.o
-       116         64          0          0          0        377   u2440mon.o
 
     ----------------------------------------------------------------------
-      2264        332        132        576          0      11193   Object Totals
+      2264        332        132        576          0      11197   Object Totals
          0          0          0          0          0          0   (incl. Generated)
          0          0          2          2          0          0   (incl. Padding)
 
@@ -540,8 +540,8 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   
 
-      2536        338        132        576          0      11361   Grand Totals
-      2536        338        132        576          0      11361   ELF Image Totals
+      2536        338        132        576          0      11365   Grand Totals
+      2536        338        132        576          0      11365   ELF Image Totals
       2536        338        132        576          0          0   ROM Totals
 
 ==============================================================================

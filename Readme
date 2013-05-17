@@ -1,0 +1,8 @@
+版权信息：根据FL2440-bootloaderV5.1精简改动，源码应该是VIVI和U-Boot的混杂形式，遵循GPL
+软件功能：启动FL2440上的Linux，只针对特定的Nand Flash地址，如有需要，请进行移植。
+		支持串口UART0的输出
+		支持Nor Flash和Nand Flash的启动（代码编译后小于4K）
+		支持开机画面的显示
+		对于USB等非必要设备没有进行初始化
+工程信息：MDK4.5.3创建并编译
+Email：drowingnot@gmail.com
